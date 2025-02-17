@@ -241,7 +241,7 @@ If you `cargo run` now, it is mostly the same as before: but tool-tips that norm
 
 ## Batching the GUI
 
-We'll start with `gui/hud.rs` because it's the messiest! Add a `let mut draw_batch = DrawBatch::new();` to the beginning, and a `draw_batch.submit(5000);` to the end. Why `5,000`? There are 80x60 (4,800) possible tiles in the map. The provided number acts as a sort: so we're guaranteeing that we'll draw the GUI after the map. Then it's a matter of converting the `ctx` calls to equivalent batch calls. It's also a good time to break the giant `draw_gui` function into smaller pieces. The completely refactor `gui/hud.rs` looks like this:
+We'll start with `gui/hud.rs` because it's the messiest! Add a `let mut draw_batch = DrawBatch::new();` to the beginning, and a `let _result = draw_batch.submit(5000);` to the end. Why `5,000`? There are 80x60 (4,800) possible tiles in the map. The provided number acts as a sort: so we're guaranteeing that we'll draw the GUI after the map. Then it's a matter of converting the `ctx` calls to equivalent batch calls. It's also a good time to break the giant `draw_gui` function into smaller pieces. The completely refactor `gui/hud.rs` looks like this:
 
 ```rust
 use rltk::prelude::*;
@@ -520,7 +520,7 @@ pub fn draw_ui(ecs: &World, ctx : &mut Rltk) {
     gamelog::print_log(&mut rltk::BACKEND_INTERNAL.lock().consoles[1].console, Point::new(1, 23));
     draw_tooltips(ecs, ctx);
 
-    draw_batch.submit(5000);
+    let _result = draw_batch.submit(5000);
 }
 ```
 
@@ -1031,7 +1031,7 @@ pub fn ranged_target(gs : &mut State, ctx : &mut Rltk, range : i32) -> (ItemMenu
         }
     }
 
-    draw_batch.submit(5000);
+    let _result = draw_batch.submit(5000);
 
     (ItemMenuResult::NoResponse, None)
 }
@@ -1419,7 +1419,6 @@ This chapter has been a little painful, but we've got our rendering using the ne
 ---
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-72-textlayers)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-72-textlayers)
 ---

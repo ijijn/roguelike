@@ -71,7 +71,7 @@ pub fn ranged_target(
         }
     }
 
-    draw_batch.submit(5000);
+    let _result = draw_batch.submit(5000);
 
     (ItemMenuResult::NoResponse, None)
 }

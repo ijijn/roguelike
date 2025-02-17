@@ -3,7 +3,6 @@ use super::{
     Position, Rect, TileType, SHOW_MAPGEN_VISUALIZER,
 };
 use rltk::RandomNumberGenerator;
-use specs::prelude::*;
 
 pub struct SimpleMapBuilder {
     map: Map,

@@ -16,15 +16,15 @@ The last few chapters have introduced an important concept in procedural generat
 
 ## A builder-based interface
 
-Builder chaining is a pretty profound approach to procedurally generating maps, and gives us an opportunity to clean up a lot of the code we've built thus far. We want an interface similar to the way we build entities with `Specs`: a builder, onto which we can keep chaining builders and return it as an "executor" - ready to build the maps. We also want to stop builders from doing more than one thing - they should do one thing, and do it well (that's a good principle of design; it makes debugging easier, and reduces duplication). 
+Builder chaining is a pretty profound approach to procedurally generating maps, and gives us an opportunity to clean up a lot of the code we've built thus far. We want an interface similar to the way we build entities with `Specs`: a builder, onto which we can keep chaining builders and return it as an "executor" - ready to build the maps. We also want to stop builders from doing more than one thing - they should do one thing, and do it well (that's a good principle of design; it makes debugging easier, and reduces duplication).
 
 There are two major types of builders: those that *just* make a map (and only make sense to run once), and those that *modify* an existing map. We'll name those `InitialMapBuilder` and `MetaMapBuilder` respectively.
 
 This gives us an idea of the syntax we want to employ:
 
 * Our *Builder* should have:
-    * ONE Initial Builder.
-    * *n* Meta Builders, that run in order.
+  * ONE Initial Builder.
+  * *n* Meta Builders, that run in order.
 
 It makes sense then that the builder should have a `start_with` method that accepts the first map, and additional `with` methods to chain builders. The builders should be stored in a container that preserves the order in which they were added - a vector being the obvious choice.
 
@@ -44,7 +44,7 @@ pub struct BuilderMap {
 }
 ```
 
-You'll notice that this has all of the data we've been building into each map builder - and nothing else. It's intentionally generic - we'll be passing it to builders, and letting them work on it. Notice that all the fields are *public* - that's because we're passing it around, and there's a good chance that anything that touches it will need to access any/all of its contents. 
+You'll notice that this has all of the data we've been building into each map builder - and nothing else. It's intentionally generic - we'll be passing it to builders, and letting them work on it. Notice that all the fields are *public* - that's because we're passing it around, and there's a good chance that anything that touches it will need to access any/all of its contents.
 
 The `BuilderMap` also needs to facilitate the task of taking snapshots for debugger viewing of maps as we work on algorithms. We're going to put one function into `BuilderMap` - to handle snapshotting development:
 
@@ -199,7 +199,7 @@ pub fn random_builder(new_depth: i32, rng: &mut rltk::RandomNumberGenerator) -> 
 
 Notice that we're now taking a `RandomNumberGenerator` parameter. That's because we'd like to use the global RNG, rather than keep making new ones. This way, if the caller sets a "seed" - it will apply to world generation. This is intended to be the topic of a future chapter. We're also now returning a `BuilderChain` rather than a boxed trait - we're hiding the messy boxing/dynamic dispatch inside the implementation, so the caller doesn't have to worry about it. There's also two new types here: `RoomBasedSpawner` and `RoomBasedStartingPosition` - as well as a changed constructor for `SimpleMapBuilder` (it no longer accepts a depth parameter). We'll be looking at that in a second - but first, lets deal with the changes to the main program resulting from the new interface.
 
-## Nice looking interface - but you broke stuff!
+## Nice looking interface - but you broke stuff
 
 We now have the *interface* we want - a good map of how the system interacts with the world. Unfortunately, the world is still expecting the setup we had before - so we need to fix it. In `main.rs`, we need to update our `generate_world_map` function to use the new interface:
 
@@ -300,7 +300,7 @@ impl SimpleMapBuilder {
 
 This is basically the same as the old `SimpleMapBuilder`, but there's a number of changes:
 
-* Notice that we're only applying the `InitialMapBuilder` trait - `MapBuilder` is no more. 
+* Notice that we're only applying the `InitialMapBuilder` trait - `MapBuilder` is no more.
 * We're also not setting a starting position, or spawning entities - those are now the purview of other builders in the chain. We've basically distilled it down to just the room building algorithm.
 * We set `build_data.rooms` to `Some(rooms)`. Not all algorithms support rooms - so our trait leaves the `Option` set to `None` until we fill it. Since the `SimpleMapBuilder` is all about rooms - we fill it in.
 
@@ -897,7 +897,7 @@ impl CullUnreachable {
             if *tile == TileType::Floor {
                 let distance_to_start = dijkstra_map.map[i];
                 // We can't get to this tile - so we'll make it a wall
-                if distance_to_start == std::f32::MAX {
+                if distance_to_start == f32::MAX {
                     *tile = TileType::Wall;
                 }
             }
@@ -1000,7 +1000,7 @@ impl DistantExit {
         for (i, tile) in build_data.map.tiles.iter_mut().enumerate() {
             if *tile == TileType::Floor {
                 let distance_to_start = dijkstra_map.map[i];
-                if distance_to_start != std::f32::MAX {
+                if distance_to_start != f32::MAX {
                     // If it is further away than our current exit candidate, move the exit
                     if distance_to_start > exit_tile.1 {
                         exit_tile.0 = i;
@@ -2245,7 +2245,6 @@ This sets the stage for the next chapter, which will look at more ways to use fi
 ...
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-36-layers)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-36-layers/)
 ---

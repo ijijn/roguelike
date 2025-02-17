@@ -30,7 +30,7 @@ impl DistantExit {
         for (i, tile) in build_data.map.tiles.iter_mut().enumerate() {
             if *tile == TileType::Floor {
                 let distance_to_start = dijkstra_map.map[i];
-                if distance_to_start != std::f32::MAX {
+                if distance_to_start != f32::MAX {
                     // If it is further away than our current exit candidate, move the exit
                     if distance_to_start > exit_tile.1 {
                         exit_tile.0 = i;

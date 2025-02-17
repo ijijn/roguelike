@@ -362,5 +362,5 @@ pub fn draw_ui(ecs: &World, ctx: &mut Rltk) {
     );
     draw_tooltips(ecs, ctx);
 
-    draw_batch.submit(5000);
+    let _result = draw_batch.submit(5000);
 }

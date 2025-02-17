@@ -25,7 +25,7 @@ impl<'a> System<'a> for ApproachAI {
             let path = rltk::a_star_search(
                 map.xy_idx(pos.x, pos.y),
                 map.xy_idx(approach.idx % map.width, approach.idx / map.width),
-                &mut *map,
+                &*map,
             );
             if path.success && path.steps.len() > 1 {
                 apply_move

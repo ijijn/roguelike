@@ -94,7 +94,7 @@ impl DrunkardsWalkBuilder {
             if *tile == TileType::Floor {
                 let distance_to_start = dijkstra_map.map[i];
                 // We can't get to this tile - so we'll make it a wall
-                if distance_to_start == std::f32::MAX {
+                if distance_to_start == f32::MAX {
                     *tile = TileType::Wall;
                 } else {
                     // If it is further away than our current exit candidate, move the exit
@@ -168,7 +168,7 @@ pub fn remove_unreachable_areas_returning_most_distant(map : &mut Map, start_idx
         if *tile == TileType::Floor {
             let distance_to_start = dijkstra_map.map[i];
             // We can't get to this tile - so we'll make it a wall
-            if distance_to_start == std::f32::MAX {
+            if distance_to_start == f32::MAX {
                 *tile = TileType::Wall;
             } else {
                 // If it is further away than our current exit candidate, move the exit
@@ -543,7 +543,6 @@ pub fn random_builder(new_depth: i32) -> Box<dyn MapBuilder> {
 And we're done with drunken map building (words I never expected to type...)! It's a *very* flexible algorithm, and can be used to make a lot of different map types. It also combines well with other algorithms, as we'll see in future chapters.
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-28-drunkards-walk)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-28-drunkards-walk/)
 ---

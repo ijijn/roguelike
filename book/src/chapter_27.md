@@ -204,7 +204,7 @@ for (i, tile) in self.map.tiles.iter_mut().enumerate() {
     if *tile == TileType::Floor {
         let distance_to_start = dijkstra_map.map[i];
         // We can't get to this tile - so we'll make it a wall
-        if distance_to_start == std::f32::MAX {
+        if distance_to_start == f32::MAX {
             *tile = TileType::Wall;
         } else {
             // If it is further away than our current exit candidate, move the exit
@@ -236,7 +236,7 @@ This is a dense piece of code that does a lot, lets walk through it:
 
 If you `cargo run`, you actually have quite a playable map now! There's just one problem: there are no other entities on the map.
 
-## Populating our cave: freeing the spawn system from rooms.
+## Populating our cave: freeing the spawn system from rooms
 
 If we were feeling lazy, we could simply iterate the map - find open spaces and have a random chance to spawn something. But that's not really very much fun. It makes more sense for monsters to be grouped together, with some "dead spaces" so you can catch your breath (and regain some health).
 
@@ -345,7 +345,7 @@ This is similar to the previous spawning code, but not quite the same (although 
 
 The best way to test this is to uncomment out the `random_builder` code (and comment the `CellularAutomataBuilder` entry) and give it a go. It should play just like before. Once you've tested it, go back to always spawning the map type we're working on.
 
-## Grouped placement in our map - Enter the Voronoi!
+## Grouped placement in our map - Enter the Voronoi
 
 [Voronoi Diagrams](https://en.wikipedia.org/wiki/Voronoi_diagram#targetText=In%20mathematics%2C%20a%20Voronoi%20diagram,specific%20subset%20of%20the%20plane.) are a wonderfully useful piece of math. Given a group of points, it builds a diagram of regions surrounding each point (which could be random, or might mean something; that's the beauty of math, it's up to you!) - with no empty space. We'd like to do something similar for our maps: subdivide the map into random regions and spawn *inside* those regions. Fortunately, RLTK provides a type of *noise* to help with that: cellular noise.
 
@@ -459,7 +459,6 @@ pub fn random_builder(new_depth: i32) -> Box<dyn MapBuilder> {
 We've made a pretty nice map generator and fixed our dependency upon rooms. Cellular Automata are a *really* flexible algorithm and can be used for all kinds of organic looking maps. With a bit of tweaking to the rules, you can make a really large variety of maps.
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-27-cellular-automata)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-27-cellular-automata/)
 ---
