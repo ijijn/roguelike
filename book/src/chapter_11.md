@@ -167,6 +167,11 @@ That's a bit of a mouthful, but it displays menu options and lets you select the
 `Serde` is pretty much the gold-standard for serialization in Rust. It makes a lot of things easier! So the first step is to include it. In your project's `Cargo.toml` file, we'll expand the `dependencies` section to include it:
 
 ```toml
+[lints]
+workspace = true
+
+
+
 [dependencies]
 rltk = { version = "0.8.0", features = ["serde"] }
 specs = { version = "0.16.1", features = ["serde"] }
@@ -609,7 +614,7 @@ That's quite the mouthful, so lets step through it:
 
 If you `cargo run` now, you can load your saved game!
 
-# Just add permadeath!
+# Just add permadeath
 
 It wouldn't really be a roguelike if we let you keep your save game after you reload! So we'll add one more function to `saveload_system`:
 

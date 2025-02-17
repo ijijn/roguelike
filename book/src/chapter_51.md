@@ -18,13 +18,16 @@ In the last chapter, we moved to a d20-style (D&D-like) combat system and attrib
 
 We're going to find it very helpful to be able to read a string containing a D&D dice specification (e.g. `20d6+4`) and turn it into computer-friendly numbers. We'll use this a lot when reading the raw files, so we'll put it in there - but make it public in case we need it somewhere else.
 
-Parsing out bit of text like that is a perfect job for *regular expressions*. These are supported in Rust via a crate, so we have to open up our `cargo.toml` and add `regex = "1.3.6"` to our `[dependencies]` section. Actually *teaching* regular expressions would be a book unto itself; it's a hugely complicated (and powerful) system, and has a tendency to look like a cat walked on your keyboard. Here's a regular expression that parses a `1d20+4` type of string:
+Parsing out bit of text like that is a perfect job for *regular expressions*. These are supported in Rust via a crate, so we have to open up our `cargo.toml` and add `regex = "1.3.6"` to our `[lints]
+workspace = true
+
+[dependencies]` section. Actually *teaching* regular expressions would be a book unto itself; it's a hugely complicated (and powerful) system, and has a tendency to look like a cat walked on your keyboard. Here's a regular expression that parses a `1d20+4` type of string:
 
 ```regexp
 (\d+)d(\d+)([\+\-]\d+)?
 ```
 
-What on *Earth* does that mean? 
+What on *Earth* does that mean?
 
 * Each part contained in parentheses `(..)` is a *match group*. You're telling the regular expression that whatever is in those parentheses is important to you, and can be *captured* for reading.
 * `\d` is regular-expression speak for "I expect a *digit* here".
@@ -162,7 +165,7 @@ if let Some(weapon) = &item_template.weapon {
 }
 ```
 
-That should be enough to read in our nicer weapons format, and have them usable in-game. 
+That should be enough to read in our nicer weapons format, and have them usable in-game.
 
 ## Starting with a weapon
 
@@ -947,7 +950,6 @@ In this chapter, we've gained a lot of functionality:
 In other words: we've come a *long* way in a relatively long chapter! The great news is that we now have a very solid base on which to build a real game.
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-51-gear)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-51-gear)
 ---

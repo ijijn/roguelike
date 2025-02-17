@@ -48,7 +48,13 @@ It's important to know that ECS is just one way of handling composition. There a
 ## Including Specs in the project
 
 To start, we want to tell Cargo that we're going to use Specs. Open your `Cargo.toml` file, and change the `dependencies` section to look like this:
+
 ```toml
+[lints]
+workspace = true
+
+
+
 [dependencies]
 rltk = { version = "0.8.0" }
 specs = "0.16.1"
@@ -58,6 +64,7 @@ specs-derive = "0.4.1"
 This is pretty straightforward: we're telling Rust that we still want to use RLTK, and we're also asking for specs (the version number is current at the time of writing; you can check for new ones by typing `cargo search specs`). We're also adding `specs-derive` - which provides some helper code to reduce the amount of boilerplate typing you have to do.
 
 At the top of `main.rs` we add a few lines of code:
+
 ```rust
 use rltk::{GameState, Rltk, RGB, VirtualKeyCode};
 use specs::prelude::*;
@@ -149,6 +156,7 @@ let mut gs = State {
 Notice that `World::new()` is another *constructor* - it's a method inside the `World` type, but without a reference to `self`. So it doesn't work on existing `World` objects - it can only make new ones. This is a pattern used everywhere in Rust, so it's a good idea to be familiar with it. [The Rust Book has a section on the topic](https://doc.rust-lang.org/book/ch05-03-method-syntax.html).
 
 The next thing to do is to tell the ECS about the components we have created. We do this right after we create the world:
+
 ```rust
 gs.ecs.register::<Position>();
 gs.ecs.register::<Renderable>();
@@ -228,6 +236,7 @@ The other interesting thing here are the parentheses. In Rust, when you wrap var
 ```rust
 ctx.set(pos.x, pos.y, render.fg, render.bg, render.glyph);
 ```
+
 We're running this for *every* entity that has *both* a `Position` and a `Renderable` component. The `join` method is passing us both, guaranteed to belong to the same enitity. Any entities that have one or the other - but not both - simply won't be included in the data returned to us.
 
 `ctx` is the instance of RLTK passed to us when `tick` runs. It offers a function called `set`, that sets a single terminal character to the glyph/colors of your choice. So we pass it the data from `pos` (the `Position` component for that entity), and the colors/glyph from `render` (the `Renderable` component for that entity).
@@ -326,11 +335,13 @@ struct LeftMover {}
 ```
 
 Now we have to tell the ECS to use the type. With our other `register` calls, we add:
+
 ```rust
 gs.ecs.register::<LeftMover>();
 ```
 
 Now, lets only make the red smiley faces left movers. So their definition grows to:
+
 ```rust
 for i in 0..10 {
     gs.ecs
@@ -406,6 +417,7 @@ self.run_systems();
 The nice thing is that this will run *all* systems we register into our dispatcher; so as we add more, we don't have to worry about calling them (or even calling them in the right order). You still sometimes need more access than the dispatcher has; our renderer isn't a system because it needs the `Context` from RLTK (we'll improve that in a future chapter).
 
 So your code now looks like this:
+
 ```rust
 use rltk::{GameState, Rltk, RGB};
 use specs::prelude::*;

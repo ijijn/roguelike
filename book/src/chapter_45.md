@@ -122,7 +122,8 @@ In this directory, create a new file: `spawns.json`. We'll temporarily put all o
 }
 ```
 
-If you aren't familiar with the JSON format, it's basically a JavaScript dump of data: 
+If you aren't familiar with the JSON format, it's basically a JavaScript dump of data:
+
 * We wrap the file in `{` and `}` to denote the *object* we are loading. This will be our `Raws` object, eventually.
 * Then we have an *array* called `Items` - which will hold our items.
 * Each `Item` has a `name` - this maps directly to the `Name` component.
@@ -187,7 +188,7 @@ let decoder : Raws = serde_json::from_str(&raw_string).expect("Unable to parse J
 rltk::console::log(format!("{:?}", decoder));
 ```
 
-(See the cryptic `{:?}`? That's a way to print *debug* information about a structure). This will fail to compile, because we haven't actually implemented `Raws` - the type it is looking for. 
+(See the cryptic `{:?}`? That's a way to print *debug* information about a structure). This will fail to compile, because we haven't actually implemented `Raws` - the type it is looking for.
 
 For clarity, we'll put the classes that actually handle the data in their own file, `raws/item_structs.rs`. Here's the file:
 
@@ -234,7 +235,7 @@ That's *super* ugly and horribly formatted, but you can see that it contains the
 
 ## Storing and indexing our raw item data
 
-Having this (largely text) data is great, but it doesn't really help us until it can directly relate to spawning entities. We're also discarding the data as soon as we've loaded it! 
+Having this (largely text) data is great, but it doesn't really help us until it can directly relate to spawning entities. We're also discarding the data as soon as we've loaded it!
 
 We want to create a structure to hold all of our raw data, and provide useful services such as spawning an object entirely from the data in the `raws`. We'll make a new file, `raws/rawmaster.rs`:
 
@@ -271,10 +272,13 @@ That's very straightforward, and well within what we've learned of Rust so far: 
 
 ## Accessing Raw Data From Anywhere
 
-This is one of those times that it would be nice if Rust didn't make global variables difficult to use; we want exactly one copy of the `RawMaster` data, and we'd like to be able to *read* it from anywhere. You *can* accomplish that with a bunch of `unsafe` code, but we'll be good "Rustaceans" and use a popular method: the `lazy_static`. This functionality isn't part of the language itself, so we need to add a crate to `cargo.toml`. Add the following line to your `[dependencies]` in the file:
+This is one of those times that it would be nice if Rust didn't make global variables difficult to use; we want exactly one copy of the `RawMaster` data, and we'd like to be able to *read* it from anywhere. You *can* accomplish that with a bunch of `unsafe` code, but we'll be good "Rustaceans" and use a popular method: the `lazy_static`. This functionality isn't part of the language itself, so we need to add a crate to `cargo.toml`. Add the following line to your `[lints]
+workspace = true
+
+[dependencies]` in the file:
 
 ```toml
-lazy_static = "1.4.0"
+lazy_static.workspace = true
 ```
 
 Now we do a bit of a dance to make the global safely available from everywhere. At the end of `main.rs`'s import section, add:
@@ -619,7 +623,7 @@ if let Some(shield) = &item_template.shield {
 
 You can now delete these items from `spawner.rs` as well, and they still spawn in game - as before.
 
-## Now for the monsters!
+## Now for the monsters
 
 We'll add a new array to `spawns.json` to handle monsters. We're calling it "mobs" - this is slang from many games for "movable object", but it has come to mean things that move around and fight you in common parlance:
 
@@ -1059,7 +1063,6 @@ If you `cargo run` now, you'll see doors and traps working as before.
 This chapter has given us the ability to easily change the items, mobs and props that adorn our levels. We haven't touched *adding more* yet (or adjusting the spawn tables) - that'll be the next chapter. You can quickly change the character of the game now; want Goblins to be weaker? Lower their stats! Want them to have better eyesight than Orcs? Adjust their vision range! That's the primary benefit of a data-driven approach: you can quickly make changes without having to dive into source code. The *engine* becomes responsible for *simulating the world* - and the *data* becomes responsible for *describing the world*.
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-45-raws1)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-45-raws1)
 ---
