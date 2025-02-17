@@ -1,6 +1,7 @@
 use rltk::{GameState, Rltk};
 
-struct State {}
+struct State;
+
 impl GameState for State {
     fn tick(&mut self, ctx: &mut Rltk) {
         ctx.cls();
