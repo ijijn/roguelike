@@ -1,4 +1,4 @@
-use super::{gamelog::GameLog, HungerClock, HungerState, MyTurn, RunState, SufferDamage};
+use super::{gamelog::GameLog, HungerClock, HungerState, MyTurn, SufferDamage};
 use specs::prelude::*;
 
 pub struct HungerSystem {}
@@ -17,7 +17,7 @@ impl<'a> System<'a> for HungerSystem {
     fn run(&mut self, data: Self::SystemData) {
         let (entities, mut hunger_clock, player_entity, mut inflict_damage, mut log, turns) = data;
 
-        for (entity, mut clock, _myturn) in (&entities, &mut hunger_clock, &turns).join() {
+        for (entity, clock, _myturn) in (&entities, &mut hunger_clock, &turns).join() {
             clock.duration -= 1;
             if clock.duration < 1 {
                 match clock.state {

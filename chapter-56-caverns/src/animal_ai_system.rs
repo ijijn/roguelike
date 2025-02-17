@@ -1,5 +1,5 @@
 use super::{
-    particle_system::ParticleBuilder, Carnivore, Confusion, EntityMoved, Herbivore, Item, Map,
+    Carnivore, EntityMoved, Herbivore, Item, Map,
     Position, RunState, Viewshed, WantsToMelee,
 };
 use rltk::Point;
@@ -43,7 +43,7 @@ impl<'a> System<'a> for AnimalAI {
         }
 
         // Herbivores run away a lot
-        for (entity, mut viewshed, _herbivore, mut pos) in
+        for (entity, viewshed, _herbivore, pos) in
             (&entities, &mut viewshed, &herbivore, &mut position).join()
         {
             let mut run_away_from: Vec<usize> = Vec::new();
@@ -71,9 +71,9 @@ impl<'a> System<'a> for AnimalAI {
                 );
                 let flee_target = rltk::DijkstraMap::find_highest_exit(&flee_map, my_idx, &*map);
                 if let Some(flee_target) = flee_target {
-                    if !map.blocked[flee_target as usize] {
+                    if !map.blocked[flee_target] {
                         map.blocked[my_idx] = false;
-                        map.blocked[flee_target as usize] = true;
+                        map.blocked[flee_target] = true;
                         viewshed.dirty = true;
                         pos.x = flee_target as i32 % map.width;
                         pos.y = flee_target as i32 / map.width;
@@ -86,7 +86,7 @@ impl<'a> System<'a> for AnimalAI {
         }
 
         // Carnivores just want to eat everything
-        for (entity, mut viewshed, _carnivore, mut pos) in
+        for (entity, viewshed, _carnivore, pos) in
             (&entities, &mut viewshed, &carnivore, &mut position).join()
         {
             let mut run_towards: Vec<usize> = Vec::new();
@@ -129,9 +129,9 @@ impl<'a> System<'a> for AnimalAI {
                 );
                 let chase_target = rltk::DijkstraMap::find_lowest_exit(&chase_map, my_idx, &*map);
                 if let Some(chase_target) = chase_target {
-                    if !map.blocked[chase_target as usize] {
+                    if !map.blocked[chase_target] {
                         map.blocked[my_idx] = false;
-                        map.blocked[chase_target as usize] = true;
+                        map.blocked[chase_target] = true;
                         viewshed.dirty = true;
                         pos.x = chase_target as i32 % map.width;
                         pos.y = chase_target as i32 / map.width;

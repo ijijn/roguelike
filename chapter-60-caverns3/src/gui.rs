@@ -47,9 +47,9 @@ fn draw_attribute(name: &str, attribute: &Attribute, y: i32, ctx: &mut Rltk) {
         y,
         color,
         black,
-        &format!("{}", attribute.base + attribute.modifiers),
+        format!("{}", attribute.base + attribute.modifiers),
     );
-    ctx.print_color(73, y, color, black, &format!("{}", attribute.bonus));
+    ctx.print_color(73, y, color, black, format!("{}", attribute.bonus));
     if attribute.bonus > 0 {
         ctx.set(72, y, color, black, rltk::to_cp437('+'));
     }
@@ -148,7 +148,7 @@ pub fn draw_ui(ecs: &World, ctx: &mut Rltk) {
         9,
         white,
         black,
-        &format!(
+        format!(
             "{:.0} lbs ({} lbs max)",
             player_pools.total_weight,
             (attr.might.base + attr.might.modifiers) * 15
@@ -159,7 +159,7 @@ pub fn draw_ui(ecs: &World, ctx: &mut Rltk) {
         10,
         white,
         black,
-        &format!(
+        format!(
             "Initiative Penalty: {:.0}",
             player_pools.total_initiative_penalty
         ),
@@ -169,7 +169,7 @@ pub fn draw_ui(ecs: &World, ctx: &mut Rltk) {
         11,
         rltk::RGB::named(rltk::GOLD),
         black,
-        &format!("Gold: {:.1}", player_pools.gold),
+        format!("Gold: {:.1}", player_pools.gold),
     );
 
     // Equipped
@@ -192,7 +192,7 @@ pub fn draw_ui(ecs: &World, ctx: &mut Rltk) {
     let mut index = 1;
     for (carried_by, _consumable, item_name) in (&backpack, &consumables, &name).join() {
         if carried_by.owner == *player_entity && index < 10 {
-            ctx.print_color(50, y, yellow, black, &format!("↑{}", index));
+            ctx.print_color(50, y, yellow, black, format!("↑{}", index));
             ctx.print_color(53, y, green, black, &item_name.name);
             y += 1;
             index += 1;
@@ -275,7 +275,7 @@ impl Tooltip {
         ctx.draw_box(x, y, self.width() - 1, self.height() - 1, white, box_gray);
         for (i, s) in self.lines.iter().enumerate() {
             let col = if i == 0 { white } else { light_gray };
-            ctx.print_color(x + 1, y + i as i32 + 1, col, black, &s);
+            ctx.print_color(x + 1, y + i as i32 + 1, col, black, s);
         }
     }
 }
@@ -472,7 +472,7 @@ pub fn show_inventory(gs: &mut State, ctx: &mut Rltk) -> (ItemMenuResult, Option
             rltk::to_cp437(')'),
         );
 
-        ctx.print(21, y, &name.name.to_string());
+        ctx.print(21, y, name.name.to_string());
         equippable.push(entity);
         y += 1;
         j += 1;
@@ -559,7 +559,7 @@ pub fn drop_item_menu(gs: &mut State, ctx: &mut Rltk) -> (ItemMenuResult, Option
             rltk::to_cp437(')'),
         );
 
-        ctx.print(21, y, &name.name.to_string());
+        ctx.print(21, y, name.name.to_string());
         equippable.push(entity);
         y += 1;
         j += 1;
@@ -646,7 +646,7 @@ pub fn remove_item_menu(gs: &mut State, ctx: &mut Rltk) -> (ItemMenuResult, Opti
             rltk::to_cp437(')'),
         );
 
-        ctx.print(21, y, &name.name.to_string());
+        ctx.print(21, y, name.name.to_string());
         equippable.push(entity);
         y += 1;
         j += 1;
@@ -950,12 +950,12 @@ pub enum CheatMenuResult {
 
 pub fn show_cheat_mode(_gs: &mut State, ctx: &mut Rltk) -> CheatMenuResult {
     let count = 4;
-    let mut y = (25 - (count / 2)) as i32;
+    let mut y = 25 - (count / 2);
     ctx.draw_box(
         15,
         y - 2,
         31,
-        (count + 3) as i32,
+        count + 3,
         RGB::named(rltk::WHITE),
         RGB::named(rltk::BLACK),
     );
@@ -968,7 +968,7 @@ pub fn show_cheat_mode(_gs: &mut State, ctx: &mut Rltk) -> CheatMenuResult {
     );
     ctx.print_color(
         18,
-        y + count as i32 + 1,
+        y + count + 1,
         RGB::named(rltk::YELLOW),
         RGB::named(rltk::BLACK),
         "ESCAPE to cancel",
@@ -1161,8 +1161,8 @@ fn vendor_sell_menu(
             rltk::to_cp437(')'),
         );
 
-        ctx.print(21, y, &name.name.to_string());
-        ctx.print(50, y, &format!("{:.1} gp", item.base_value * 0.8));
+        ctx.print(21, y, name.name.to_string());
+        ctx.print(50, y, format!("{:.1} gp", item.base_value * 0.8));
         equippable.push(entity);
         y += 1;
         j += 1;
@@ -1253,7 +1253,7 @@ fn vendor_buy_menu(
         );
 
         ctx.print(21, y, &sale.0);
-        ctx.print(50, y, &format!("{:.1} gp", sale.1 * 1.2));
+        ctx.print(50, y, format!("{:.1} gp", sale.1 * 1.2));
         y += 1;
     }
 

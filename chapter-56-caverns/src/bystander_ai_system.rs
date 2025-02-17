@@ -43,7 +43,7 @@ impl<'a> System<'a> for BystanderAI {
             return;
         }
 
-        for (entity, mut viewshed, _bystander, mut pos) in
+        for (entity, viewshed, _bystander, pos) in
             (&entities, &mut viewshed, &bystander, &mut position).join()
         {
             // Possibly quip

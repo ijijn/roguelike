@@ -80,7 +80,7 @@ impl PrefabBuilder {
 
     fn build(&mut self) {
         match self.mode {
-            PrefabMode::RexLevel { template } => self.load_rex_map(&template),
+            PrefabMode::RexLevel { template } => self.load_rex_map(template),
             PrefabMode::Constant { level } => self.load_ascii_map(&level),
             PrefabMode::Sectional { section } => self.apply_sectional(&section),
         }
@@ -136,8 +136,8 @@ impl PrefabBuilder {
                 let y = idx as i32 / self.map.width;
                 self.map.tiles[idx] = TileType::Floor;
                 self.starting_position = Position {
-                    x: x as i32,
-                    y: y as i32,
+                    x,
+                    y,
                 };
             }
             '>' => self.map.tiles[idx] = TileType::DownStairs,

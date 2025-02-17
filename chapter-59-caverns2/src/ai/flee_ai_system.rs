@@ -27,7 +27,7 @@ impl<'a> System<'a> for FleeAI {
         ) = data;
 
         let mut turn_done: Vec<Entity> = Vec::new();
-        for (entity, mut pos, flee, mut viewshed, _myturn) in (
+        for (entity, pos, flee, viewshed, _myturn) in (
             &entities,
             &mut positions,
             &want_flee,
@@ -48,7 +48,7 @@ impl<'a> System<'a> for FleeAI {
             );
             let flee_target = rltk::DijkstraMap::find_highest_exit(&flee_map, my_idx, &*map);
             if let Some(flee_target) = flee_target {
-                if !crate::spatial::is_blocked(flee_target as usize) {
+                if !crate::spatial::is_blocked(flee_target) {
                     crate::spatial::move_entity(entity, my_idx, flee_target);
                     viewshed.dirty = true;
                     pos.x = flee_target as i32 % map.width;

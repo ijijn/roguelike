@@ -122,7 +122,7 @@ impl<'a> System<'a> for RangedCombatSystem {
                 } else {
                     attacker_attributes.quickness.bonus
                 };
-                let skill_hit_bonus = skill_bonus(Skill::Melee, &*attacker_skills);
+                let skill_hit_bonus = skill_bonus(Skill::Melee, attacker_skills);
                 let weapon_hit_bonus = weapon_info.hit_bonus;
                 let mut status_hit_bonus = 0;
                 if let Some(hc) = hunger_clock.get(entity) {
@@ -150,7 +150,7 @@ impl<'a> System<'a> for RangedCombatSystem {
                     Some(nat) => nat.armor_class.unwrap_or(10),
                 };
                 let armor_quickness_bonus = target_attributes.quickness.bonus;
-                let armor_skill_bonus = skill_bonus(Skill::Defense, &*target_skills);
+                let armor_skill_bonus = skill_bonus(Skill::Defense, target_skills);
                 let armor_item_bonus = armor_item_bonus_f as i32;
                 let armor_class =
                     base_armor_class + armor_quickness_bonus + armor_skill_bonus + armor_item_bonus;
@@ -163,7 +163,7 @@ impl<'a> System<'a> for RangedCombatSystem {
                         weapon_info.damage_die_type,
                     );
                     let attr_damage_bonus = attacker_attributes.might.bonus;
-                    let skill_damage_bonus = skill_bonus(Skill::Melee, &*attacker_skills);
+                    let skill_damage_bonus = skill_bonus(Skill::Melee, attacker_skills);
                     let weapon_damage_bonus = weapon_info.damage_bonus;
 
                     let damage = i32::max(

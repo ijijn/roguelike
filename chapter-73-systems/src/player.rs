@@ -81,12 +81,12 @@ fn fire_on_target(ecs: &mut World) -> RunState {
             .insert(*player_entity, WantsToShoot { target })
             .expect("Insert Fail");
 
-        return RunState::Ticking;
+        RunState::Ticking
     } else {
         crate::gamelog::Logger::new()
             .append("You don't have a target selected!")
             .log();
-        return RunState::AwaitingInput;
+        RunState::AwaitingInput
     }
 }
 

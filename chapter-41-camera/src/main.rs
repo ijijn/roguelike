@@ -114,7 +114,7 @@ impl GameState for State {
 
         match newrunstate {
             RunState::MainMenu { .. } => {}
-            RunState::GameOver { .. } => {}
+            RunState::GameOver => {}
             _ => {
                 camera::render_camera(&self.ecs, ctx);
                 gui::draw_ui(&self.ecs, ctx);
@@ -299,7 +299,7 @@ impl GameState for State {
             RunState::MagicMapReveal { row } => {
                 let mut map = self.ecs.fetch_mut::<Map>();
                 for x in 0..map.width {
-                    let idx = map.xy_idx(x as i32, row);
+                    let idx = map.xy_idx(x, row);
                     map.revealed_tiles[idx] = true;
                 }
                 if row == map.height - 1 {

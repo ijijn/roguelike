@@ -20,7 +20,7 @@ impl<'a> System<'a> for DefaultMoveAI {
             data;
 
         let mut turn_done: Vec<Entity> = Vec::new();
-        for (entity, pos, mut mode, _myturn) in
+        for (entity, pos, mode, _myturn) in
             (&entities, &positions, &mut move_mode, &turns).join()
         {
             turn_done.push(entity);
@@ -44,7 +44,7 @@ impl<'a> System<'a> for DefaultMoveAI {
                         let dest_idx = map.xy_idx(x, y);
                         if !crate::spatial::is_blocked(dest_idx) {
                             apply_move
-                                .insert(entity, ApplyMove { dest_idx: dest_idx })
+                                .insert(entity, ApplyMove { dest_idx })
                                 .expect("Unable to insert");
                             turn_done.push(entity);
                         }
@@ -55,7 +55,7 @@ impl<'a> System<'a> for DefaultMoveAI {
                     if let Some(path) = path {
                         // We have a target - go there
                         if path.len() > 1 {
-                            if !crate::spatial::is_blocked(path[1] as usize) {
+                            if !crate::spatial::is_blocked(path[1]) {
                                 apply_move
                                     .insert(entity, ApplyMove { dest_idx: path[1] })
                                     .expect("Unable to insert");

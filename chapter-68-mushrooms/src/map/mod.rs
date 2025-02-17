@@ -104,7 +104,7 @@ impl BaseMap for Map {
         let mut exits = rltk::SmallVec::new();
         let x = idx as i32 % self.width;
         let y = idx as i32 / self.width;
-        let tt = self.tiles[idx as usize];
+        let tt = self.tiles[idx];
         let w = self.width as usize;
 
         // Cardinal directions

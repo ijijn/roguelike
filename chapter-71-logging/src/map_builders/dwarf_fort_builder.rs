@@ -110,7 +110,7 @@ impl DragonSpawner {
         let dragon_pt = rltk::Point::new(start_x, start_y);
 
         // Remove all spawns within 25 tiles of the drake
-        let w = build_data.map.width as i32;
+        let w = build_data.map.width;
         build_data.spawn_list.retain(|spawn| {
             let spawn_pt = rltk::Point::new(spawn.0 as i32 % w, spawn.0 as i32 / w);
             let distance = rltk::DistanceAlg::Pythagoras.distance2d(dragon_pt, spawn_pt);

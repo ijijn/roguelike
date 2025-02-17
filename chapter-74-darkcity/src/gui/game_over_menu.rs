@@ -26,7 +26,7 @@ pub fn game_over(ctx: &mut Rltk) -> GameOverResult {
 
     draw_batch.print_color_centered(
         19,
-        &format!(
+        format!(
             "You lived for {} turns.",
             crate::gamelog::get_event_count("Turn")
         ),
@@ -34,7 +34,7 @@ pub fn game_over(ctx: &mut Rltk) -> GameOverResult {
     );
     draw_batch.print_color_centered(
         20,
-        &format!(
+        format!(
             "You suffered {} points of damage.",
             crate::gamelog::get_event_count("Damage Taken")
         ),
@@ -42,7 +42,7 @@ pub fn game_over(ctx: &mut Rltk) -> GameOverResult {
     );
     draw_batch.print_color_centered(
         21,
-        &format!(
+        format!(
             "You inflicted {} points of damage.",
             crate::gamelog::get_event_count("Damage Inflicted")
         ),

@@ -31,7 +31,7 @@ impl<'a> System<'a> for FleeAI {
             );
             let flee_target = rltk::DijkstraMap::find_highest_exit(&flee_map, my_idx, &*map);
             if let Some(flee_target) = flee_target {
-                if !crate::spatial::is_blocked(flee_target as usize) {
+                if !crate::spatial::is_blocked(flee_target) {
                     apply_move
                         .insert(
                             entity,

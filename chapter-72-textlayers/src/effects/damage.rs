@@ -5,7 +5,6 @@ use crate::components::{
 };
 use crate::gamesystem::{mana_at_level, player_hp_at_level};
 use crate::map::Map;
-use specs::prelude::*;
 use specs::saveload::{MarkedBuilder, SimpleMarker};
 
 pub fn inflict_damage(ecs: &mut World, damage: &EffectSpawner, target: Entity) {
@@ -76,8 +75,8 @@ pub fn death(ecs: &mut World, effect: &EffectSpawner, target: Entity) {
             }
 
             if xp_gain != 0 || gold_gain != 0.0 {
-                let mut player_stats = pools.get_mut(source).unwrap();
-                let mut player_attributes = attributes.get_mut(source).unwrap();
+                let player_stats = pools.get_mut(source).unwrap();
+                let player_attributes = attributes.get_mut(source).unwrap();
                 player_stats.xp += xp_gain;
                 player_stats.gold += gold_gain;
                 if player_stats.xp >= player_stats.level * 1000 {

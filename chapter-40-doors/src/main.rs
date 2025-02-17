@@ -113,7 +113,7 @@ impl GameState for State {
 
         match newrunstate {
             RunState::MainMenu { .. } => {}
-            RunState::GameOver { .. } => {}
+            RunState::GameOver => {}
             _ => {
                 draw_map(&self.ecs.fetch::<Map>(), ctx);
                 let positions = self.ecs.read_storage::<Position>();

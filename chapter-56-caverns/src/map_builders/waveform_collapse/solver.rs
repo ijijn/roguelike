@@ -32,7 +32,7 @@ impl Solver {
     }
 
     fn chunk_idx(&self, x: usize, y: usize) -> usize {
-        ((y * self.chunks_x) + x) as usize
+        (y * self.chunks_x) + x
     }
 
     fn count_neighbors(&self, chunk_x: usize, chunk_y: usize) -> i32 {
@@ -164,10 +164,10 @@ impl Solver {
             // There is nothing nearby, so we can have anything!
             let new_chunk_idx = (rng.roll_dice(1, self.constraints.len() as i32) - 1) as usize;
             self.chunks[chunk_index] = Some(new_chunk_idx);
-            let left_x = chunk_x as i32 * self.chunk_size as i32;
-            let right_x = (chunk_x as i32 + 1) * self.chunk_size as i32;
-            let top_y = chunk_y as i32 * self.chunk_size as i32;
-            let bottom_y = (chunk_y as i32 + 1) * self.chunk_size as i32;
+            let left_x = chunk_x as i32 * self.chunk_size;
+            let right_x = (chunk_x as i32 + 1) * self.chunk_size;
+            let top_y = chunk_y as i32 * self.chunk_size;
+            let bottom_y = (chunk_y as i32 + 1) * self.chunk_size;
 
             let mut i: usize = 0;
             for y in top_y..bottom_y {
@@ -212,10 +212,10 @@ impl Solver {
                 };
 
                 self.chunks[chunk_index] = Some(possible_options[new_chunk_idx as usize]);
-                let left_x = chunk_x as i32 * self.chunk_size as i32;
-                let right_x = (chunk_x as i32 + 1) * self.chunk_size as i32;
-                let top_y = chunk_y as i32 * self.chunk_size as i32;
-                let bottom_y = (chunk_y as i32 + 1) * self.chunk_size as i32;
+                let left_x = chunk_x as i32 * self.chunk_size;
+                let right_x = (chunk_x as i32 + 1) * self.chunk_size;
+                let top_y = chunk_y as i32 * self.chunk_size;
+                let bottom_y = (chunk_y as i32 + 1) * self.chunk_size;
 
                 let mut i: usize = 0;
                 for y in top_y..bottom_y {

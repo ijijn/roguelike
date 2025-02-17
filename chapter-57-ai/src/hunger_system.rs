@@ -26,7 +26,7 @@ impl<'a> System<'a> for HungerSystem {
             turns,
         ) = data;
 
-        for (entity, mut clock, _myturn) in (&entities, &mut hunger_clock, &turns).join() {
+        for (entity, clock, _myturn) in (&entities, &mut hunger_clock, &turns).join() {
             clock.duration -= 1;
             if clock.duration < 1 {
                 match clock.state {

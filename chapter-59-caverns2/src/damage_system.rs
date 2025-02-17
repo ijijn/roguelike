@@ -38,7 +38,7 @@ impl<'a> System<'a> for DamageSystem {
         let mut xp_gain = 0;
         let mut gold_gain = 0.0f32;
 
-        for (entity, mut stats, damage) in (&entities, &mut stats, &damage).join() {
+        for (entity, stats, damage) in (&entities, &mut stats, &damage).join() {
             gold_gain += stats.gold;
             for dmg in damage.amount.iter() {
                 if !stats.god_mode {
@@ -57,7 +57,7 @@ impl<'a> System<'a> for DamageSystem {
         }
 
         if xp_gain != 0 || gold_gain != 0.0 {
-            let mut player_stats = stats.get_mut(*player).unwrap();
+            let player_stats = stats.get_mut(*player).unwrap();
             let player_attributes = attributes.get(*player).unwrap();
             player_stats.xp += xp_gain;
             player_stats.gold += gold_gain;

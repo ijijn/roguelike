@@ -95,7 +95,7 @@ fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
                         y,
                         RGB::named(rltk::WHITE),
                         RGB::named(rltk::GREY),
-                        &" ".to_string(),
+                        " ".to_string(),
                     );
                 }
                 y += 1;
@@ -105,7 +105,7 @@ fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
                 arrow_pos.y,
                 RGB::named(rltk::WHITE),
                 RGB::named(rltk::GREY),
-                &"->".to_string(),
+                "->".to_string(),
             );
         } else {
             let arrow_pos = Point::new(mouse_pos.0 + 1, mouse_pos.1);
@@ -126,7 +126,7 @@ fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
                         y,
                         RGB::named(rltk::WHITE),
                         RGB::named(rltk::GREY),
-                        &" ".to_string(),
+                        " ".to_string(),
                     );
                 }
                 y += 1;
@@ -136,7 +136,7 @@ fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
                 arrow_pos.y,
                 RGB::named(rltk::WHITE),
                 RGB::named(rltk::GREY),
-                &"<-".to_string(),
+                "<-".to_string(),
             );
         }
     }

@@ -1,7 +1,6 @@
 use super::*;
 use crate::map::Map;
 use crate::particle_system::ParticleBuilder;
-use specs::prelude::*;
 
 pub fn particle_to_tile(ecs: &mut World, tile_idx: i32, effect: &EffectSpawner) {
     if let EffectType::Particle {

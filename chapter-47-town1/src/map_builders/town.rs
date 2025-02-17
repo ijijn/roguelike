@@ -259,8 +259,8 @@ impl TownBuilder {
         for door_idx in doors.iter() {
             let mut nearest_roads: Vec<(usize, f32)> = Vec::new();
             let door_pt = rltk::Point::new(
-                *door_idx as i32 % build_data.map.width as i32,
-                *door_idx as i32 / build_data.map.width as i32,
+                *door_idx as i32 % build_data.map.width,
+                *door_idx as i32 / build_data.map.width,
             );
             for r in roads.iter() {
                 nearest_roads.push((
@@ -280,7 +280,7 @@ impl TownBuilder {
             let path = rltk::a_star_search(*door_idx, destination, &build_data.map);
             if path.success {
                 for step in path.steps.iter() {
-                    let idx = *step as usize;
+                    let idx = { *step };
                     build_data.map.tiles[idx] = TileType::Road;
                     roads.push(idx);
                 }

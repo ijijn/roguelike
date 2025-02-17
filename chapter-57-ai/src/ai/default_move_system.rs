@@ -29,7 +29,7 @@ impl<'a> System<'a> for DefaultMoveAI {
         ) = data;
 
         let mut turn_done: Vec<Entity> = Vec::new();
-        for (entity, mut pos, mut mode, mut viewshed, _myturn) in (
+        for (entity, pos, mode, viewshed, _myturn) in (
             &entities,
             &mut positions,
             &mut move_mode,
@@ -76,7 +76,7 @@ impl<'a> System<'a> for DefaultMoveAI {
                         // We have a target - go there
                         let mut idx = map.xy_idx(pos.x, pos.y);
                         if path.len() > 1 {
-                            if !map.blocked[path[1] as usize] {
+                            if !map.blocked[path[1]] {
                                 map.blocked[idx] = false;
                                 pos.x = path[1] as i32 % map.width;
                                 pos.y = path[1] as i32 / map.width;

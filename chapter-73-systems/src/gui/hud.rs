@@ -19,12 +19,12 @@ fn draw_attribute(name: &str, attribute: &Attribute, y: i32, draw_batch: &mut Dr
     };
     draw_batch.print_color(
         Point::new(67, y),
-        &format!("{}", attribute.base + attribute.modifiers),
+        format!("{}", attribute.base + attribute.modifiers),
         ColorPair::new(color, black),
     );
     draw_batch.print_color(
         Point::new(73, y),
-        &format!("{}", attribute.bonus),
+        format!("{}", attribute.bonus),
         ColorPair::new(color, black),
     );
     if attribute.bonus > 0 {
@@ -174,7 +174,7 @@ fn initiative_weight(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &En
     let player_pools = pools.get(*player_entity).unwrap();
     draw_batch.print_color(
         Point::new(50, 9),
-        &format!(
+        format!(
             "{:.0} lbs ({} lbs max)",
             player_pools.total_weight,
             (attr.might.base + attr.might.modifiers) * 15
@@ -183,7 +183,7 @@ fn initiative_weight(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &En
     );
     draw_batch.print_color(
         Point::new(50, 10),
-        &format!(
+        format!(
             "Initiative Penalty: {:.0}",
             player_pools.total_initiative_penalty
         ),
@@ -191,7 +191,7 @@ fn initiative_weight(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &En
     );
     draw_batch.print_color(
         Point::new(50, 11),
-        &format!("Gold: {:.1}", player_pools.gold),
+        format!("Gold: {:.1}", player_pools.gold),
         ColorPair::new(RGB::named(rltk::GOLD), black),
     );
 }
@@ -258,12 +258,12 @@ fn consumables(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity, 
         if carried_by.owner == *player_entity && index < 10 {
             draw_batch.print_color(
                 Point::new(50, y),
-                &format!("↑{}", index),
+                format!("↑{}", index),
                 ColorPair::new(yellow, black),
             );
             draw_batch.print_color(
                 Point::new(53, y),
-                &get_item_display_name(ecs, entity),
+                get_item_display_name(ecs, entity),
                 ColorPair::new(get_item_color(ecs, entity), black),
             );
             y += 1;
@@ -283,12 +283,12 @@ fn spells(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity, mut y
     for spell in known_spells.iter() {
         draw_batch.print_color(
             Point::new(50, y),
-            &format!("^{}", index),
+            format!("^{}", index),
             ColorPair::new(blue, black),
         );
         draw_batch.print_color(
             Point::new(53, y),
-            &format!("{} ({})", &spell.display_name, spell.mana_cost),
+            format!("{} ({})", &spell.display_name, spell.mana_cost),
             ColorPair::new(blue, black),
         );
         index += 1;
@@ -335,7 +335,7 @@ fn status(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity) {
         if status.target == *player_entity {
             draw_batch.print_color(
                 Point::new(50, y),
-                &format!("{} ({})", name.name, duration.turns),
+                format!("{} ({})", name.name, duration.turns),
                 ColorPair::new(RGB::named(rltk::RED), RGB::named(rltk::BLACK)),
             );
             y -= 1;

@@ -264,8 +264,8 @@ impl TownBuilder {
         for door_idx in doors.iter() {
             let mut nearest_roads: Vec<(usize, f32)> = Vec::new();
             let door_pt = rltk::Point::new(
-                *door_idx as i32 % build_data.map.width as i32,
-                *door_idx as i32 / build_data.map.width as i32,
+                *door_idx as i32 % build_data.map.width,
+                *door_idx as i32 / build_data.map.width,
             );
             for r in roads.iter() {
                 nearest_roads.push((
@@ -285,7 +285,7 @@ impl TownBuilder {
             let path = rltk::a_star_search(*door_idx, destination, &build_data.map);
             if path.success {
                 for step in path.steps.iter() {
-                    let idx = *step as usize;
+                    let idx = { *step };
                     build_data.map.tiles[idx] = TileType::Road;
                     roads.push(idx);
                 }
@@ -327,14 +327,14 @@ impl TownBuilder {
         for (i, building) in buildings.iter().enumerate() {
             let build_type = &building_index[i].2;
             match build_type {
-                BuildingTag::Pub => self.build_pub(&building, build_data, rng),
-                BuildingTag::Temple => self.build_temple(&building, build_data, rng),
-                BuildingTag::Blacksmith => self.build_smith(&building, build_data, rng),
-                BuildingTag::Clothier => self.build_clothier(&building, build_data, rng),
-                BuildingTag::Alchemist => self.build_alchemist(&building, build_data, rng),
-                BuildingTag::PlayerHouse => self.build_my_house(&building, build_data, rng),
-                BuildingTag::Hovel => self.build_hovel(&building, build_data, rng),
-                BuildingTag::Abandoned => self.build_abandoned_house(&building, build_data, rng),
+                BuildingTag::Pub => self.build_pub(building, build_data, rng),
+                BuildingTag::Temple => self.build_temple(building, build_data, rng),
+                BuildingTag::Blacksmith => self.build_smith(building, build_data, rng),
+                BuildingTag::Clothier => self.build_clothier(building, build_data, rng),
+                BuildingTag::Alchemist => self.build_alchemist(building, build_data, rng),
+                BuildingTag::PlayerHouse => self.build_my_house(building, build_data, rng),
+                BuildingTag::Hovel => self.build_hovel(building, build_data, rng),
+                BuildingTag::Abandoned => self.build_abandoned_house(building, build_data, rng),
                 _ => {}
             }
         }

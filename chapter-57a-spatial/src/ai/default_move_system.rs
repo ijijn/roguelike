@@ -29,7 +29,7 @@ impl<'a> System<'a> for DefaultMoveAI {
         ) = data;
 
         let mut turn_done: Vec<Entity> = Vec::new();
-        for (entity, mut pos, mut mode, mut viewshed, _myturn) in (
+        for (entity, pos, mode, viewshed, _myturn) in (
             &entities,
             &mut positions,
             &mut move_mode,
@@ -73,9 +73,9 @@ impl<'a> System<'a> for DefaultMoveAI {
                 Movement::RandomWaypoint { path } => {
                     if let Some(path) = path {
                         // We have a target - go there
-                        let mut idx = map.xy_idx(pos.x, pos.y);
+                        let idx = map.xy_idx(pos.x, pos.y);
                         if path.len() > 1 {
-                            if !crate::spatial::is_blocked(path[1] as usize) {
+                            if !crate::spatial::is_blocked(path[1]) {
                                 pos.x = path[1] as i32 % map.width;
                                 pos.y = path[1] as i32 / map.width;
                                 entity_moved

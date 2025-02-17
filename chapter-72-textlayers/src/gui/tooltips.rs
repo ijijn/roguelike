@@ -43,7 +43,7 @@ impl Tooltip {
             let col = if i == 0 { white } else { light_gray };
             draw_batch.print_color(
                 Point::new(x + 1, y + i as i32 + 1),
-                &s,
+                s,
                 ColorPair::new(col, black),
             );
         }

@@ -18,7 +18,7 @@ impl<'a> System<'a> for MapIndexingSystem {
         let (map, position, blockers, pools, sizes, entities) = data;
 
         spatial::clear();
-        spatial::populate_blocked_from_map(&*map);
+        spatial::populate_blocked_from_map(&map);
         for (entity, position) in (&entities, &position).join() {
             let mut alive = true;
             if let Some(pools) = pools.get(entity) {

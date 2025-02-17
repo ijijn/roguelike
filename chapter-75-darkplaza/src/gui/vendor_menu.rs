@@ -69,7 +69,7 @@ fn vendor_sell_menu(
 
         draw_batch.print_color(
             Point::new(21, y),
-            &get_item_display_name(&gs.ecs, entity),
+            get_item_display_name(&gs.ecs, entity),
             ColorPair::new(
                 get_item_color(&gs.ecs, entity),
                 RGB::from_f32(0.0, 0.0, 0.0),
@@ -77,7 +77,7 @@ fn vendor_sell_menu(
         );
         draw_batch.print(
             Point::new(50, y),
-            &format!("{:.1} gp", item.base_value * 0.8),
+            format!("{:.1} gp", item.base_value * 0.8),
         );
         equippable.push(entity);
         y += 1;
@@ -156,7 +156,7 @@ fn vendor_buy_menu(
         );
 
         draw_batch.print(Point::new(21, y), &sale.0);
-        draw_batch.print(Point::new(50, y), &format!("{:.1} gp", sale.1 * 1.2));
+        draw_batch.print(Point::new(50, y), format!("{:.1} gp", sale.1 * 1.2));
         y += 1;
     }
 

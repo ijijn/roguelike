@@ -45,7 +45,7 @@ impl<'a> System<'a> for TriggerSystem {
                                 if let Some(aoe) = area_of_effect.get(entity_id) {
                                     Targets::Tiles {
                                         tiles: aoe_tiles(
-                                            &*map,
+                                            &map,
                                             rltk::Point::new(pos.x, pos.y),
                                             aoe.radius,
                                         ),

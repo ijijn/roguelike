@@ -9,7 +9,7 @@ pub fn menu_box<T: ToString>(draw_batch: &mut DrawBatch, x: i32, y: i32, width: 
     );
     draw_batch.print_color(
         Point::new(18, y - 2),
-        &title.to_string(),
+        title.to_string(),
         ColorPair::new(RGB::named(rltk::MAGENTA), RGB::named(rltk::BLACK)),
     );
 }
@@ -38,7 +38,7 @@ pub fn menu_option<T: ToString>(
     );
     draw_batch.print_color(
         Point::new(x + 5, y),
-        &text.to_string(),
+        text.to_string(),
         ColorPair::new(RGB::named(rltk::YELLOW), RGB::named(rltk::BLACK)),
     );
 }
@@ -57,7 +57,7 @@ pub fn item_result_menu<S: ToString>(
     );
     draw_batch.print_color(
         Point::new(18, y - 2),
-        &title.to_string(),
+        title.to_string(),
         ColorPair::new(RGB::named(rltk::YELLOW), RGB::named(rltk::BLACK)),
     );
     draw_batch.print_color(

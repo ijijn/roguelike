@@ -69,7 +69,7 @@ pub fn build_patterns(
             patterns.len()
         ));
         let set: HashSet<Vec<TileType>> = patterns.drain(..).collect(); // dedup
-        patterns.extend(set.into_iter());
+        patterns.extend(set);
         rltk::console::log(format!("There are {} patterns", patterns.len()));
     }
 

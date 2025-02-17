@@ -58,7 +58,7 @@ impl<'a> System<'a> for MeleeCombatSystem {
 
                 let natural_roll = rng.roll_dice(1, 20);
                 let attribute_hit_bonus = attacker_attributes.might.bonus;
-                let skill_hit_bonus = skill_bonus(Skill::Melee, &*attacker_skills);
+                let skill_hit_bonus = skill_bonus(Skill::Melee, attacker_skills);
                 let weapon_hit_bonus = 0; // TODO: Once weapons support this
                 let mut status_hit_bonus = 0;
                 if let Some(hc) = hunger_clock.get(entity) {
@@ -75,7 +75,7 @@ impl<'a> System<'a> for MeleeCombatSystem {
 
                 let base_armor_class = 10;
                 let armor_quickness_bonus = target_attributes.quickness.bonus;
-                let armor_skill_bonus = skill_bonus(Skill::Defense, &*target_skills);
+                let armor_skill_bonus = skill_bonus(Skill::Defense, target_skills);
                 let armor_item_bonus = 0; // TODO: Once armor supports this
                 let armor_class =
                     base_armor_class + armor_quickness_bonus + armor_skill_bonus + armor_item_bonus;
@@ -84,7 +84,7 @@ impl<'a> System<'a> for MeleeCombatSystem {
                     // Target hit! Until we support weapons, we're going with 1d4
                     let base_damage = rng.roll_dice(1, 4);
                     let attr_damage_bonus = attacker_attributes.might.bonus;
-                    let skill_damage_bonus = skill_bonus(Skill::Melee, &*attacker_skills);
+                    let skill_damage_bonus = skill_bonus(Skill::Melee, attacker_skills);
                     let weapon_damage_bonus = 0;
 
                     let damage = i32::max(

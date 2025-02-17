@@ -135,7 +135,7 @@ fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
                         y,
                         RGB::named(rltk::WHITE),
                         RGB::named(rltk::GREY),
-                        &" ".to_string(),
+                        " ".to_string(),
                     );
                 }
                 y += 1;
@@ -145,7 +145,7 @@ fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
                 arrow_pos.y,
                 RGB::named(rltk::WHITE),
                 RGB::named(rltk::GREY),
-                &"->".to_string(),
+                "->".to_string(),
             );
         } else {
             let arrow_pos = Point::new(mouse_pos.0 + 1, mouse_pos.1);
@@ -166,7 +166,7 @@ fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
                         y,
                         RGB::named(rltk::WHITE),
                         RGB::named(rltk::GREY),
-                        &" ".to_string(),
+                        " ".to_string(),
                     );
                 }
                 y += 1;
@@ -176,7 +176,7 @@ fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
                 arrow_pos.y,
                 RGB::named(rltk::WHITE),
                 RGB::named(rltk::GREY),
-                &"<-".to_string(),
+                "<-".to_string(),
             );
         }
     }
@@ -252,7 +252,7 @@ pub fn show_inventory(gs: &mut State, ctx: &mut Rltk) -> (ItemMenuResult, Option
             rltk::to_cp437(')'),
         );
 
-        ctx.print(21, y, &name.name.to_string());
+        ctx.print(21, y, name.name.to_string());
         equippable.push(entity);
         y += 1;
         j += 1;
@@ -339,7 +339,7 @@ pub fn drop_item_menu(gs: &mut State, ctx: &mut Rltk) -> (ItemMenuResult, Option
             rltk::to_cp437(')'),
         );
 
-        ctx.print(21, y, &name.name.to_string());
+        ctx.print(21, y, name.name.to_string());
         equippable.push(entity);
         y += 1;
         j += 1;
@@ -426,7 +426,7 @@ pub fn remove_item_menu(gs: &mut State, ctx: &mut Rltk) -> (ItemMenuResult, Opti
             rltk::to_cp437(')'),
         );
 
-        ctx.print(21, y, &name.name.to_string());
+        ctx.print(21, y, name.name.to_string());
         equippable.push(entity);
         y += 1;
         j += 1;

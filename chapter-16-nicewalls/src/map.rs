@@ -49,7 +49,7 @@ impl Map {
         for x in min(x1, x2)..=max(x1, x2) {
             let idx = self.xy_idx(x, y);
             if idx > 0 && idx < self.width as usize * self.height as usize {
-                self.tiles[idx as usize] = TileType::Floor;
+                self.tiles[idx] = TileType::Floor;
             }
         }
     }
@@ -58,7 +58,7 @@ impl Map {
         for y in min(y1, y2)..=max(y1, y2) {
             let idx = self.xy_idx(x, y);
             if idx > 0 && idx < self.width as usize * self.height as usize {
-                self.tiles[idx as usize] = TileType::Floor;
+                self.tiles[idx] = TileType::Floor;
             }
         }
     }
@@ -205,7 +205,7 @@ fn is_revealed_and_wall(map: &Map, x: i32, y: i32) -> bool {
 }
 
 fn wall_glyph(map: &Map, x: i32, y: i32) -> rltk::FontCharType {
-    if x < 1 || x > map.width - 2 || y < 1 || y > map.height - 2 as i32 {
+    if x < 1 || x > map.width - 2 || y < 1 || y > map.height - 2_i32 {
         return 35;
     }
     let mut mask: u8 = 0;
@@ -261,7 +261,7 @@ pub fn draw_map(ecs: &World, ctx: &mut Rltk) {
                     fg = RGB::from_f32(0.0, 0.5, 0.5);
                 }
                 TileType::Wall => {
-                    glyph = wall_glyph(&*map, x, y);
+                    glyph = wall_glyph(&map, x, y);
                     fg = RGB::from_f32(0., 1.0, 0.);
                 }
                 TileType::DownStairs => {

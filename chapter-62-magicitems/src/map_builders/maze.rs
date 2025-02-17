@@ -82,7 +82,7 @@ struct Grid<'a> {
     rng: &'a mut RandomNumberGenerator,
 }
 
-impl<'a> Grid<'a> {
+impl Grid<'_> {
     fn new(width: i32, height: i32, rng: &mut RandomNumberGenerator) -> Grid {
         let mut grid = Grid {
             width,

@@ -1,5 +1,5 @@
 use super::{
-    gamelog, AreaOfEffect, CursedItem, EquipmentChanged, Equippable, Equipped, IdentifiedItem,
+    AreaOfEffect, CursedItem, EquipmentChanged, Equippable, Equipped, IdentifiedItem,
     InBackpack, Item, MagicItem, Map, MasterDungeonMap, Name, ObfuscatedName, Position,
     WantsToCastSpell, WantsToDropItem, WantsToPickupItem, WantsToRemoveItem, WantsToUseItem,
 };

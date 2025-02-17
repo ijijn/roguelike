@@ -157,8 +157,8 @@ fn affect_tile(ecs: &mut World, effect: &mut EffectSpawner, tile_idx: i32) {
 
     match &effect.effect_type {
         EffectType::Bloodstain => damage::bloodstain(ecs, tile_idx),
-        EffectType::Particle { .. } => particles::particle_to_tile(ecs, tile_idx, &effect),
-        EffectType::ParticleProjectile { .. } => particles::projectile(ecs, tile_idx, &effect),
+        EffectType::Particle { .. } => particles::particle_to_tile(ecs, tile_idx, effect),
+        EffectType::ParticleProjectile { .. } => particles::projectile(ecs, tile_idx, effect),
         _ => {}
     }
 }
@@ -171,14 +171,14 @@ fn affect_entity(ecs: &mut World, effect: &mut EffectSpawner, target: Entity) {
     match &effect.effect_type {
         EffectType::Damage { .. } => damage::inflict_damage(ecs, effect, target),
         EffectType::EntityDeath => damage::death(ecs, effect, target),
-        EffectType::Bloodstain { .. } => {
+        EffectType::Bloodstain => {
             if let Some(pos) = entity_position(ecs, target) {
                 damage::bloodstain(ecs, pos)
             }
         }
         EffectType::Particle { .. } => {
             if let Some(pos) = entity_position(ecs, target) {
-                particles::particle_to_tile(ecs, pos, &effect)
+                particles::particle_to_tile(ecs, pos, effect)
             }
         }
         EffectType::WellFed => hunger::well_fed(ecs, effect, target),

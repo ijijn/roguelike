@@ -24,7 +24,7 @@ impl<'a> System<'a> for MovementSystem {
 
     fn run(&mut self, data: Self::SystemData) {
         let (
-            mut map,
+            map,
             mut position,
             blockers,
             entities,
@@ -74,9 +74,9 @@ impl<'a> System<'a> for MovementSystem {
         apply_teleport.clear();
 
         // Apply broad movement
-        for (entity, movement, mut pos) in (&entities, &apply_move, &mut position).join() {
+        for (entity, movement, pos) in (&entities, &apply_move, &mut position).join() {
             let start_idx = map.xy_idx(pos.x, pos.y);
-            let dest_idx = movement.dest_idx as usize;
+            let dest_idx = movement.dest_idx;
             crate::spatial::move_entity(entity, start_idx, dest_idx);
             pos.x = movement.dest_idx as i32 % map.width;
             pos.y = movement.dest_idx as i32 / map.width;

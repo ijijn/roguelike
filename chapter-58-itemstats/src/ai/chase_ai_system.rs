@@ -44,7 +44,7 @@ impl<'a> System<'a> for ChaseAI {
         end_chase.clear();
 
         let mut turn_done: Vec<Entity> = Vec::new();
-        for (entity, mut pos, _chase, mut viewshed, _myturn) in
+        for (entity, pos, _chase, viewshed, _myturn) in
             (&entities, &mut positions, &chasing, &mut viewsheds, &turns).join()
         {
             turn_done.push(entity);

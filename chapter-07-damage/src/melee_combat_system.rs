@@ -27,12 +27,12 @@ impl<'a> System<'a> for MeleeCombatSystem {
                     let damage = i32::max(0, stats.power - target_stats.defense);
 
                     if damage == 0 {
-                        console::log(&format!(
+                        console::log(format!(
                             "{} is unable to hurt {}",
                             &name.name, &target_name.name
                         ));
                     } else {
-                        console::log(&format!(
+                        console::log(format!(
                             "{} hits {}, for {} hp.",
                             &name.name, &target_name.name, damage
                         ));

@@ -125,7 +125,7 @@ pub fn spawn_entity(ecs: &mut World, spawn: &(&usize, &String)) {
     let spawn_result = spawn_named_entity(
         &RAWS.lock().unwrap(),
         ecs.create_entity(),
-        &spawn.1,
+        spawn.1,
         SpawnType::AtPosition { x, y },
     );
     if spawn_result.is_some() {

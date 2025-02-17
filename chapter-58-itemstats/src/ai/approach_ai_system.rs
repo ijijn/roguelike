@@ -27,7 +27,7 @@ impl<'a> System<'a> for ApproachAI {
         ) = data;
 
         let mut turn_done: Vec<Entity> = Vec::new();
-        for (entity, mut pos, approach, mut viewshed, _myturn) in (
+        for (entity, pos, approach, viewshed, _myturn) in (
             &entities,
             &mut positions,
             &want_approach,

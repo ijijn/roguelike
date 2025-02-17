@@ -174,7 +174,7 @@ impl GameState for State {
 
         match newrunstate {
             RunState::MainMenu { .. } => {}
-            RunState::GameOver { .. } => {}
+            RunState::GameOver => {}
             _ => {
                 camera::render_camera(&self.ecs, ctx);
                 gui::draw_ui(&self.ecs, ctx);
@@ -281,7 +281,7 @@ impl GameState for State {
                     gui::CheatMenuResult::Heal => {
                         let player = self.ecs.fetch::<Entity>();
                         let mut pools = self.ecs.write_storage::<Pools>();
-                        let mut player_pools = pools.get_mut(*player).unwrap();
+                        let player_pools = pools.get_mut(*player).unwrap();
                         player_pools.hit_points.current = player_pools.hit_points.max;
                         newrunstate = RunState::AwaitingInput;
                     }
@@ -295,7 +295,7 @@ impl GameState for State {
                     gui::CheatMenuResult::GodMode => {
                         let player = self.ecs.fetch::<Entity>();
                         let mut pools = self.ecs.write_storage::<Pools>();
-                        let mut player_pools = pools.get_mut(*player).unwrap();
+                        let player_pools = pools.get_mut(*player).unwrap();
                         player_pools.god_mode = true;
                         newrunstate = RunState::AwaitingInput;
                     }
@@ -536,7 +536,7 @@ impl GameState for State {
             RunState::MagicMapReveal { row } => {
                 let mut map = self.ecs.fetch_mut::<Map>();
                 for x in 0..map.width {
-                    let idx = map.xy_idx(x as i32, row);
+                    let idx = map.xy_idx(x, row);
                     map.revealed_tiles[idx] = true;
                 }
                 if row == map.height - 1 {

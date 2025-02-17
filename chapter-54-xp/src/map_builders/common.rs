@@ -16,10 +16,10 @@ pub fn apply_horizontal_tunnel(map: &mut Map, x1: i32, x2: i32, y: i32) -> Vec<u
         let idx = map.xy_idx(x, y);
         if idx > 0
             && idx < map.width as usize * map.height as usize
-            && map.tiles[idx as usize] != TileType::Floor
+            && map.tiles[idx] != TileType::Floor
         {
-            map.tiles[idx as usize] = TileType::Floor;
-            corridor.push(idx as usize);
+            map.tiles[idx] = TileType::Floor;
+            corridor.push(idx);
         }
     }
     corridor
@@ -31,10 +31,10 @@ pub fn apply_vertical_tunnel(map: &mut Map, y1: i32, y2: i32, x: i32) -> Vec<usi
         let idx = map.xy_idx(x, y);
         if idx > 0
             && idx < map.width as usize * map.height as usize
-            && map.tiles[idx as usize] != TileType::Floor
+            && map.tiles[idx] != TileType::Floor
         {
             corridor.push(idx);
-            map.tiles[idx as usize] = TileType::Floor;
+            map.tiles[idx] = TileType::Floor;
         }
     }
     corridor

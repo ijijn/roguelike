@@ -138,7 +138,7 @@ impl PrefabBuilder {
 
     fn build(&mut self) {
         match self.mode {
-            PrefabMode::RexLevel { template } => self.load_rex_map(&template),
+            PrefabMode::RexLevel { template } => self.load_rex_map(template),
             PrefabMode::Constant { level } => self.load_ascii_map(&level),
             PrefabMode::Sectional { section } => self.apply_sectional(&section),
             PrefabMode::RoomVaults => self.apply_room_vaults(),
@@ -195,8 +195,8 @@ impl PrefabBuilder {
                 let y = idx as i32 / self.map.width;
                 self.map.tiles[idx] = TileType::Floor;
                 self.starting_position = Position {
-                    x: x as i32,
-                    y: y as i32,
+                    x,
+                    y,
                 };
             }
             '>' => self.map.tiles[idx] = TileType::DownStairs,
@@ -358,7 +358,7 @@ impl PrefabBuilder {
         }
 
         // Note that this is a place-holder and will be moved out of this function
-        let master_vault_list = vec![TOTALLY_NOT_A_TRAP, CHECKERBOARD, SILLY_SMILE];
+        let master_vault_list = [TOTALLY_NOT_A_TRAP, CHECKERBOARD, SILLY_SMILE];
 
         // Filter the vault list down to ones that are applicable to the current depth
         let mut possible_vaults: Vec<&PrefabRoom> = master_vault_list

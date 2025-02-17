@@ -118,11 +118,11 @@ impl YellowBrickRoad {
         build_data.take_snapshot();
 
         let (stream_x, stream_y) = self.find_exit(build_data, stream_startx, stream_starty);
-        let stream_idx = build_data.map.xy_idx(stream_x, stream_y) as usize;
+        let stream_idx = build_data.map.xy_idx(stream_x, stream_y);
         let stream = rltk::a_star_search(stairs_idx, stream_idx, &mut build_data.map);
         for tile in stream.steps.iter() {
-            if build_data.map.tiles[*tile as usize] == TileType::Floor {
-                build_data.map.tiles[*tile as usize] = TileType::ShallowWater;
+            if build_data.map.tiles[*tile] == TileType::Floor {
+                build_data.map.tiles[*tile] = TileType::ShallowWater;
             }
         }
         build_data.map.tiles[stairs_idx] = TileType::DownStairs;

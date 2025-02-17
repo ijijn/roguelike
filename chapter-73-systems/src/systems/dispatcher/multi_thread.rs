@@ -21,7 +21,7 @@ macro_rules! construct_dispatcher {
                 .build();
 
             let dispatch = MultiThreadedDispatcher{
-                dispatcher : dispatcher
+                dispatcher
             };
 
             return Box::new(dispatch);

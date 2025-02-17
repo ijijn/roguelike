@@ -15,10 +15,10 @@ pub enum CheatMenuResult {
 pub fn show_cheat_mode(_gs: &mut State, ctx: &mut Rltk) -> CheatMenuResult {
     let mut draw_batch = DrawBatch::new();
     let count = 4;
-    let mut y = (25 - (count / 2)) as i32;
-    menu_box(&mut draw_batch, 15, y, (count + 3) as i32, "Cheating!");
+    let mut y = 25 - (count / 2);
+    menu_box(&mut draw_batch, 15, y, count + 3, "Cheating!");
     draw_batch.print_color(
-        Point::new(18, y + count as i32 + 1),
+        Point::new(18, y + count + 1),
         "ESCAPE to cancel",
         ColorPair::new(RGB::named(rltk::YELLOW), RGB::named(rltk::BLACK)),
     );
