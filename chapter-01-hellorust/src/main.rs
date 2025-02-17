@@ -14,6 +14,6 @@ fn main() -> rltk::BError {
     let context = RltkBuilder::simple80x50()
         .with_title("Roguelike Tutorial")
         .build()?;
-    let gs = State {};
+    let gs = State;
     rltk::main_loop(context, gs)
 }

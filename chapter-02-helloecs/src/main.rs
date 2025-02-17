@@ -1,7 +1,6 @@
 use rltk::{GameState, Rltk, VirtualKeyCode, RGB};
 use specs::prelude::*;
 use specs_derive::*;
-use std::cmp::{max, min};
 
 #[derive(Component)]
 struct Position {
@@ -17,10 +16,10 @@ struct Renderable {
 }
 
 #[derive(Component)]
-struct LeftMover {}
+struct LeftMover;
 
 #[derive(Component, Debug)]
-struct Player {}
+struct Player;
 
 struct State {
     ecs: World,
@@ -31,8 +30,8 @@ fn try_move_player(delta_x: i32, delta_y: i32, ecs: &mut World) {
     let mut players = ecs.write_storage::<Player>();
 
     for (_player, pos) in (&mut players, &mut positions).join() {
-        pos.x = min(79, max(0, pos.x + delta_x));
-        pos.y = min(49, max(0, pos.y + delta_y));
+        pos.x = (pos.x + delta_x).clamp(0, 79);
+        pos.y = (pos.y + delta_y).clamp(0, 49);
     }
 }
 
@@ -66,7 +65,7 @@ impl GameState for State {
     }
 }
 
-struct LeftWalker {}
+struct LeftWalker;
 
 impl<'a> System<'a> for LeftWalker {
     type SystemData = (ReadStorage<'a, LeftMover>, WriteStorage<'a, Position>);
@@ -83,7 +82,7 @@ impl<'a> System<'a> for LeftWalker {
 
 impl State {
     fn run_systems(&mut self) {
-        let mut lw = LeftWalker {};
+        let mut lw = LeftWalker;
         lw.run_now(&self.ecs);
         self.ecs.maintain();
     }
@@ -108,7 +107,7 @@ fn main() -> rltk::BError {
             fg: RGB::named(rltk::YELLOW),
             bg: RGB::named(rltk::BLACK),
         })
-        .with(Player {})
+        .with(Player)
         .build();
 
     for i in 0..10 {
@@ -120,7 +119,7 @@ fn main() -> rltk::BError {
                 fg: RGB::named(rltk::RED),
                 bg: RGB::named(rltk::BLACK),
             })
-            .with(LeftMover {})
+            .with(LeftMover)
             .build();
     }
 

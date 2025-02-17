@@ -16,7 +16,7 @@ pub struct Renderable {
 }
 
 #[derive(Component, Debug)]
-pub struct Player {}
+pub struct Player;
 
 #[derive(Component)]
 pub struct Viewshed {
@@ -26,7 +26,7 @@ pub struct Viewshed {
 }
 
 #[derive(Component, Debug)]
-pub struct Monster {}
+pub struct Monster;
 
 #[derive(Component, Debug)]
 pub struct Name {
@@ -34,7 +34,7 @@ pub struct Name {
 }
 
 #[derive(Component, Debug)]
-pub struct BlocksTile {}
+pub struct BlocksTile;
 
 #[derive(Component, Debug)]
 pub struct CombatStats {

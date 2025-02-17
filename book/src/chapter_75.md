@@ -69,7 +69,7 @@ Now that we have the exact same map as the previous level, let's build a generat
 // Plaza Builder
 use super::{InitialMapBuilder, BuilderMap, TileType };
 
-pub struct PlazaMapBuilder {}
+pub struct PlazaMapBuilder ;
 
 impl InitialMapBuilder for PlazaMapBuilder {
     #[allow(dead_code)]
@@ -81,7 +81,7 @@ impl InitialMapBuilder for PlazaMapBuilder {
 impl PlazaMapBuilder {
     #[allow(dead_code)]
     pub fn new() -> Box<PlazaMapBuilder> {
-        Box::new(PlazaMapBuilder{})
+        Box::new(PlazaMapBuilder)
     }
 
     fn empty_map(&mut self, build_data : &mut BuilderMap) {
@@ -259,6 +259,7 @@ zone_sizes.iter().enumerate().for_each(|(i, (zone, _))| {
     }
 });
 ```
+
 See how if we aren't matching anything else, we roll a dice? If it comes up 1 or 2, we add a pool of varying depth. Actually adding the pool is just like adding solid rock - but we add water instead.
 
 The addition of some water features continues to bring the zone to life:
@@ -643,7 +644,6 @@ We now have the second-to-last section done! You can battle your way down to the
 ---
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-75-darkplaza)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-75-darkplaza)
 ---

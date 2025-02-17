@@ -1,7 +1,6 @@
 use rltk::{GameState, Rltk, VirtualKeyCode, RGB};
 use specs::prelude::*;
 use specs_derive::*;
-use std::cmp::{max, min};
 
 #[derive(Component)]
 struct Position {
@@ -17,7 +16,7 @@ struct Renderable {
 }
 
 #[derive(Component, Debug)]
-struct Player {}
+struct Player;
 
 #[derive(PartialEq, Copy, Clone)]
 enum TileType {
@@ -70,8 +69,8 @@ fn try_move_player(delta_x: i32, delta_y: i32, ecs: &mut World) {
     for (_player, pos) in (&mut players, &mut positions).join() {
         let destination_idx = xy_idx(pos.x + delta_x, pos.y + delta_y);
         if map[destination_idx] != TileType::Wall {
-            pos.x = min(79, max(0, pos.x + delta_x));
-            pos.y = min(49, max(0, pos.y + delta_y));
+            pos.x = (pos.x + delta_x).clamp(0, 79);
+            pos.y = (pos.y + delta_y).clamp(0, 49);
         }
     }
 }
@@ -170,7 +169,7 @@ fn main() -> rltk::BError {
             fg: RGB::named(rltk::YELLOW),
             bg: RGB::named(rltk::BLACK),
         })
-        .with(Player {})
+        .with(Player)
         .build();
 
     rltk::main_loop(context, gs)
