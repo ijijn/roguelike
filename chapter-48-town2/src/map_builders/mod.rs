@@ -148,21 +148,19 @@ pub trait MetaMapBuilder {
 }
 
 fn random_start_position(rng: &mut rltk::RandomNumberGenerator) -> (XStart, YStart) {
-    let x;
     let xroll = rng.roll_dice(1, 3);
-    match xroll {
-        1 => x = XStart::LEFT,
-        2 => x = XStart::CENTER,
-        _ => x = XStart::RIGHT,
-    }
+    let x = match xroll {
+        1 => XStart::Left,
+        2 => XStart::Center,
+        _ => XStart::Right,
+    };
 
-    let y;
     let yroll = rng.roll_dice(1, 3);
-    match yroll {
-        1 => y = YStart::BOTTOM,
-        2 => y = YStart::CENTER,
-        _ => y = YStart::TOP,
-    }
+    let y = match yroll {
+        1 => YStart::Bottom,
+        2 => YStart::Center,
+        _ => YStart::Top,
+    };
 
     (x, y)
 }
@@ -180,11 +178,11 @@ fn random_room_builder(rng: &mut rltk::RandomNumberGenerator, builder: &mut Buil
         // Sort by one of the 5 available algorithms
         let sort_roll = rng.roll_dice(1, 5);
         match sort_roll {
-            1 => builder.with(RoomSorter::new(RoomSort::LEFTMOST)),
-            2 => builder.with(RoomSorter::new(RoomSort::RIGHTMOST)),
-            3 => builder.with(RoomSorter::new(RoomSort::TOPMOST)),
-            4 => builder.with(RoomSorter::new(RoomSort::BOTTOMMOST)),
-            _ => builder.with(RoomSorter::new(RoomSort::CENTRAL)),
+            1 => builder.with(RoomSorter::new(RoomSort::Leftmost)),
+            2 => builder.with(RoomSorter::new(RoomSort::Rightmost)),
+            3 => builder.with(RoomSorter::new(RoomSort::Topmost)),
+            4 => builder.with(RoomSorter::new(RoomSort::Bottommost)),
+            _ => builder.with(RoomSorter::new(RoomSort::Central)),
         }
 
         builder.with(RoomDrawer::new());
@@ -254,7 +252,7 @@ fn random_shape_builder(rng: &mut rltk::RandomNumberGenerator, builder: &mut Bui
     }
 
     // Set the start to the center and cull
-    builder.with(AreaStartingPosition::new(XStart::CENTER, YStart::CENTER));
+    builder.with(AreaStartingPosition::new(XStart::Center, YStart::Center));
     builder.with(CullUnreachable::new());
 
     // Now set the start to a random starting area

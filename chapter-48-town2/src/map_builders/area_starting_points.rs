@@ -4,16 +4,16 @@ use rltk::RandomNumberGenerator;
 
 #[allow(dead_code)]
 pub enum XStart {
-    LEFT,
-    CENTER,
-    RIGHT,
+    Left,
+    Center,
+    Right,
 }
 
 #[allow(dead_code)]
 pub enum YStart {
-    TOP,
-    CENTER,
-    BOTTOM,
+    Top,
+    Center,
+    Bottom,
 }
 
 pub struct AreaStartingPosition {
@@ -34,20 +34,17 @@ impl AreaStartingPosition {
     }
 
     fn build(&mut self, _rng: &mut RandomNumberGenerator, build_data: &mut BuilderMap) {
-        let seed_x;
-        let seed_y;
+        let seed_x = match self.x {
+            XStart::Left => 1,
+            XStart::Center => build_data.map.width / 2,
+            XStart::Right => build_data.map.width - 2,
+        };
 
-        match self.x {
-            XStart::LEFT => seed_x = 1,
-            XStart::CENTER => seed_x = build_data.map.width / 2,
-            XStart::RIGHT => seed_x = build_data.map.width - 2,
-        }
-
-        match self.y {
-            YStart::TOP => seed_y = 1,
-            YStart::CENTER => seed_y = build_data.map.height / 2,
-            YStart::BOTTOM => seed_y = build_data.map.height - 2,
-        }
+        let seed_y = match self.y {
+            YStart::Top => 1,
+            YStart::Center => build_data.map.height / 2,
+            YStart::Bottom => build_data.map.height - 2,
+        };
 
         let mut available_floors: Vec<(usize, f32)> = Vec::new();
         for (idx, tiletype) in build_data.map.tiles.iter().enumerate() {
