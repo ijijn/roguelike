@@ -1,4 +1,4 @@
-use super::{Map, Rect, TileType, Position, spawner, SHOW_MAPGEN_VISUALIZER};
+use super::{spawner, Map, Position, Rect, TileType, SHOW_MAPGEN_VISUALIZER};
 mod simple_map;
 use simple_map::SimpleMapBuilder;
 mod bsp_dungeon;
@@ -31,7 +31,7 @@ pub trait MapBuilder {
     fn take_snapshot(&mut self);
     fn get_spawn_list(&self) -> &Vec<(usize, String)>;
 
-    fn spawn_entities(&mut self, ecs : &mut World) {
+    fn spawn_entities(&mut self, ecs: &mut World) {
         for entity in self.get_spawn_list().iter() {
             spawner::spawn_entity(ecs, &(&entity.0, &entity.1));
         }
@@ -68,15 +68,8 @@ pub fn random_builder(new_depth: i32) -> Box<dyn MapBuilder> {
 
     result*/
 
-    Box::new(
-        PrefabBuilder::new(
-            new_depth,
-            Some(
-                Box::new(
-                    CellularAutomataBuilder::new(new_depth)
-                )
-            )
-        )
-    )
+    Box::new(PrefabBuilder::new(
+        new_depth,
+        Some(Box::new(CellularAutomataBuilder::new(new_depth))),
+    ))
 }
-

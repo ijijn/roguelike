@@ -1,26 +1,40 @@
+use crate::{Attributes, Initiative, MyTurn, Pools, Position, RunState};
 use specs::prelude::*;
-use crate::{Initiative, Position, MyTurn, Attributes, RunState, Pools};
 
 pub struct InitiativeSystem {}
 
 impl<'a> System<'a> for InitiativeSystem {
     #[allow(clippy::type_complexity)]
-    type SystemData = ( WriteStorage<'a, Initiative>,
-                        ReadStorage<'a, Position>,
-                        WriteStorage<'a, MyTurn>,
-                        Entities<'a>,
-                        WriteExpect<'a, rltk::RandomNumberGenerator>,
-                        ReadStorage<'a, Attributes>,
-                        WriteExpect<'a, RunState>,
-                        ReadExpect<'a, Entity>,
-                        ReadExpect<'a, rltk::Point>,
-                        ReadStorage<'a, Pools>);
+    type SystemData = (
+        WriteStorage<'a, Initiative>,
+        ReadStorage<'a, Position>,
+        WriteStorage<'a, MyTurn>,
+        Entities<'a>,
+        WriteExpect<'a, rltk::RandomNumberGenerator>,
+        ReadStorage<'a, Attributes>,
+        WriteExpect<'a, RunState>,
+        ReadExpect<'a, Entity>,
+        ReadExpect<'a, rltk::Point>,
+        ReadStorage<'a, Pools>,
+    );
 
-    fn run(&mut self, data : Self::SystemData) {
-        let (mut initiatives, positions, mut turns, entities, mut rng, attributes,
-            mut runstate, player, player_pos, pools) = data;
+    fn run(&mut self, data: Self::SystemData) {
+        let (
+            mut initiatives,
+            positions,
+            mut turns,
+            entities,
+            mut rng,
+            attributes,
+            mut runstate,
+            player,
+            player_pos,
+            pools,
+        ) = data;
 
-        if *runstate != RunState::Ticking { return; }
+        if *runstate != RunState::Ticking {
+            return;
+        }
 
         // Clear any remaining MyTurn we left by mistkae
         turns.clear();
@@ -50,7 +64,8 @@ impl<'a> System<'a> for InitiativeSystem {
                 if entity == *player {
                     *runstate = RunState::AwaitingInput;
                 } else {
-                    let distance = rltk::DistanceAlg::Pythagoras.distance2d(*player_pos, rltk::Point::new(pos.x, pos.y));
+                    let distance = rltk::DistanceAlg::Pythagoras
+                        .distance2d(*player_pos, rltk::Point::new(pos.x, pos.y));
                     if distance > 20.0 {
                         myturn = false;
                     }
@@ -58,9 +73,10 @@ impl<'a> System<'a> for InitiativeSystem {
 
                 // It's my turn!
                 if myturn {
-                    turns.insert(entity, MyTurn{}).expect("Unable to insert turn");
+                    turns
+                        .insert(entity, MyTurn {})
+                        .expect("Unable to insert turn");
                 }
-
             }
         }
     }

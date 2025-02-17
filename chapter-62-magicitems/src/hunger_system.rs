@@ -1,22 +1,21 @@
+use super::{gamelog::GameLog, HungerClock, HungerState, MyTurn, SufferDamage};
 use specs::prelude::*;
-use super::{HungerClock, HungerState, SufferDamage, gamelog::GameLog, MyTurn};
 
 pub struct HungerSystem {}
 
 impl<'a> System<'a> for HungerSystem {
     #[allow(clippy::type_complexity)]
     type SystemData = (
-                        Entities<'a>,
-                        WriteStorage<'a, HungerClock>,
-                        ReadExpect<'a, Entity>, // The player
-                        WriteStorage<'a, SufferDamage>,
-                        WriteExpect<'a, GameLog>,
-                        ReadStorage<'a, MyTurn>
-                      );
+        Entities<'a>,
+        WriteStorage<'a, HungerClock>,
+        ReadExpect<'a, Entity>, // The player
+        WriteStorage<'a, SufferDamage>,
+        WriteExpect<'a, GameLog>,
+        ReadStorage<'a, MyTurn>,
+    );
 
-    fn run(&mut self, data : Self::SystemData) {
-        let (entities, mut hunger_clock, player_entity, mut inflict_damage, mut log,
-            turns) = data;
+    fn run(&mut self, data: Self::SystemData) {
+        let (entities, mut hunger_clock, player_entity, mut inflict_damage, mut log, turns) = data;
 
         for (entity, mut clock, _myturn) in (&entities, &mut hunger_clock, &turns).join() {
             clock.duration -= 1;
@@ -46,7 +45,10 @@ impl<'a> System<'a> for HungerSystem {
                     HungerState::Starving => {
                         // Inflict damage from hunger
                         if entity == *player_entity {
-                            log.entries.push("Your hunger pangs are getting painful! You suffer 1 hp damage.".to_string());
+                            log.entries.push(
+                                "Your hunger pangs are getting painful! You suffer 1 hp damage."
+                                    .to_string(),
+                            );
                         }
                         SufferDamage::new_damage(&mut inflict_damage, entity, 1, false);
                     }

@@ -1,16 +1,17 @@
-use super::{MapBuilder, Map,
-    TileType, Position, spawner, SHOW_MAPGEN_VISUALIZER,
-    remove_unreachable_areas_returning_most_distant, generate_voronoi_spawn_regions};
+use super::{
+    generate_voronoi_spawn_regions, remove_unreachable_areas_returning_most_distant, spawner, Map,
+    MapBuilder, Position, TileType, SHOW_MAPGEN_VISUALIZER,
+};
 use rltk::RandomNumberGenerator;
 use std::collections::HashMap;
 
 pub struct MazeBuilder {
-    map : Map,
-    starting_position : Position,
+    map: Map,
+    starting_position: Position,
     depth: i32,
     history: Vec<Map>,
-    noise_areas : HashMap<i32, Vec<usize>>,
-    spawn_list: Vec<(usize, String)>
+    noise_areas: HashMap<i32, Vec<usize>>,
+    spawn_list: Vec<(usize, String)>,
 }
 
 impl MapBuilder for MazeBuilder {
@@ -26,7 +27,7 @@ impl MapBuilder for MazeBuilder {
         self.history.clone()
     }
 
-    fn build_map(&mut self)  {
+    fn build_map(&mut self) {
         self.build();
     }
 
@@ -47,14 +48,14 @@ impl MapBuilder for MazeBuilder {
 
 impl MazeBuilder {
     #[allow(dead_code)]
-    pub fn new(new_depth : i32) -> MazeBuilder {
-        MazeBuilder{
-            map : Map::new(new_depth),
-            starting_position : Position{ x: 0, y : 0 },
-            depth : new_depth,
+    pub fn new(new_depth: i32) -> MazeBuilder {
+        MazeBuilder {
+            map: Map::new(new_depth),
+            starting_position: Position { x: 0, y: 0 },
+            depth: new_depth,
             history: Vec::new(),
-            noise_areas : HashMap::new(),
-            spawn_list : Vec::new()
+            noise_areas: HashMap::new(),
+            spawn_list: Vec::new(),
         }
     }
 
@@ -63,12 +64,18 @@ impl MazeBuilder {
         let mut rng = RandomNumberGenerator::new();
 
         // Maze gen
-        let mut maze = Grid::new((self.map.width / 2)-2, (self.map.height / 2)-2, &mut rng);
+        let mut maze = Grid::new(
+            (self.map.width / 2) - 2,
+            (self.map.height / 2) - 2,
+            &mut rng,
+        );
         maze.generate_maze(self);
 
         // Find a starting point; start at the middle and walk left until we find an open tile
-        self.starting_position = Position{ x: 2, y : 2 };
-        let start_idx = self.map.xy_idx(self.starting_position.x, self.starting_position.y);
+        self.starting_position = Position { x: 2, y: 2 };
+        let start_idx = self
+            .map
+            .xy_idx(self.starting_position.x, self.starting_position.y);
         self.take_snapshot();
 
         // Find all tiles we can reach from the starting point
@@ -84,17 +91,23 @@ impl MazeBuilder {
 
         // Spawn the entities
         for area in self.noise_areas.iter() {
-            spawner::spawn_region(&self.map, &mut rng, area.1, self.depth, &mut self.spawn_list);
+            spawner::spawn_region(
+                &self.map,
+                &mut rng,
+                area.1,
+                self.depth,
+                &mut self.spawn_list,
+            );
         }
     }
 }
 
 /* Maze code taken under MIT from https://github.com/cyucelen/mazeGenerator/ */
 
-const TOP : usize = 0;
-const RIGHT : usize = 1;
-const BOTTOM : usize = 2;
-const LEFT : usize = 3;
+const TOP: usize = 0;
+const RIGHT: usize = 1;
+const BOTTOM: usize = 2;
+const LEFT: usize = 3;
 
 #[derive(Copy, Clone)]
 struct Cell {
@@ -106,31 +119,28 @@ struct Cell {
 
 impl Cell {
     fn new(row: i32, column: i32) -> Cell {
-        Cell{
+        Cell {
             row,
             column,
             walls: [true, true, true, true],
-            visited: false
+            visited: false,
         }
     }
 
-    fn remove_walls(&mut self, next : &mut Cell) {
+    fn remove_walls(&mut self, next: &mut Cell) {
         let x = self.column - next.column;
         let y = self.row - next.row;
 
         if x == 1 {
             self.walls[LEFT] = false;
             next.walls[RIGHT] = false;
-        }
-        else if x == -1 {
+        } else if x == -1 {
             self.walls[RIGHT] = false;
             next.walls[LEFT] = false;
-        }
-        else if y == 1 {
+        } else if y == 1 {
             self.walls[TOP] = false;
             next.walls[BOTTOM] = false;
-        }
-        else if y == -1 {
+        } else if y == -1 {
             self.walls[BOTTOM] = false;
             next.walls[TOP] = false;
         }
@@ -143,18 +153,18 @@ struct Grid<'a> {
     cells: Vec<Cell>,
     backtrace: Vec<usize>,
     current: usize,
-    rng : &'a mut RandomNumberGenerator
+    rng: &'a mut RandomNumberGenerator,
 }
 
 impl<'a> Grid<'a> {
-    fn new(width: i32, height:i32, rng: &mut RandomNumberGenerator) -> Grid {
-        let mut grid = Grid{
+    fn new(width: i32, height: i32, rng: &mut RandomNumberGenerator) -> Grid {
+        let mut grid = Grid {
             width,
             height,
             cells: Vec::new(),
             backtrace: Vec::new(),
             current: 0,
-            rng
+            rng,
         };
 
         for row in 0..height {
@@ -167,7 +177,7 @@ impl<'a> Grid<'a> {
     }
 
     fn calculate_index(&self, row: i32, column: i32) -> i32 {
-        if row < 0 || column < 0 || column > self.width-1 || row > self.height-1 {
+        if row < 0 || column < 0 || column > self.width - 1 || row > self.height - 1 {
             -1
         } else {
             column + (row * self.width)
@@ -175,16 +185,16 @@ impl<'a> Grid<'a> {
     }
 
     fn get_available_neighbors(&self) -> Vec<usize> {
-        let mut neighbors : Vec<usize> = Vec::new();
+        let mut neighbors: Vec<usize> = Vec::new();
 
         let current_row = self.cells[self.current].row;
         let current_column = self.cells[self.current].column;
 
-        let neighbor_indices : [i32; 4] = [
-            self.calculate_index(current_row -1, current_column),
+        let neighbor_indices: [i32; 4] = [
+            self.calculate_index(current_row - 1, current_column),
             self.calculate_index(current_row, current_column + 1),
             self.calculate_index(current_row + 1, current_column),
-            self.calculate_index(current_row, current_column - 1)
+            self.calculate_index(current_row, current_column - 1),
         ];
 
         for i in neighbor_indices.iter() {
@@ -202,13 +212,15 @@ impl<'a> Grid<'a> {
             if neighbors.len() == 1 {
                 return Some(neighbors[0]);
             } else {
-                return Some(neighbors[(self.rng.roll_dice(1, neighbors.len() as i32)-1) as usize]);
+                return Some(
+                    neighbors[(self.rng.roll_dice(1, neighbors.len() as i32) - 1) as usize],
+                );
             }
         }
         None
     }
 
-    fn generate_maze(&mut self, generator : &mut MazeBuilder) {
+    fn generate_maze(&mut self, generator: &mut MazeBuilder) {
         let mut i = 0;
         loop {
             self.cells[self.current].visited = true;
@@ -246,9 +258,11 @@ impl<'a> Grid<'a> {
         }
     }
 
-    fn copy_to_map(&self, map : &mut Map) {
+    fn copy_to_map(&self, map: &mut Map) {
         // Clear the map
-        for i in map.tiles.iter_mut() { *i = TileType::Wall; }
+        for i in map.tiles.iter_mut() {
+            *i = TileType::Wall;
+        }
 
         for cell in self.cells.iter() {
             let x = cell.column + 1;
@@ -256,10 +270,18 @@ impl<'a> Grid<'a> {
             let idx = map.xy_idx(x * 2, y * 2);
 
             map.tiles[idx] = TileType::Floor;
-            if !cell.walls[TOP] { map.tiles[idx - map.width as usize] = TileType::Floor }
-            if !cell.walls[RIGHT] { map.tiles[idx + 1] = TileType::Floor }
-            if !cell.walls[BOTTOM] { map.tiles[idx + map.width as usize] = TileType::Floor }
-            if !cell.walls[LEFT] { map.tiles[idx - 1] = TileType::Floor }
+            if !cell.walls[TOP] {
+                map.tiles[idx - map.width as usize] = TileType::Floor
+            }
+            if !cell.walls[RIGHT] {
+                map.tiles[idx + 1] = TileType::Floor
+            }
+            if !cell.walls[BOTTOM] {
+                map.tiles[idx + map.width as usize] = TileType::Floor
+            }
+            if !cell.walls[LEFT] {
+                map.tiles[idx - 1] = TileType::Floor
+            }
         }
     }
 }

@@ -1,16 +1,18 @@
+use super::{spatial, BlocksTile, Map, Pools, Position};
 use specs::prelude::*;
-use super::{Map, Position, BlocksTile, Pools, spatial};
 
 pub struct MapIndexingSystem {}
 
 impl<'a> System<'a> for MapIndexingSystem {
-    type SystemData = ( ReadExpect<'a, Map>,
-                        ReadStorage<'a, Position>,
-                        ReadStorage<'a, BlocksTile>,
-                        ReadStorage<'a, Pools>,
-                        Entities<'a>,);
+    type SystemData = (
+        ReadExpect<'a, Map>,
+        ReadStorage<'a, Position>,
+        ReadStorage<'a, BlocksTile>,
+        ReadStorage<'a, Pools>,
+        Entities<'a>,
+    );
 
-    fn run(&mut self, data : Self::SystemData) {
+    fn run(&mut self, data: Self::SystemData) {
         let (map, position, blockers, pools, entities) = data;
 
         spatial::clear();

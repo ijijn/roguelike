@@ -1,5 +1,7 @@
-use super::{MapBuilder, Map, TileType, Position, spawner, SHOW_MAPGEN_VISUALIZER,
-    generate_voronoi_spawn_regions, remove_unreachable_areas_returning_most_distant};
+use super::{
+    generate_voronoi_spawn_regions, remove_unreachable_areas_returning_most_distant, spawner, Map,
+    MapBuilder, Position, TileType, SHOW_MAPGEN_VISUALIZER,
+};
 use rltk::RandomNumberGenerator;
 mod image_loader;
 use image_loader::*;
@@ -12,21 +14,24 @@ use constraints::*;
 mod solver;
 use solver::*;
 
-/// Modes supported by Wave Function Collapse algorithm. 
+/// Modes supported by Wave Function Collapse algorithm.
 /// TestMap loads the baked-in map, made in Rex.
 /// Derived takes a builder, runs it, and then runs the algorithm on that map.
 #[derive(PartialEq, Copy, Clone)]
-pub enum WaveformMode { TestMap, Derived }
+pub enum WaveformMode {
+    TestMap,
+    Derived,
+}
 
 /// Provides a map builder using the Wave Function Collapse algorithm.
 pub struct WaveformCollapseBuilder {
-    map : Map,
-    starting_position : Position,
+    map: Map,
+    starting_position: Position,
     depth: i32,
     history: Vec<Map>,
-    noise_areas : HashMap<i32, Vec<usize>>,
-    mode : WaveformMode,
-    derive_from : Option<Box<dyn MapBuilder>>
+    noise_areas: HashMap<i32, Vec<usize>>,
+    mode: WaveformMode,
+    derive_from: Option<Box<dyn MapBuilder>>,
 }
 
 impl MapBuilder for WaveformCollapseBuilder {
@@ -42,11 +47,11 @@ impl MapBuilder for WaveformCollapseBuilder {
         self.history.clone()
     }
 
-    fn build_map(&mut self)  {
+    fn build_map(&mut self) {
         self.build();
     }
 
-    fn spawn_entities(&mut self, ecs : &mut World) {
+    fn spawn_entities(&mut self, ecs: &mut World) {
         for area in self.noise_areas.iter() {
             spawner::spawn_region(ecs, area.1, self.depth);
         }
@@ -68,15 +73,19 @@ impl WaveformCollapseBuilder {
     /// # Arguments
     /// * new_depth - the new map depth
     /// * derive_from - either None, or a boxed MapBuilder, as output by `random_builder`
-    pub fn new(new_depth : i32, mode : WaveformMode, derive_from : Option<Box<dyn MapBuilder>>) -> WaveformCollapseBuilder {
-        WaveformCollapseBuilder{
-            map : Map::new(new_depth),
-            starting_position : Position{ x: 0, y : 0 },
-            depth : new_depth,
+    pub fn new(
+        new_depth: i32,
+        mode: WaveformMode,
+        derive_from: Option<Box<dyn MapBuilder>>,
+    ) -> WaveformCollapseBuilder {
+        WaveformCollapseBuilder {
+            map: Map::new(new_depth),
+            starting_position: Position { x: 0, y: 0 },
+            depth: new_depth,
             history: Vec::new(),
-            noise_areas : HashMap::new(),
+            noise_areas: HashMap::new(),
             mode,
-            derive_from
+            derive_from,
         }
     }
 
@@ -97,20 +106,25 @@ impl WaveformCollapseBuilder {
 
     fn build(&mut self) {
         if self.mode == WaveformMode::TestMap {
-            self.map = load_rex_map(self.depth, &rltk::rex::XpFile::from_resource("../../resources/wfc-demo1.xp").unwrap());
+            self.map = load_rex_map(
+                self.depth,
+                &rltk::rex::XpFile::from_resource("../../resources/wfc-demo1.xp").unwrap(),
+            );
             self.take_snapshot();
             return;
         }
 
         let mut rng = RandomNumberGenerator::new();
 
-        const CHUNK_SIZE :i32 = 8;
+        const CHUNK_SIZE: i32 = 8;
 
         let prebuilder = &mut self.derive_from.as_mut().unwrap();
         prebuilder.build_map();
         self.map = prebuilder.get_map();
         for t in self.map.tiles.iter_mut() {
-            if *t == TileType::DownStairs { *t = TileType::Floor; }
+            if *t == TileType::DownStairs {
+                *t = TileType::Floor;
+            }
         }
         self.take_snapshot();
 
@@ -125,15 +139,24 @@ impl WaveformCollapseBuilder {
                 self.take_snapshot();
             }
             self.take_snapshot();
-            if solver.possible { break; } // If it has hit an impossible condition, try again
+            if solver.possible {
+                break;
+            } // If it has hit an impossible condition, try again
         }
 
         // Find a starting point; start at the middle and walk left until we find an open tile
-        self.starting_position = Position{ x: self.map.width / 2, y : self.map.height / 2 };
-        let mut start_idx = self.map.xy_idx(self.starting_position.x, self.starting_position.y);
+        self.starting_position = Position {
+            x: self.map.width / 2,
+            y: self.map.height / 2,
+        };
+        let mut start_idx = self
+            .map
+            .xy_idx(self.starting_position.x, self.starting_position.y);
         while self.map.tiles[start_idx] != TileType::Floor {
             self.starting_position.x -= 1;
-            start_idx = self.map.xy_idx(self.starting_position.x, self.starting_position.y);
+            start_idx = self
+                .map
+                .xy_idx(self.starting_position.x, self.starting_position.y);
         }
         self.take_snapshot();
 

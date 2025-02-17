@@ -1,7 +1,7 @@
-use rltk::{GameState, Rltk, RGB, VirtualKeyCode};
+use rltk::{GameState, Rltk, VirtualKeyCode, RGB};
 use specs::prelude::*;
 use specs_derive::*;
-use std::cmp::{min, max};
+use std::cmp::{max, min};
 
 #[derive(Component)]
 struct Position {
@@ -21,11 +21,12 @@ struct Player {}
 
 #[derive(PartialEq, Copy, Clone)]
 enum TileType {
-    Wall, Floor
+    Wall,
+    Floor,
 }
 
 struct State {
-    ecs: World
+    ecs: World,
 }
 
 pub fn xy_idx(x: i32, y: i32) -> usize {
@@ -33,7 +34,7 @@ pub fn xy_idx(x: i32, y: i32) -> usize {
 }
 
 fn new_map() -> Vec<TileType> {
-    let mut map = vec![TileType::Floor; 80*50];
+    let mut map = vec![TileType::Floor; 80 * 50];
 
     // Make the boundaries walls
     for x in 0..80 {
@@ -69,7 +70,7 @@ fn try_move_player(delta_x: i32, delta_y: i32, ecs: &mut World) {
     for (_player, pos) in (&mut players, &mut positions).join() {
         let destination_idx = xy_idx(pos.x + delta_x, pos.y + delta_y);
         if map[destination_idx] != TileType::Wall {
-            pos.x = min(79 , max(0, pos.x + delta_x));
+            pos.x = min(79, max(0, pos.x + delta_x));
             pos.y = min(49, max(0, pos.y + delta_y));
         }
     }
@@ -89,17 +90,29 @@ fn player_input(gs: &mut State, ctx: &mut Rltk) {
     }
 }
 
-fn draw_map(map: &[TileType], ctx : &mut Rltk) {
+fn draw_map(map: &[TileType], ctx: &mut Rltk) {
     let mut y = 0;
     let mut x = 0;
     for tile in map.iter() {
         // Render a tile depending upon the tile type
         match tile {
             TileType::Floor => {
-                ctx.set(x, y, RGB::from_f32(0.5, 0.5, 0.5), RGB::from_f32(0., 0., 0.), rltk::to_cp437('.'));
+                ctx.set(
+                    x,
+                    y,
+                    RGB::from_f32(0.5, 0.5, 0.5),
+                    RGB::from_f32(0., 0., 0.),
+                    rltk::to_cp437('.'),
+                );
             }
             TileType::Wall => {
-                ctx.set(x, y, RGB::from_f32(0.0, 1.0, 0.0), RGB::from_f32(0., 0., 0.), rltk::to_cp437('#'));
+                ctx.set(
+                    x,
+                    y,
+                    RGB::from_f32(0.0, 1.0, 0.0),
+                    RGB::from_f32(0., 0., 0.),
+                    rltk::to_cp437('#'),
+                );
             }
         }
 
@@ -113,7 +126,7 @@ fn draw_map(map: &[TileType], ctx : &mut Rltk) {
 }
 
 impl GameState for State {
-    fn tick(&mut self, ctx : &mut Rltk) {
+    fn tick(&mut self, ctx: &mut Rltk) {
         ctx.cls();
 
         player_input(self, ctx);
@@ -142,9 +155,7 @@ fn main() -> rltk::BError {
     let context = RltkBuilder::simple80x50()
         .with_title("Roguelike Tutorial")
         .build()?;
-    let mut gs = State {
-        ecs: World::new()
-    };
+    let mut gs = State { ecs: World::new() };
     gs.ecs.register::<Position>();
     gs.ecs.register::<Renderable>();
     gs.ecs.register::<Player>();
@@ -159,7 +170,7 @@ fn main() -> rltk::BError {
             fg: RGB::named(rltk::YELLOW),
             bg: RGB::named(rltk::BLACK),
         })
-        .with(Player{})
+        .with(Player {})
         .build();
 
     rltk::main_loop(context, gs)

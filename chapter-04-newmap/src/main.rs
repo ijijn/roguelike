@@ -11,7 +11,7 @@ mod rect;
 pub use rect::Rect;
 
 pub struct State {
-    pub ecs: World
+    pub ecs: World,
 }
 
 impl State {
@@ -21,7 +21,7 @@ impl State {
 }
 
 impl GameState for State {
-    fn tick(&mut self, ctx : &mut Rltk) {
+    fn tick(&mut self, ctx: &mut Rltk) {
         ctx.cls();
 
         player_input(self, ctx);
@@ -44,9 +44,7 @@ fn main() -> rltk::BError {
     let context = RltkBuilder::simple80x50()
         .with_title("Roguelike Tutorial")
         .build()?;
-    let mut gs = State {
-        ecs: World::new()
-    };
+    let mut gs = State { ecs: World::new() };
     gs.ecs.register::<Position>();
     gs.ecs.register::<Renderable>();
     gs.ecs.register::<Player>();
@@ -57,13 +55,16 @@ fn main() -> rltk::BError {
 
     gs.ecs
         .create_entity()
-        .with(Position { x: player_x, y: player_y })
+        .with(Position {
+            x: player_x,
+            y: player_y,
+        })
         .with(Renderable {
             glyph: rltk::to_cp437('@'),
             fg: RGB::named(rltk::YELLOW),
             bg: RGB::named(rltk::BLACK),
         })
-        .with(Player{})
+        .with(Player {})
         .build();
 
     rltk::main_loop(context, gs)

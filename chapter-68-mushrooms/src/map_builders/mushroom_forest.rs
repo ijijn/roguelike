@@ -1,9 +1,16 @@
-use super::{BuilderChain, XStart, YStart, AreaStartingPosition, 
-    CullUnreachable, VoronoiSpawning,
-    AreaEndingPosition, XEnd, YEnd, CellularAutomataBuilder, PrefabBuilder, WaveformCollapseBuilder};
+use super::{
+    AreaEndingPosition, AreaStartingPosition, BuilderChain, CellularAutomataBuilder,
+    CullUnreachable, PrefabBuilder, VoronoiSpawning, WaveformCollapseBuilder, XEnd, XStart, YEnd,
+    YStart,
+};
 use crate::map_builders::prefab_builder::prefab_sections::UNDERGROUND_FORT;
 
-pub fn mushroom_entrance(new_depth: i32, _rng: &mut rltk::RandomNumberGenerator, width: i32, height: i32) -> BuilderChain {
+pub fn mushroom_entrance(
+    new_depth: i32,
+    _rng: &mut rltk::RandomNumberGenerator,
+    width: i32,
+    height: i32,
+) -> BuilderChain {
     let mut chain = BuilderChain::new(new_depth, width, height, "Into The Mushroom Grove");
     chain.start_with(CellularAutomataBuilder::new());
     chain.with(WaveformCollapseBuilder::new());

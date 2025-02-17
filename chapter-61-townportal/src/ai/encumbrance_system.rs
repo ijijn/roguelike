@@ -1,5 +1,5 @@
+use crate::{gamelog::GameLog, Attributes, EquipmentChanged, Equipped, InBackpack, Item, Pools};
 use specs::prelude::*;
-use crate::{EquipmentChanged, Item, InBackpack, Equipped, Pools, Attributes, gamelog::GameLog};
 use std::collections::HashMap;
 
 pub struct EncumbranceSystem {}
@@ -15,17 +15,28 @@ impl<'a> System<'a> for EncumbranceSystem {
         WriteStorage<'a, Pools>,
         ReadStorage<'a, Attributes>,
         ReadExpect<'a, Entity>,
-        WriteExpect<'a, GameLog>
+        WriteExpect<'a, GameLog>,
     );
 
-    fn run(&mut self, data : Self::SystemData) {
-        let (mut equip_dirty, entities, items, backpacks, wielded,
-            mut pools, attributes, player, mut gamelog) = data;
+    fn run(&mut self, data: Self::SystemData) {
+        let (
+            mut equip_dirty,
+            entities,
+            items,
+            backpacks,
+            wielded,
+            mut pools,
+            attributes,
+            player,
+            mut gamelog,
+        ) = data;
 
-        if equip_dirty.is_empty() { return; }
+        if equip_dirty.is_empty() {
+            return;
+        }
 
         // Build the map of who needs updating
-        let mut to_update : HashMap<Entity, (f32, f32)> = HashMap::new(); // (weight, intiative)
+        let mut to_update: HashMap<Entity, (f32, f32)> = HashMap::new(); // (weight, intiative)
         for (entity, _dirty) in (&entities, &equip_dirty).join() {
             to_update.insert(entity, (0.0, 0.0));
         }
@@ -63,7 +74,10 @@ impl<'a> System<'a> for EncumbranceSystem {
                         // Overburdened
                         pool.total_initiative_penalty += 4.0;
                         if *entity == *player {
-                            gamelog.entries.push("You are overburdened, and suffering an initiative penalty.".to_string());
+                            gamelog.entries.push(
+                                "You are overburdened, and suffering an initiative penalty."
+                                    .to_string(),
+                            );
                         }
                     }
                 }

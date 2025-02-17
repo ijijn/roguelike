@@ -1,17 +1,21 @@
+use super::{
+    gamelog::GameLog, Equipped, InBackpack, LootTable, Map, Name, Player, Pools, Position,
+    RunState, SufferDamage,
+};
 use specs::prelude::*;
-use super::{Pools, SufferDamage, Player, Name, gamelog::GameLog, RunState, Position, Map,
-    InBackpack, Equipped, LootTable};
 
 pub struct DamageSystem {}
 
 impl<'a> System<'a> for DamageSystem {
-    type SystemData = ( WriteStorage<'a, Pools>,
-                        WriteStorage<'a, SufferDamage>,
-                        ReadStorage<'a, Position>,
-                        WriteExpect<'a, Map>,
-                        Entities<'a> );
+    type SystemData = (
+        WriteStorage<'a, Pools>,
+        WriteStorage<'a, SufferDamage>,
+        ReadStorage<'a, Position>,
+        WriteExpect<'a, Map>,
+        Entities<'a>,
+    );
 
-    fn run(&mut self, data : Self::SystemData) {
+    fn run(&mut self, data: Self::SystemData) {
         let (mut stats, mut damage, positions, mut map, entities) = data;
 
         for (entity, mut stats, damage) in (&entities, &mut stats, &damage).join() {
@@ -27,8 +31,8 @@ impl<'a> System<'a> for DamageSystem {
     }
 }
 
-pub fn delete_the_dead(ecs : &mut World) {
-    let mut dead : Vec<Entity> = Vec::new();
+pub fn delete_the_dead(ecs: &mut World) {
+    let mut dead: Vec<Entity> = Vec::new();
     // Using a scope to make the borrow checker happy
     {
         let combat_stats = ecs.read_storage::<Pools>();
@@ -57,9 +61,10 @@ pub fn delete_the_dead(ecs : &mut World) {
     }
 
     // Drop everything held by dead people
-    let mut to_spawn : Vec<(String, Position)> = Vec::new();
-    { // To avoid keeping hold of borrowed entries, use a scope
-        let mut to_drop : Vec<(Entity, Position)> = Vec::new();
+    let mut to_spawn: Vec<(String, Position)> = Vec::new();
+    {
+        // To avoid keeping hold of borrowed entries, use a scope
+        let mut to_drop: Vec<(Entity, Position)> = Vec::new();
         let entities = ecs.entities();
         let mut equipped = ecs.write_storage::<Equipped>();
         let mut carried = ecs.write_storage::<InBackpack>();
@@ -89,7 +94,7 @@ pub fn delete_the_dead(ecs : &mut World) {
                 let drop_finder = crate::raws::get_item_drop(
                     &crate::raws::RAWS.lock().unwrap(),
                     &mut rng,
-                    &table.table
+                    &table.table,
                 );
                 if let Some(tag) = drop_finder {
                     if let Some(pos) = pos {
@@ -102,7 +107,9 @@ pub fn delete_the_dead(ecs : &mut World) {
         for drop in to_drop.iter() {
             equipped.remove(drop.0);
             carried.remove(drop.0);
-            positions.insert(drop.0, drop.1.clone()).expect("Unable to insert position");
+            positions
+                .insert(drop.0, drop.1.clone())
+                .expect("Unable to insert position");
         }
     }
 
@@ -112,7 +119,10 @@ pub fn delete_the_dead(ecs : &mut World) {
                 &crate::raws::RAWS.lock().unwrap(),
                 ecs,
                 &drop.0,
-                crate::raws::SpawnType::AtPosition{x : drop.1.x, y: drop.1.y}
+                crate::raws::SpawnType::AtPosition {
+                    x: drop.1.x,
+                    y: drop.1.y,
+                },
             );
         }
     }

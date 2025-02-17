@@ -1,26 +1,28 @@
-use std::collections::HashMap;
-use serde::{Serialize, Deserialize};
 use super::{Map, TileType};
-use crate::components::{Position, Viewshed, OtherLevelPosition};
+use crate::components::{OtherLevelPosition, Position, Viewshed};
 use crate::map_builders::level_builder;
-use specs::prelude::*;
 use rltk::Point;
+use serde::{Deserialize, Serialize};
+use specs::prelude::*;
+use std::collections::HashMap;
 
 #[derive(Default, Serialize, Deserialize, Clone)]
 pub struct MasterDungeonMap {
-    maps : HashMap<i32, Map>
+    maps: HashMap<i32, Map>,
 }
 
 impl MasterDungeonMap {
     pub fn new() -> MasterDungeonMap {
-        MasterDungeonMap{ maps: HashMap::new() }
+        MasterDungeonMap {
+            maps: HashMap::new(),
+        }
     }
 
-    pub fn store_map(&mut self, map : &Map) {
+    pub fn store_map(&mut self, map: &Map) {
         self.maps.insert(map.depth, map.clone());
     }
 
-    pub fn get_map(&self, depth : i32) -> Option<Map> {
+    pub fn get_map(&self, depth: i32) -> Option<Map> {
         if self.maps.contains_key(&depth) {
             let mut result = self.maps[&depth].clone();
             Some(result)
@@ -30,7 +32,7 @@ impl MasterDungeonMap {
     }
 }
 
-fn transition_to_new_map(ecs : &mut World, new_depth: i32) -> Vec<Map> {
+fn transition_to_new_map(ecs: &mut World, new_depth: i32) -> Vec<Map> {
     let mut rng = ecs.write_resource::<rltk::RandomNumberGenerator>();
     let mut builder = level_builder(new_depth, &mut rng, 80, 50);
     builder.build_map(&mut rng);
@@ -45,7 +47,12 @@ fn transition_to_new_map(ecs : &mut World, new_depth: i32) -> Vec<Map> {
     {
         let mut worldmap_resource = ecs.write_resource::<Map>();
         *worldmap_resource = builder.build_data.map.clone();
-        player_start = builder.build_data.starting_position.as_mut().unwrap().clone();
+        player_start = builder
+            .build_data
+            .starting_position
+            .as_mut()
+            .unwrap()
+            .clone();
     }
 
     // Spawn bad guys
@@ -86,7 +93,11 @@ fn transition_to_existing_map(ecs: &mut World, new_depth: i32, offset: i32) {
 
     // Find the down stairs and place the player
     let w = map.width;
-    let stair_type = if offset < 0 { TileType::DownStairs } else { TileType::UpStairs };
+    let stair_type = if offset < 0 {
+        TileType::DownStairs
+    } else {
+        TileType::UpStairs
+    };
     for (idx, tt) in map.tiles.iter().enumerate() {
         if *tt == stair_type {
             let mut player_position = ecs.write_resource::<Point>();
@@ -119,10 +130,19 @@ pub fn freeze_level_entities(ecs: &mut World) {
     let map_depth = ecs.fetch::<Map>().depth;
 
     // Find positions and make OtherLevelPosition
-    let mut pos_to_delete : Vec<Entity> = Vec::new();
+    let mut pos_to_delete: Vec<Entity> = Vec::new();
     for (entity, pos) in (&entities, &positions).join() {
         if entity != *player_entity {
-            other_level_positions.insert(entity, OtherLevelPosition{ x: pos.x, y: pos.y, depth: map_depth }).expect("Insert fail");
+            other_level_positions
+                .insert(
+                    entity,
+                    OtherLevelPosition {
+                        x: pos.x,
+                        y: pos.y,
+                        depth: map_depth,
+                    },
+                )
+                .expect("Insert fail");
             pos_to_delete.push(entity);
         }
     }
@@ -142,10 +162,12 @@ pub fn thaw_level_entities(ecs: &mut World) {
     let map_depth = ecs.fetch::<Map>().depth;
 
     // Find OtherLevelPosition
-    let mut pos_to_delete : Vec<Entity> = Vec::new();
+    let mut pos_to_delete: Vec<Entity> = Vec::new();
     for (entity, pos) in (&entities, &other_level_positions).join() {
         if entity != *player_entity && pos.depth == map_depth {
-            positions.insert(entity, Position{ x: pos.x, y: pos.y }).expect("Insert fail");
+            positions
+                .insert(entity, Position { x: pos.x, y: pos.y })
+                .expect("Insert fail");
             pos_to_delete.push(entity);
         }
     }
@@ -156,7 +178,7 @@ pub fn thaw_level_entities(ecs: &mut World) {
     }
 }
 
-pub fn level_transition(ecs : &mut World, new_depth: i32, offset: i32) -> Option<Vec<Map>> {
+pub fn level_transition(ecs: &mut World, new_depth: i32, offset: i32) -> Option<Vec<Map>> {
     // Obtain the master dungeon map
     let dungeon_master = ecs.read_resource::<MasterDungeonMap>();
 

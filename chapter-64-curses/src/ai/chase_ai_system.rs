@@ -1,5 +1,5 @@
+use crate::{ApplyMove, Chasing, Map, MyTurn, Position};
 use specs::prelude::*;
-use crate::{MyTurn, Chasing, Position, Map, ApplyMove};
 use std::collections::HashMap;
 
 pub struct ChaseAI {}
@@ -12,15 +12,14 @@ impl<'a> System<'a> for ChaseAI {
         ReadStorage<'a, Position>,
         WriteExpect<'a, Map>,
         Entities<'a>,
-        WriteStorage<'a, ApplyMove>
+        WriteStorage<'a, ApplyMove>,
     );
 
-    fn run(&mut self, data : Self::SystemData) {
-        let (mut turns, mut chasing, positions, mut map,
-            entities, mut apply_move) = data;
+    fn run(&mut self, data: Self::SystemData) {
+        let (mut turns, mut chasing, positions, mut map, entities, mut apply_move) = data;
 
-        let mut targets : HashMap<Entity, (i32, i32)> = HashMap::new();
-        let mut end_chase : Vec<Entity> = Vec::new();
+        let mut targets: HashMap<Entity, (i32, i32)> = HashMap::new();
+        let mut end_chase: Vec<Entity> = Vec::new();
         for (entity, _turn, chasing) in (&entities, &turns, &chasing).join() {
             let target_pos = positions.get(chasing.target);
             if let Some(target_pos) = target_pos {
@@ -35,19 +34,24 @@ impl<'a> System<'a> for ChaseAI {
         }
         end_chase.clear();
 
-        let mut turn_done : Vec<Entity> = Vec::new();
-        for (entity, pos, _chase, _myturn) in
-            (&entities, &positions, &chasing, &turns).join()
-        {
+        let mut turn_done: Vec<Entity> = Vec::new();
+        for (entity, pos, _chase, _myturn) in (&entities, &positions, &chasing, &turns).join() {
             turn_done.push(entity);
             let target_pos = targets[&entity];
             let path = rltk::a_star_search(
                 map.xy_idx(pos.x, pos.y),
                 map.xy_idx(target_pos.0, target_pos.1),
-                &mut *map
+                &mut *map,
             );
-            if path.success && path.steps.len()>1 && path.steps.len()<15 {
-                apply_move.insert(entity, ApplyMove{ dest_idx: path.steps[1] }).expect("Unable to insert");
+            if path.success && path.steps.len() > 1 && path.steps.len() < 15 {
+                apply_move
+                    .insert(
+                        entity,
+                        ApplyMove {
+                            dest_idx: path.steps[1],
+                        },
+                    )
+                    .expect("Unable to insert");
                 turn_done.push(entity);
             } else {
                 end_chase.push(entity);

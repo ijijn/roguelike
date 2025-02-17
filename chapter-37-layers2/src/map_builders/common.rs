@@ -3,21 +3,26 @@ use std::cmp::{max, min};
 
 #[derive(PartialEq, Copy, Clone)]
 #[allow(dead_code)]
-pub enum Symmetry { None, Horizontal, Vertical, Both }
+pub enum Symmetry {
+    None,
+    Horizontal,
+    Vertical,
+    Both,
+}
 
-pub fn apply_room_to_map(map : &mut Map, room : &Rect) {
-    for y in room.y1 +1 ..= room.y2 {
-        for x in room.x1 + 1 ..= room.x2 {
+pub fn apply_room_to_map(map: &mut Map, room: &Rect) {
+    for y in room.y1 + 1..=room.y2 {
+        for x in room.x1 + 1..=room.x2 {
             let idx = map.xy_idx(x, y);
-            if idx > 0 && idx < ((map.width * map.height)-1) as usize {
+            if idx > 0 && idx < ((map.width * map.height) - 1) as usize {
                 map.tiles[idx] = TileType::Floor;
             }
         }
     }
 }
 
-pub fn apply_horizontal_tunnel(map : &mut Map, x1:i32, x2:i32, y:i32) {
-    for x in min(x1,x2) ..= max(x1,x2) {
+pub fn apply_horizontal_tunnel(map: &mut Map, x1: i32, x2: i32, y: i32) {
+    for x in min(x1, x2)..=max(x1, x2) {
         let idx = map.xy_idx(x, y);
         if idx > 0 && idx < map.width as usize * map.height as usize {
             map.tiles[idx as usize] = TileType::Floor;
@@ -25,8 +30,8 @@ pub fn apply_horizontal_tunnel(map : &mut Map, x1:i32, x2:i32, y:i32) {
     }
 }
 
-pub fn apply_vertical_tunnel(map : &mut Map, y1:i32, y2:i32, x:i32) {
-    for y in min(y1,y2) ..= max(y1,y2) {
+pub fn apply_vertical_tunnel(map: &mut Map, y1: i32, y2: i32, x: i32) {
+    for y in min(y1, y2)..=max(y1, y2) {
         let idx = map.xy_idx(x, y);
         if idx > 0 && idx < map.width as usize * map.height as usize {
             map.tiles[idx as usize] = TileType::Floor;
@@ -34,7 +39,7 @@ pub fn apply_vertical_tunnel(map : &mut Map, y1:i32, y2:i32, x:i32) {
     }
 }
 
-pub fn draw_corridor(map: &mut Map, x1:i32, y1:i32, x2:i32, y2:i32) {
+pub fn draw_corridor(map: &mut Map, x1: i32, y1: i32, x2: i32, y2: i32) {
     let mut x = x1;
     let mut y = y1;
 
@@ -54,7 +59,7 @@ pub fn draw_corridor(map: &mut Map, x1:i32, y1:i32, x2:i32, y2:i32) {
     }
 }
 
-pub fn paint(map: &mut Map, mode: Symmetry, brush_size: i32, x: i32, y:i32) {
+pub fn paint(map: &mut Map, mode: Symmetry, brush_size: i32, x: i32, y: i32) {
     match mode {
         Symmetry::None => apply_paint(map, brush_size, x, y),
         Symmetry::Horizontal => {
@@ -103,9 +108,13 @@ fn apply_paint(map: &mut Map, brush_size: i32, x: i32, y: i32) {
 
         _ => {
             let half_brush_size = brush_size / 2;
-            for brush_y in y-half_brush_size .. y+half_brush_size {
-                for brush_x in x-half_brush_size .. x+half_brush_size {
-                    if brush_x > 1 && brush_x < map.width-1 && brush_y > 1 && brush_y < map.height-1 {
+            for brush_y in y - half_brush_size..y + half_brush_size {
+                for brush_x in x - half_brush_size..x + half_brush_size {
+                    if brush_x > 1
+                        && brush_x < map.width - 1
+                        && brush_y > 1
+                        && brush_y < map.height - 1
+                    {
                         let idx = map.xy_idx(brush_x, brush_y);
                         map.tiles[idx] = TileType::Floor;
                     }
