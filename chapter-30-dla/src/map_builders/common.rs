@@ -46,7 +46,7 @@ pub fn remove_unreachable_areas_returning_most_distant(map: &mut Map, start_idx:
         if *tile == TileType::Floor {
             let distance_to_start = dijkstra_map.map[i];
             // We can't get to this tile - so we'll make it a wall
-            if distance_to_start == std::f32::MAX {
+            if distance_to_start == f32::MAX {
                 *tile = TileType::Wall;
             } else {
                 // If it is further away than our current exit candidate, move the exit
