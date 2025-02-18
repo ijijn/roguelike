@@ -43,10 +43,7 @@ impl<'a> System<'a> for ItemDropSystem {
                 dropper_pos.y = dropped_pos.y;
             }
             positions
-                .insert(
-                    to_drop.item,
-                    dropper_pos,
-                )
+                .insert(to_drop.item, dropper_pos)
                 .expect("Unable to insert position");
             backpack.remove(to_drop.item);
             dirty
@@ -55,8 +52,8 @@ impl<'a> System<'a> for ItemDropSystem {
 
             if entity == *player_entity {
                 crate::gamelog::Logger::new()
-                    .append("You drop the")
-                    .item_name(super::obfuscate_name(
+                    .append(&"You drop the")
+                    .item_name(&super::obfuscate_name(
                         to_drop.item,
                         &names,
                         &magic_items,

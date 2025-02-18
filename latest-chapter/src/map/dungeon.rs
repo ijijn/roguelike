@@ -15,7 +15,8 @@ pub struct MasterDungeonMap {
 }
 
 impl MasterDungeonMap {
-    #[must_use] pub fn new() -> Self {
+    #[must_use]
+    pub fn new() -> Self {
         let mut dm = Self {
             maps: HashMap::new(),
             identified_items: HashSet::new(),
@@ -43,7 +44,8 @@ impl MasterDungeonMap {
         self.maps.insert(map.depth, map.clone());
     }
 
-    #[must_use] pub fn get_map(&self, depth: i32) -> Option<Map> {
+    #[must_use]
+    pub fn get_map(&self, depth: i32) -> Option<Map> {
         if self.maps.contains_key(&depth) {
             let result = self.maps[&depth].clone();
             Some(result)
@@ -176,7 +178,7 @@ fn transition_to_new_map(ecs: &mut World, new_depth: i32) -> Vec<Map> {
     mapgen_history
 }
 
-fn transition_to_existing_map(ecs: &mut World, new_depth: i32, offset: i32) {
+fn transition_to_existing_map(ecs: &World, new_depth: i32, offset: i32) {
     let dungeon_master = ecs.read_resource::<MasterDungeonMap>();
     let map = dungeon_master.get_map(new_depth).unwrap();
     let mut worldmap_resource = ecs.write_resource::<Map>();

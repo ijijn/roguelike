@@ -34,11 +34,11 @@ pub fn inflict_damage(ecs: &World, damage: &EffectSpawner, target: Entity) {
                     Targets::Single { target },
                 );
                 if target == *player_entity {
-                    crate::gamelog::record_event("Damage Taken", amount);
+                    crate::gamelog::record_event(&"Damage Taken", amount);
                 }
                 if let Some(creator) = damage.creator {
                     if creator == *player_entity {
-                        crate::gamelog::record_event("Damage Inflicted", amount);
+                        crate::gamelog::record_event(&"Damage Inflicted", amount);
                     }
                 }
 
@@ -87,8 +87,8 @@ pub fn death(ecs: &World, effect: &EffectSpawner, target: Entity) {
                     player_stats.level += 1;
                     crate::gamelog::Logger::new()
                         .color(rltk::MAGENTA)
-                        .append("Congratulations, you are now level")
-                        .append(format!("{}", player_stats.level))
+                        .append(&"Congratulations, you are now level")
+                        .append(&format!("{}", player_stats.level))
                         .log();
 
                     // Improve a random attribute
@@ -98,28 +98,28 @@ pub fn death(ecs: &World, effect: &EffectSpawner, target: Entity) {
                             player_attributes.might.base += 1;
                             crate::gamelog::Logger::new()
                                 .color(rltk::GREEN)
-                                .append("You feel stronger!")
+                                .append(&"You feel stronger!")
                                 .log();
                         }
                         2 => {
                             player_attributes.fitness.base += 1;
                             crate::gamelog::Logger::new()
                                 .color(rltk::GREEN)
-                                .append("You feel healthier!")
+                                .append(&"You feel healthier!")
                                 .log();
                         }
                         3 => {
                             player_attributes.quickness.base += 1;
                             crate::gamelog::Logger::new()
                                 .color(rltk::GREEN)
-                                .append("You feel quicker!")
+                                .append(&"You feel quicker!")
                                 .log();
                         }
                         _ => {
                             player_attributes.intelligence.base += 1;
                             crate::gamelog::Logger::new()
                                 .color(rltk::GREEN)
-                                .append("You feel smarter!")
+                                .append(&"You feel smarter!")
                                 .log();
                         }
                     }

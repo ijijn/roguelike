@@ -1,5 +1,6 @@
 use crate::{
-    effects::{EffectType, Targets, add_effect}, skill_bonus, Attributes, EquipmentSlot, Equipped, HungerClock, HungerState, Name,
+    effects::{add_effect, EffectType, Targets},
+    skill_bonus, Attributes, EquipmentSlot, Equipped, HungerClock, HungerState, Name,
     NaturalAttackDefense, Pools, Skill, Skills, WantsToMelee, Weapon, WeaponAttribute, Wearable,
 };
 use specs::prelude::*;
@@ -156,11 +157,11 @@ impl<'a> System<'a> for MeleeCombatSystem {
                     );
                     crate::gamelog::Logger::new()
                         .npc_name(&name.name)
-                        .append("hits")
+                        .append(&"hits")
                         .npc_name(&target_name.name)
-                        .append("for")
+                        .append(&"for")
                         .damage(damage)
-                        .append("hp.")
+                        .append(&"hp.")
                         .log();
 
                     // Proc effects
@@ -191,11 +192,11 @@ impl<'a> System<'a> for MeleeCombatSystem {
                         .color(rltk::CYAN)
                         .append(&name.name)
                         .color(rltk::WHITE)
-                        .append("considers attacking")
+                        .append(&"considers attacking")
                         .color(rltk::CYAN)
                         .append(&target_name.name)
                         .color(rltk::WHITE)
-                        .append("but misjudges the timing!")
+                        .append(&"but misjudges the timing!")
                         .log();
                     add_effect(
                         None,
@@ -215,11 +216,11 @@ impl<'a> System<'a> for MeleeCombatSystem {
                         .color(rltk::CYAN)
                         .append(&name.name)
                         .color(rltk::WHITE)
-                        .append("attacks")
+                        .append(&"attacks")
                         .color(rltk::CYAN)
                         .append(&target_name.name)
                         .color(rltk::WHITE)
-                        .append("but can't connect.")
+                        .append(&"but can't connect.")
                         .log();
                     add_effect(
                         None,

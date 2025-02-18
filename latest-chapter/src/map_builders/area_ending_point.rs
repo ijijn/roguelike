@@ -27,12 +27,11 @@ impl MetaMapBuilder for AreaEndingPosition {
 }
 
 impl AreaEndingPosition {
-    #[allow(dead_code)]
     pub fn new(x: XEnd, y: YEnd) -> Box<Self> {
         Box::new(Self { x, y })
     }
 
-    fn build(&mut self, build_data: &mut BuilderMap) {
+    fn build(&self, build_data: &mut BuilderMap) {
         let seed_x = match self.x {
             XEnd::Left => 1,
             XEnd::Centre => build_data.map.width / 2,

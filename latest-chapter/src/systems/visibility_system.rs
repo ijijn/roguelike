@@ -57,7 +57,7 @@ impl<'a> System<'a> for VisibilitySystem {
                                         let name = names.get(e);
                                         if let Some(name) = name {
                                             crate::gamelog::Logger::new()
-                                                .append("You spotted:")
+                                                .append(&"You spotted:")
                                                 .npc_name(&name.name)
                                                 .log();
                                         }

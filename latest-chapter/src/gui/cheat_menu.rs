@@ -16,7 +16,7 @@ pub fn show_cheat_mode(_gs: &mut State, ctx: &Rltk) -> CheatMenuResult {
     let mut draw_batch = DrawBatch::new();
     let count = 4;
     let mut y = 25 - (count / 2);
-    menu_box(&mut draw_batch, 15, y, count + 3, "Cheating!");
+    menu_box(&mut draw_batch, 15, y, count + 3, &"Cheating!");
     draw_batch.print_color(
         Point::new(18, y + count + 1),
         "ESCAPE to cancel",
@@ -28,7 +28,7 @@ pub fn show_cheat_mode(_gs: &mut State, ctx: &Rltk) -> CheatMenuResult {
         17,
         y,
         rltk::to_cp437('T'),
-        "Teleport to next level",
+        &"Teleport to next level",
     );
     y += 1;
     menu_option(
@@ -36,7 +36,7 @@ pub fn show_cheat_mode(_gs: &mut State, ctx: &Rltk) -> CheatMenuResult {
         17,
         y,
         rltk::to_cp437('H'),
-        "Heal all wounds",
+        &"Heal all wounds",
     );
     y += 1;
     menu_option(
@@ -44,7 +44,7 @@ pub fn show_cheat_mode(_gs: &mut State, ctx: &Rltk) -> CheatMenuResult {
         17,
         y,
         rltk::to_cp437('R'),
-        "Reveal the map",
+        &"Reveal the map",
     );
     y += 1;
     menu_option(
@@ -52,7 +52,7 @@ pub fn show_cheat_mode(_gs: &mut State, ctx: &Rltk) -> CheatMenuResult {
         17,
         y,
         rltk::to_cp437('G'),
-        "God Mode (No Death)",
+        &"God Mode (No Death)",
     );
 
     let _result = draw_batch.submit(6000);

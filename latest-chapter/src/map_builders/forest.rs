@@ -5,7 +5,7 @@ use super::{
 use crate::map;
 
 pub fn forest_builder(new_depth: i32, width: i32, height: i32) -> BuilderChain {
-    let mut chain = BuilderChain::new(new_depth, width, height, "Into the Woods");
+    let mut chain = BuilderChain::new(new_depth, width, height, &"Into the Woods");
     chain.start_with(CellularAutomataBuilder::new());
     chain.with(AreaStartingPosition::new(XStart::Centre, YStart::Middle));
     chain.with(CullUnreachable::new());
@@ -92,7 +92,7 @@ impl YellowBrickRoad {
 
         // Place exit
         let exit_dir = crate::rng::roll_dice(1, 2);
-        let (seed_x, seed_y, stream_startx, stream_starty) = if exit_dir == 1 {
+        let (seed_x, seed_y, stream_start_x, stream_start_y) = if exit_dir == 1 {
             (build_data.map.width - 1, 1, 0, build_data.height - 1)
         } else {
             (
@@ -107,7 +107,7 @@ impl YellowBrickRoad {
         let stairs_idx = build_data.map.xy_idx(stairs_x, stairs_y);
         build_data.take_snapshot();
 
-        let (stream_x, stream_y) = self.find_exit(build_data, stream_startx, stream_starty);
+        let (stream_x, stream_y) = self.find_exit(build_data, stream_start_x, stream_start_y);
         let stream_idx = build_data.map.xy_idx(stream_x, stream_y);
         let stream = rltk::a_star_search(stairs_idx, stream_idx, &build_data.map);
         for tile in &stream.steps {

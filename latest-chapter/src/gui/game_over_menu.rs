@@ -28,7 +28,7 @@ pub fn game_over(ctx: &Rltk) -> GameOverResult {
         19,
         format!(
             "You lived for {} turns.",
-            crate::gamelog::get_event_count("Turn")
+            crate::gamelog::get_event_count(&"Turn")
         ),
         ColorPair::new(RGB::named(rltk::WHITE), RGB::named(rltk::BLACK)),
     );
@@ -36,7 +36,7 @@ pub fn game_over(ctx: &Rltk) -> GameOverResult {
         20,
         format!(
             "You suffered {} points of damage.",
-            crate::gamelog::get_event_count("Damage Taken")
+            crate::gamelog::get_event_count(&"Damage Taken")
         ),
         ColorPair::new(RGB::named(rltk::RED), RGB::named(rltk::BLACK)),
     );
@@ -44,7 +44,7 @@ pub fn game_over(ctx: &Rltk) -> GameOverResult {
         21,
         format!(
             "You inflicted {} points of damage.",
-            crate::gamelog::get_event_count("Damage Inflicted")
+            crate::gamelog::get_event_count(&"Damage Inflicted")
         ),
         ColorPair::new(RGB::named(rltk::RED), RGB::named(rltk::BLACK)),
     );

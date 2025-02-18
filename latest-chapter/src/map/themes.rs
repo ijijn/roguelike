@@ -1,10 +1,10 @@
 use super::{Map, TileType};
 use rltk::RGB;
 
-#[must_use] pub fn tile_glyph(idx: usize, map: &Map) -> (rltk::FontCharType, RGB, RGB) {
+#[must_use]
+pub fn tile_glyph(idx: usize, map: &Map) -> (rltk::FontCharType, RGB, RGB) {
     let (glyph, mut fg, mut bg) = match map.depth {
-        9 => get_mushroom_glyph(idx, map),
-        8 => get_mushroom_glyph(idx, map),
+        9 | 8 => get_mushroom_glyph(idx, map),
         7 => {
             let x = idx as i32 % map.width;
             if x > map.width - 16 {
@@ -21,8 +21,7 @@ use rltk::RGB;
                 get_tile_glyph_default(idx, map)
             }
         }
-        4 => get_limestone_cavern_glyph(idx, map),
-        3 => get_limestone_cavern_glyph(idx, map),
+        4 | 3 => get_limestone_cavern_glyph(idx, map),
         2 => get_forest_glyph(idx, map),
         _ => get_tile_glyph_default(idx, map),
     };
@@ -46,40 +45,40 @@ fn get_forest_glyph(idx: usize, map: &Map) -> (rltk::FontCharType, RGB, RGB) {
     let fg;
     let bg = RGB::from_f32(0., 0., 0.);
 
-    match map.tiles[idx] {
-        TileType::Wall => {
+    match map.tiles.get(idx) {
+        Some(TileType::Wall) => {
             glyph = rltk::to_cp437('♣');
             fg = RGB::from_f32(0.0, 0.6, 0.0);
         }
-        TileType::Bridge => {
+        Some(TileType::Bridge) => {
             glyph = rltk::to_cp437('.');
             fg = RGB::named(rltk::CHOCOLATE);
         }
-        TileType::Road => {
+        Some(TileType::Road) => {
             glyph = rltk::to_cp437('≡');
             fg = RGB::named(rltk::YELLOW);
         }
-        TileType::Grass => {
+        Some(TileType::Grass) => {
             glyph = rltk::to_cp437('"');
             fg = RGB::named(rltk::GREEN);
         }
-        TileType::ShallowWater => {
+        Some(TileType::ShallowWater) => {
             glyph = rltk::to_cp437('~');
             fg = RGB::named(rltk::CYAN);
         }
-        TileType::DeepWater => {
+        Some(TileType::DeepWater) => {
             glyph = rltk::to_cp437('~');
             fg = RGB::named(rltk::BLUE);
         }
-        TileType::Gravel => {
+        Some(TileType::Gravel) => {
             glyph = rltk::to_cp437(';');
             fg = RGB::from_f32(0.5, 0.5, 0.5);
         }
-        TileType::DownStairs => {
+        Some(TileType::DownStairs) => {
             glyph = rltk::to_cp437('>');
             fg = RGB::from_f32(0., 1.0, 1.0);
         }
-        TileType::UpStairs => {
+        Some(TileType::UpStairs) => {
             glyph = rltk::to_cp437('<');
             fg = RGB::from_f32(0., 1.0, 1.0);
         }
@@ -97,40 +96,40 @@ fn get_mushroom_glyph(idx: usize, map: &Map) -> (rltk::FontCharType, RGB, RGB) {
     let fg;
     let bg = RGB::from_f32(0., 0., 0.);
 
-    match map.tiles[idx] {
-        TileType::Wall => {
+    match map.tiles.get(idx) {
+        Some(TileType::Wall) => {
             glyph = rltk::to_cp437('♠');
             fg = RGB::from_f32(1.0, 0.0, 1.0);
         }
-        TileType::Bridge => {
+        Some(TileType::Bridge) => {
             glyph = rltk::to_cp437('.');
             fg = RGB::named(rltk::GREEN);
         }
-        TileType::Road => {
+        Some(TileType::Road) => {
             glyph = rltk::to_cp437('≡');
             fg = RGB::named(rltk::CHOCOLATE);
         }
-        TileType::Grass => {
+        Some(TileType::Grass) => {
             glyph = rltk::to_cp437('"');
             fg = RGB::named(rltk::GREEN);
         }
-        TileType::ShallowWater => {
+        Some(TileType::ShallowWater) => {
             glyph = rltk::to_cp437('~');
             fg = RGB::named(rltk::CYAN);
         }
-        TileType::DeepWater => {
+        Some(TileType::DeepWater) => {
             glyph = rltk::to_cp437('~');
             fg = RGB::named(rltk::BLUE);
         }
-        TileType::Gravel => {
+        Some(TileType::Gravel) => {
             glyph = rltk::to_cp437(';');
             fg = RGB::from_f32(0.5, 0.5, 0.5);
         }
-        TileType::DownStairs => {
+        Some(TileType::DownStairs) => {
             glyph = rltk::to_cp437('>');
             fg = RGB::from_f32(0., 1.0, 1.0);
         }
-        TileType::UpStairs => {
+        Some(TileType::UpStairs) => {
             glyph = rltk::to_cp437('<');
             fg = RGB::from_f32(0., 1.0, 1.0);
         }
@@ -287,23 +286,20 @@ fn wall_glyph(map: &Map, x: i32, y: i32) -> rltk::FontCharType {
     }
 
     match mask {
-        0 => 9,    // Pillar because we can't see neighbors
-        1 => 186,  // Wall only to the north
-        2 => 186,  // Wall only to the south
-        3 => 186,  // Wall to the north and south
-        4 => 205,  // Wall only to the west
-        5 => 188,  // Wall to the north and west
-        6 => 187,  // Wall to the south and west
-        7 => 185,  // Wall to the north, south and west
-        8 => 205,  // Wall only to the east
-        9 => 200,  // Wall to the north and east
-        10 => 201, // Wall to the south and east
-        11 => 204, // Wall to the north, south and east
-        12 => 205, // Wall to the east and west
-        13 => 202, // Wall to the east, west, and south
-        14 => 203, // Wall to the east, west, and north
-        15 => 206, // ╬ Wall on all sides
-        _ => 35,   // We missed one?
+        0 => 9,        // Pillar because we can't see neighbors
+        1..=3 => 186,  // Wall only to the north
+        4 => 205,      // Wall only to the west
+        5 => 188,      // Wall to the north and west
+        6 => 187,      // Wall to the south and west
+        7 => 185,      // Wall to the north, south and west
+        8 | 12 => 205, // Wall only to the east
+        9 => 200,      // Wall to the north and east
+        10 => 201,     // Wall to the south and east
+        11 => 204,     // Wall to the north, south and east
+        13 => 202,     // Wall to the east, west, and south
+        14 => 203,     // Wall to the east, west, and north
+        15 => 206,     // ╬ Wall on all sides
+        _ => 35,       // We missed one?
     }
 }
 

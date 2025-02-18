@@ -32,7 +32,7 @@ impl AreaStartingPosition {
         Box::new(Self { x, y })
     }
 
-    fn build(&mut self, build_data: &mut BuilderMap) {
+    fn build(&self, build_data: &mut BuilderMap) {
         let seed_x = match self.x {
             XStart::Left => 1,
             XStart::Centre => build_data.map.width / 2,

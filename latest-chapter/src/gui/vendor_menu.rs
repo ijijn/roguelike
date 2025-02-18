@@ -14,8 +14,8 @@ pub enum VendorResult {
 }
 
 fn vendor_sell_menu(
-    gs: &mut State,
-    ctx: &mut Rltk,
+    gs: &State,
+    ctx: &Rltk,
     _vendor: Entity,
     _mode: VendorMode,
 ) -> (VendorResult, Option<Entity>, Option<String>, Option<f32>) {
@@ -37,7 +37,7 @@ fn vendor_sell_menu(
         15,
         y,
         (count + 3) as i32,
-        "Sell Which Item? (space to switch to buy mode)",
+        &"Sell Which Item? (space to switch to buy mode)",
     );
     draw_batch.print_color(
         Point::new(18, y + count as i32 + 1),
@@ -107,8 +107,8 @@ fn vendor_sell_menu(
 }
 
 fn vendor_buy_menu(
-    gs: &mut State,
-    ctx: &mut Rltk,
+    gs: &State,
+    ctx: &Rltk,
     vendor: Entity,
     _mode: VendorMode,
 ) -> (VendorResult, Option<Entity>, Option<String>, Option<f32>) {
@@ -129,7 +129,7 @@ fn vendor_buy_menu(
         15,
         y,
         (count + 3) as i32,
-        "Buy Which Item? (space to switch to sell mode)",
+        &"Buy Which Item? (space to switch to sell mode)",
     );
     draw_batch.print_color(
         Point::new(18, y + count as i32 + 1),
@@ -183,8 +183,8 @@ fn vendor_buy_menu(
 }
 
 pub fn show_vendor_menu(
-    gs: &mut State,
-    ctx: &mut Rltk,
+    gs: &State,
+    ctx: &Rltk,
     vendor: Entity,
     mode: VendorMode,
 ) -> (VendorResult, Option<Entity>, Option<String>, Option<f32>) {

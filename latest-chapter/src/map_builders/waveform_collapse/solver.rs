@@ -40,41 +40,29 @@ impl Solver {
 
         if chunk_x > 0 {
             let left_idx = self.chunk_idx(chunk_x - 1, chunk_y);
-            match self.chunks[left_idx] {
-                None => {}
-                Some(_) => {
-                    neighbors += 1;
-                }
+            if let Some(Some(_)) = self.chunks.get(left_idx) {
+                neighbors += 1;
             }
         }
 
         if chunk_x < self.chunks_x - 1 {
             let right_idx = self.chunk_idx(chunk_x + 1, chunk_y);
-            match self.chunks[right_idx] {
-                None => {}
-                Some(_) => {
-                    neighbors += 1;
-                }
+            if let Some(Some(_)) = self.chunks.get(right_idx) {
+                neighbors += 1;
             }
         }
 
         if chunk_y > 0 {
             let up_idx = self.chunk_idx(chunk_x, chunk_y - 1);
-            match self.chunks[up_idx] {
-                None => {}
-                Some(_) => {
-                    neighbors += 1;
-                }
+            if let Some(Some(_)) = self.chunks.get(up_idx) {
+                neighbors += 1;
             }
         }
 
         if chunk_y < self.chunks_y - 1 {
             let down_idx = self.chunk_idx(chunk_x, chunk_y + 1);
-            match self.chunks[down_idx] {
-                None => {}
-                Some(_) => {
-                    neighbors += 1;
-                }
+            if let Some(Some(_)) = self.chunks.get(down_idx) {
+                neighbors += 1;
             }
         }
         neighbors
@@ -116,48 +104,28 @@ impl Solver {
         let mut neighbors = 0;
         let mut options: Vec<Vec<usize>> = Vec::new();
 
-        if chunk_x > 0 {
-            let left_idx = self.chunk_idx(chunk_x - 1, chunk_y);
-            match self.chunks[left_idx] {
-                None => {}
-                Some(nt) => {
-                    neighbors += 1;
-                    options.push(self.constraints[nt].compatible_with[3].clone());
-                }
-            }
+        let left_idx = self.chunk_idx(chunk_x - 1, chunk_y);
+        if let Some(Some(nt)) = self.chunks.get(left_idx) {
+            neighbors += 1;
+            options.push(self.constraints[*nt].compatible_with[3].clone());
         }
 
-        if chunk_x < self.chunks_x - 1 {
-            let right_idx = self.chunk_idx(chunk_x + 1, chunk_y);
-            match self.chunks[right_idx] {
-                None => {}
-                Some(nt) => {
-                    neighbors += 1;
-                    options.push(self.constraints[nt].compatible_with[2].clone());
-                }
-            }
+        let right_idx = self.chunk_idx(chunk_x + 1, chunk_y);
+        if let Some(Some(nt)) = self.chunks.get(right_idx) {
+            neighbors += 1;
+            options.push(self.constraints[*nt].compatible_with[2].clone());
         }
 
-        if chunk_y > 0 {
-            let up_idx = self.chunk_idx(chunk_x, chunk_y - 1);
-            match self.chunks[up_idx] {
-                None => {}
-                Some(nt) => {
-                    neighbors += 1;
-                    options.push(self.constraints[nt].compatible_with[1].clone());
-                }
-            }
+        let up_idx = self.chunk_idx(chunk_x, chunk_y - 1);
+        if let Some(Some(nt)) = self.chunks.get(up_idx) {
+            neighbors += 1;
+            options.push(self.constraints[*nt].compatible_with[1].clone());
         }
 
-        if chunk_y < self.chunks_y - 1 {
-            let down_idx = self.chunk_idx(chunk_x, chunk_y + 1);
-            match self.chunks[down_idx] {
-                None => {}
-                Some(nt) => {
-                    neighbors += 1;
-                    options.push(self.constraints[nt].compatible_with[0].clone());
-                }
-            }
+        let down_idx = self.chunk_idx(chunk_x, chunk_y + 1);
+        if let Some(Some(nt)) = self.chunks.get(down_idx) {
+            neighbors += 1;
+            options.push(self.constraints[*nt].compatible_with[0].clone());
         }
 
         if neighbors == 0 {
@@ -205,28 +173,28 @@ impl Solver {
                 rltk::console::log("Oh no! It's not possible!");
                 self.possible = false;
                 return true;
+            }
+
+            let new_chunk_idx = if possible_options.len() == 1 {
+                0
             } else {
-                let new_chunk_idx = if possible_options.len() == 1 {
-                    0
-                } else {
-                    crate::rng::roll_dice(1, possible_options.len() as i32) - 1
-                };
+                crate::rng::roll_dice(1, possible_options.len() as i32) - 1
+            };
 
-                self.chunks[chunk_index] = Some(possible_options[new_chunk_idx as usize]);
-                let left_x = chunk_x as i32 * self.chunk_size;
-                let right_x = (chunk_x as i32 + 1) * self.chunk_size;
-                let top_y = chunk_y as i32 * self.chunk_size;
-                let bottom_y = (chunk_y as i32 + 1) * self.chunk_size;
+            self.chunks[chunk_index] = Some(possible_options[new_chunk_idx as usize]);
+            let left_x = chunk_x as i32 * self.chunk_size;
+            let right_x = (chunk_x as i32 + 1) * self.chunk_size;
+            let top_y = chunk_y as i32 * self.chunk_size;
+            let bottom_y = (chunk_y as i32 + 1) * self.chunk_size;
 
-                let mut i: usize = 0;
-                for y in top_y..bottom_y {
-                    for x in left_x..right_x {
-                        let mapidx = map.xy_idx(x, y);
-                        let tile =
-                            self.constraints[possible_options[new_chunk_idx as usize]].pattern[i];
-                        map.tiles[mapidx] = tile;
-                        i += 1;
-                    }
+            let mut i: usize = 0;
+            for y in top_y..bottom_y {
+                for x in left_x..right_x {
+                    let mapidx = map.xy_idx(x, y);
+                    let tile =
+                        self.constraints[possible_options[new_chunk_idx as usize]].pattern[i];
+                    map.tiles[mapidx] = tile;
+                    i += 1;
                 }
             }
         }

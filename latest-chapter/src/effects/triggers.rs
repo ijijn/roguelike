@@ -11,14 +11,14 @@ use crate::components::{
 };
 use crate::RunState;
 
-pub fn item_trigger(creator: Option<Entity>, item: Entity, targets: &Targets, ecs: &mut World) {
+pub fn item_trigger(creator: Option<Entity>, item: Entity, targets: &Targets, ecs: &World) {
     // Check charges
     if let Some(c) = ecs.write_storage::<Consumable>().get_mut(item) {
         if c.charges < 1 {
             // Cancel
             crate::gamelog::Logger::new()
                 .item_name(&ecs.read_storage::<Name>().get(item).unwrap().name)
-                .append("is out of charges!")
+                .append(&"is out of charges!")
                 .log();
             return;
         }
@@ -39,7 +39,7 @@ pub fn item_trigger(creator: Option<Entity>, item: Entity, targets: &Targets, ec
     }
 }
 
-pub fn spell_trigger(creator: Option<Entity>, spell: Entity, targets: &Targets, ecs: &mut World) {
+pub fn spell_trigger(creator: Option<Entity>, spell: Entity, targets: &Targets, ecs: &World) {
     let mut targeting = targets.clone();
     let mut self_destruct = false;
     if let Some(template) = ecs.read_storage::<SpellTemplate>().get(spell) {
@@ -81,7 +81,7 @@ pub fn spell_trigger(creator: Option<Entity>, spell: Entity, targets: &Targets, 
     }
 }
 
-pub fn trigger(creator: Option<Entity>, trigger: Entity, targets: &Targets, ecs: &mut World) {
+pub fn trigger(creator: Option<Entity>, trigger: Entity, targets: &Targets, ecs: &World) {
     // The triggering item is no longer hidden
     ecs.write_storage::<Hidden>().remove(trigger);
 
@@ -146,7 +146,7 @@ fn event_trigger(creator: Option<Entity>, entity: Entity, targets: &Targets, ecs
         add_effect(creator, EffectType::WellFed, targets.clone());
         let names = ecs.read_storage::<Name>();
         crate::gamelog::Logger::new()
-            .append("You eat the")
+            .append(&"You eat the")
             .item_name(&names.get(entity).unwrap().name)
             .log();
         did_something = true;
@@ -156,7 +156,7 @@ fn event_trigger(creator: Option<Entity>, entity: Entity, targets: &Targets, ecs
     if ecs.read_storage::<MagicMapper>().get(entity).is_some() {
         let mut runstate = ecs.fetch_mut::<RunState>();
         crate::gamelog::Logger::new()
-            .append("The map is revealed to you!")
+            .append(&"The map is revealed to you!")
             .log();
         *runstate = RunState::MagicMapReveal { row: 0 };
         did_something = true;
@@ -189,11 +189,11 @@ fn event_trigger(creator: Option<Entity>, entity: Entity, targets: &Targets, ecs
         let map = ecs.fetch::<Map>();
         if map.depth == 1 {
             crate::gamelog::Logger::new()
-                .append("You are already in town, so the scroll does nothing.")
+                .append(&"You are already in town, so the scroll does nothing.")
                 .log();
         } else {
             crate::gamelog::Logger::new()
-                .append("You are telported back to town!")
+                .append(&"You are telported back to town!")
                 .log();
             let mut runstate = ecs.fetch_mut::<RunState>();
             *runstate = RunState::TownPortal;

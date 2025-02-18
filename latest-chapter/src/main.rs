@@ -5,7 +5,9 @@
     clippy::cast_sign_loss,
     clippy::missing_panics_doc,
     clippy::non_std_lazy_statics,
-    clippy::too_many_lines
+    clippy::similar_names,
+    clippy::too_many_lines,
+    clippy::unnecessary_box_returns
 )]
 
 extern crate serde;
@@ -156,7 +158,7 @@ impl GameState for State {
             RunState::AwaitingInput => {
                 newrunstate = player_input(self, ctx);
                 if newrunstate != RunState::AwaitingInput {
-                    crate::gamelog::record_event("Turn", 1);
+                    crate::gamelog::record_event(&"Turn", 1);
                 }
             }
             RunState::Ticking => {
@@ -182,7 +184,7 @@ impl GameState for State {
                     }
                 }
                 if should_change_target {
-                    player::end_turn_targeting(&mut self.ecs);
+                    player::end_turn_targeting(&self.ecs);
                 }
             }
             RunState::ShowInventory => {
@@ -516,7 +518,7 @@ impl State {
         self.generate_world_map(current_depth + offset, offset);
 
         // Notify the player
-        gamelog::Logger::new().append("You change level.").log();
+        gamelog::Logger::new().append(&"You change level.").log();
     }
 
     fn game_over_cleanup(&mut self) {
@@ -556,9 +558,9 @@ impl State {
 
         gamelog::clear_log();
         gamelog::Logger::new()
-            .append("Welcome to")
+            .append(&"Welcome to")
             .color(rltk::CYAN)
-            .append("Rusty Roguelike")
+            .append(&"Rusty Roguelike")
             .log();
 
         gamelog::clear_events();
@@ -671,7 +673,7 @@ fn main() -> rltk::BError {
     raws::load_raws();
 
     gs.ecs.insert(map::MasterDungeonMap::new());
-    gs.ecs.insert(Map::new(1, 64, 64, "New Map"));
+    gs.ecs.insert(Map::new(1, 64, 64, &"New Map"));
     gs.ecs.insert(Point::new(0, 0));
     let player_entity = spawner::player(&mut gs.ecs, 0, 0);
     gs.ecs.insert(player_entity);

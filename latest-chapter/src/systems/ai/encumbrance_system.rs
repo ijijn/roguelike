@@ -139,7 +139,7 @@ impl<'a> System<'a> for EncumbranceSystem {
                             crate::gamelog::Logger::new()
                                 .color(rltk::ORANGE)
                                 .append(
-                                    "You are overburdened, and suffering an initiative penalty.",
+                                    &"You are overburdened, and suffering an initiative penalty.",
                                 )
                                 .log();
                         }

@@ -1,4 +1,7 @@
-use crate::{effects::{EffectType, Targets, add_effect}, HungerClock, HungerState, MyTurn};
+use crate::{
+    effects::{add_effect, EffectType, Targets},
+    HungerClock, HungerState, MyTurn,
+};
 use specs::prelude::*;
 
 pub struct HungerSystem {}
@@ -25,7 +28,7 @@ impl<'a> System<'a> for HungerSystem {
                         if entity == *player_entity {
                             crate::gamelog::Logger::new()
                                 .color(rltk::ORANGE)
-                                .append("You are no longer well fed")
+                                .append(&"You are no longer well fed")
                                 .log();
                         }
                     }
@@ -35,7 +38,7 @@ impl<'a> System<'a> for HungerSystem {
                         if entity == *player_entity {
                             crate::gamelog::Logger::new()
                                 .color(rltk::ORANGE)
-                                .append("You are hungry")
+                                .append(&"You are hungry")
                                 .log();
                         }
                     }
@@ -45,7 +48,7 @@ impl<'a> System<'a> for HungerSystem {
                         if entity == *player_entity {
                             crate::gamelog::Logger::new()
                                 .color(rltk::RED)
-                                .append("You are starving!")
+                                .append(&"You are starving!")
                                 .log();
                         }
                     }
@@ -54,7 +57,7 @@ impl<'a> System<'a> for HungerSystem {
                         if entity == *player_entity {
                             crate::gamelog::Logger::new()
                                 .color(rltk::RED)
-                                .append("Your hunger pangs are getting painful! You suffer 1 hp damage.")
+                                .append(&"Your hunger pangs are getting painful! You suffer 1 hp damage.")
                                 .log();
                         }
                         add_effect(

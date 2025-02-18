@@ -25,7 +25,8 @@ pub struct Map {
 }
 
 impl Map {
-    #[must_use] pub const fn xy_idx(&self, x: i32, y: i32) -> usize {
+    #[must_use]
+    pub const fn xy_idx(&self, x: i32, y: i32) -> usize {
         (y as usize * self.width as usize) + x as usize
     }
 
@@ -71,7 +72,7 @@ impl Map {
     }
 
     /// Generates an empty map, consisting entirely of solid walls
-    pub fn new<S: ToString>(new_depth: i32, width: i32, height: i32, name: S) -> Self {
+    pub fn new<S: ToString>(new_depth: i32, width: i32, height: i32, name: &S) -> Self {
         let map_tile_count = (width * height) as usize;
         crate::spatial::set_size(map_tile_count);
         Self {

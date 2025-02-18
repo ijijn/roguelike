@@ -14,7 +14,7 @@ pub enum MainMenuResult {
     Selected { selected: MainMenuSelection },
 }
 
-pub fn main_menu(gs: &mut State, ctx: &mut Rltk) -> MainMenuResult {
+pub fn main_menu(gs: &State, ctx: &mut Rltk) -> MainMenuResult {
     let mut draw_batch = DrawBatch::new();
     let save_exists = crate::saveload_system::does_save_exist();
     let runstate = gs.ecs.fetch::<RunState>();

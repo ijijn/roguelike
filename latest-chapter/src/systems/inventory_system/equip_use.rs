@@ -49,16 +49,16 @@ impl<'a> System<'a> for ItemEquipOnUse {
                     if already_equipped.owner == target && already_equipped.slot == target_slot {
                         if cursed.get(item_entity).is_some() {
                             crate::gamelog::Logger::new()
-                                .append("You cannot unequip")
+                                .append(&"You cannot unequip")
                                 .item_name(&name.name)
-                                .append("- it is cursed!")
+                                .append(&"- it is cursed!")
                                 .log();
                             can_equip = false;
                         } else {
                             to_unequip.push(item_entity);
                             if target == *player_entity {
                                 crate::gamelog::Logger::new()
-                                    .append("You unequip")
+                                    .append(&"You unequip")
                                     .item_name(&name.name)
                                     .log();
                             }
@@ -99,7 +99,7 @@ impl<'a> System<'a> for ItemEquipOnUse {
                     backpack.remove(useitem.item);
                     if target == *player_entity {
                         crate::gamelog::Logger::new()
-                            .append("You equip")
+                            .append(&"You equip")
                             .item_name(&names.get(useitem.item).unwrap().name)
                             .log();
                     }

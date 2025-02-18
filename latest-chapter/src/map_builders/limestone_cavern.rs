@@ -6,7 +6,7 @@ use super::{
 };
 
 pub fn limestone_cavern_builder(new_depth: i32, width: i32, height: i32) -> BuilderChain {
-    let mut chain = BuilderChain::new(new_depth, width, height, "Limestone Caverns");
+    let mut chain = BuilderChain::new(new_depth, width, height, &"Limestone Caverns");
     chain.start_with(DrunkardsWalkBuilder::winding_passages());
     chain.with(AreaStartingPosition::new(XStart::Centre, YStart::Middle));
     chain.with(CullUnreachable::new());
@@ -18,7 +18,7 @@ pub fn limestone_cavern_builder(new_depth: i32, width: i32, height: i32) -> Buil
 }
 
 pub fn limestone_deep_cavern_builder(new_depth: i32, width: i32, height: i32) -> BuilderChain {
-    let mut chain = BuilderChain::new(new_depth, width, height, "Deep Limestone Caverns");
+    let mut chain = BuilderChain::new(new_depth, width, height, &"Deep Limestone Caverns");
     chain.start_with(DLABuilder::central_attractor());
     chain.with(AreaStartingPosition::new(XStart::Left, YStart::Top));
     chain.with(VoronoiSpawning::new());
@@ -31,7 +31,7 @@ pub fn limestone_deep_cavern_builder(new_depth: i32, width: i32, height: i32) ->
 }
 
 pub fn limestone_transition_builder(new_depth: i32, width: i32, height: i32) -> BuilderChain {
-    let mut chain = BuilderChain::new(new_depth, width, height, "Dwarf Fort - Upper Reaches");
+    let mut chain = BuilderChain::new(new_depth, width, height, &"Dwarf Fort - Upper Reaches");
     chain.start_with(CellularAutomataBuilder::new());
     chain.with(AreaStartingPosition::new(XStart::Centre, YStart::Middle));
     chain.with(CullUnreachable::new());
@@ -123,7 +123,7 @@ impl CaveTransition {
         build_data.take_snapshot();
 
         // Build a BSP-based dungeon
-        let mut builder = BuilderChain::new(5, build_data.width, build_data.height, "New Map");
+        let mut builder = BuilderChain::new(5, build_data.width, build_data.height, &"New Map");
         builder.start_with(BspDungeonBuilder::new());
         builder.with(RoomDrawer::new());
         builder.with(RoomSorter::new(RoomSort::Rightmost));

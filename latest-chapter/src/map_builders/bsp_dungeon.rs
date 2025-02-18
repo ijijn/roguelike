@@ -34,9 +34,9 @@ impl BspDungeonBuilder {
         let mut n_rooms = 0;
         while n_rooms < 240 {
             let rect = self.get_random_rect();
-            let candidate = self.get_random_sub_rect(rect);
+            let candidate = get_random_sub_rect(rect);
 
-            if self.is_possible(candidate, build_data, &rooms) {
+            if is_possible(candidate, build_data, &rooms) {
                 //apply_room_to_map(&mut build_data.map, &candidate);
                 rooms.push(candidate);
                 self.add_subrects(rect);
@@ -76,68 +76,68 @@ impl BspDungeonBuilder {
         ));
     }
 
-    fn get_random_rect(&mut self) -> Rect {
+    fn get_random_rect(&self) -> Rect {
         if self.rects.len() == 1 {
             return self.rects[0];
         }
         let idx = (crate::rng::roll_dice(1, self.rects.len() as i32) - 1) as usize;
         self.rects[idx]
     }
+}
 
-    fn get_random_sub_rect(&self, rect: Rect) -> Rect {
-        let mut result = rect;
-        let rect_width = i32::abs(rect.x1 - rect.x2);
-        let rect_height = i32::abs(rect.y1 - rect.y2);
+fn get_random_sub_rect(rect: Rect) -> Rect {
+    let mut result = rect;
+    let rect_width = i32::abs(rect.x1 - rect.x2);
+    let rect_height = i32::abs(rect.y1 - rect.y2);
 
-        let w = i32::max(3, crate::rng::roll_dice(1, i32::min(rect_width, 20)) - 1) + 1;
-        let h = i32::max(3, crate::rng::roll_dice(1, i32::min(rect_height, 20)) - 1) + 1;
+    let w = i32::max(3, crate::rng::roll_dice(1, i32::min(rect_width, 20)) - 1) + 1;
+    let h = i32::max(3, crate::rng::roll_dice(1, i32::min(rect_height, 20)) - 1) + 1;
 
-        result.x1 += crate::rng::roll_dice(1, 6) - 1;
-        result.y1 += crate::rng::roll_dice(1, 6) - 1;
-        result.x2 = result.x1 + w;
-        result.y2 = result.y1 + h;
+    result.x1 += crate::rng::roll_dice(1, 6) - 1;
+    result.y1 += crate::rng::roll_dice(1, 6) - 1;
+    result.x2 = result.x1 + w;
+    result.y2 = result.y1 + h;
 
-        result
+    result
+}
+
+fn is_possible(rect: Rect, build_data: &BuilderMap, rooms: &[Rect]) -> bool {
+    let mut expanded = rect;
+    expanded.x1 -= 2;
+    expanded.x2 += 2;
+    expanded.y1 -= 2;
+    expanded.y2 += 2;
+
+    let mut can_build = true;
+
+    for r in rooms {
+        if r.intersect(&rect) {
+            can_build = false;
+        }
     }
 
-    fn is_possible(&self, rect: Rect, build_data: &BuilderMap, rooms: &[Rect]) -> bool {
-        let mut expanded = rect;
-        expanded.x1 -= 2;
-        expanded.x2 += 2;
-        expanded.y1 -= 2;
-        expanded.y2 += 2;
-
-        let mut can_build = true;
-
-        for r in rooms {
-            if r.intersect(&rect) {
+    for y in expanded.y1..=expanded.y2 {
+        for x in expanded.x1..=expanded.x2 {
+            if x > build_data.map.width - 2 {
                 can_build = false;
             }
-        }
-
-        for y in expanded.y1..=expanded.y2 {
-            for x in expanded.x1..=expanded.x2 {
-                if x > build_data.map.width - 2 {
+            if y > build_data.map.height - 2 {
+                can_build = false;
+            }
+            if x < 1 {
+                can_build = false;
+            }
+            if y < 1 {
+                can_build = false;
+            }
+            if can_build {
+                let idx = build_data.map.xy_idx(x, y);
+                if build_data.map.tiles[idx] != TileType::Wall {
                     can_build = false;
-                }
-                if y > build_data.map.height - 2 {
-                    can_build = false;
-                }
-                if x < 1 {
-                    can_build = false;
-                }
-                if y < 1 {
-                    can_build = false;
-                }
-                if can_build {
-                    let idx = build_data.map.xy_idx(x, y);
-                    if build_data.map.tiles[idx] != TileType::Wall {
-                        can_build = false;
-                    }
                 }
             }
         }
-
-        can_build
     }
+
+    can_build
 }

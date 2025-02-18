@@ -19,7 +19,7 @@ impl Logger {
         self
     }
 
-    pub fn append<T: ToString>(mut self, text: T) -> Self {
+    pub fn append<T: ToString>(mut self, text: &T) -> Self {
         self.fragments.push(LogFragment {
             color: self.current_color,
             text: text.to_string(),
@@ -31,7 +31,7 @@ impl Logger {
         append_entry(self.fragments);
     }
 
-    pub fn npc_name<T: ToString>(mut self, text: T) -> Self {
+    pub fn npc_name<T: ToString>(mut self, text: &T) -> Self {
         self.fragments.push(LogFragment {
             color: RGB::named(rltk::YELLOW),
             text: text.to_string(),
@@ -39,7 +39,7 @@ impl Logger {
         self
     }
 
-    pub fn item_name<T: ToString>(mut self, text: T) -> Self {
+    pub fn item_name<T: ToString>(mut self, text: &T) -> Self {
         self.fragments.push(LogFragment {
             color: RGB::named(rltk::CYAN),
             text: text.to_string(),

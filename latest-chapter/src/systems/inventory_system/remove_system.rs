@@ -22,9 +22,9 @@ impl<'a> System<'a> for ItemRemoveSystem {
         for (entity, to_remove) in (&entities, &wants_remove).join() {
             if cursed.get(to_remove.item).is_some() {
                 crate::gamelog::Logger::new()
-                    .append("You cannot remove")
+                    .append(&"You cannot remove")
                     .item_name(&names.get(to_remove.item).unwrap().name)
-                    .append(" - it is cursed.")
+                    .append(&" - it is cursed.")
                     .log();
             } else {
                 equipped.remove(to_remove.item);

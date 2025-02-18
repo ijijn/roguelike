@@ -9,7 +9,7 @@ pub fn clear_events() {
     EVENTS.lock().unwrap().clear();
 }
 
-pub fn record_event<T: ToString>(event: T, n: i32) {
+pub fn record_event<T: ToString>(event: &T, n: i32) {
     let event_name = event.to_string();
     let mut events_lock = EVENTS.lock();
     let events = events_lock.as_mut().unwrap();
@@ -20,24 +20,20 @@ pub fn record_event<T: ToString>(event: T, n: i32) {
     }
 }
 
-pub fn get_event_count<T: ToString>(event: T) -> i32 {
+pub fn get_event_count<T: ToString>(event: &T) -> i32 {
     let event_name = event.to_string();
-    let events_lock = EVENTS.lock();
-    let events = events_lock.unwrap();
-    if let Some(e) = events.get(&event_name) {
-        *e
-    } else {
-        0
-    }
+    let events = EVENTS.lock().unwrap();
+
+    events.get(&event_name).map_or(0, |e| *e)
 }
 
 pub fn clone_events() -> HashMap<String, i32> {
     EVENTS.lock().unwrap().clone()
 }
 
-pub fn load_events(events: HashMap<String, i32>) {
+pub fn load_events(events: &HashMap<String, i32>) {
     EVENTS.lock().unwrap().clear();
-    for (k, v) in &events {
+    for (k, v) in events {
         EVENTS.lock().unwrap().insert(k.to_string(), *v);
     }
 }

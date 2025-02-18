@@ -1,7 +1,8 @@
 use crate::{
-    effects::{EffectType, Targets, add_effect}, skill_bonus, Attributes, EquipmentSlot, Equipped, HungerClock, HungerState, Map,
-    Name, NaturalAttackDefense, Pools, Position, Skill, Skills, WantsToShoot, Weapon,
-    WeaponAttribute, Wearable,
+    effects::{add_effect, EffectType, Targets},
+    skill_bonus, Attributes, EquipmentSlot, Equipped, HungerClock, HungerState, Map, Name,
+    NaturalAttackDefense, Pools, Position, Skill, Skills, WantsToShoot, Weapon, WeaponAttribute,
+    Wearable,
 };
 use rltk::{to_cp437, Point, RGB};
 use specs::prelude::*;
@@ -184,11 +185,11 @@ impl<'a> System<'a> for RangedCombatSystem {
                     );
                     crate::gamelog::Logger::new()
                         .npc_name(&name.name)
-                        .append("hits")
+                        .append(&"hits")
                         .npc_name(&target_name.name)
-                        .append("for")
+                        .append(&"for")
                         .damage(damage)
-                        .append("hp.")
+                        .append(&"hp.")
                         .log();
 
                     // Proc effects
@@ -217,9 +218,9 @@ impl<'a> System<'a> for RangedCombatSystem {
                     // Natural 1 miss
                     crate::gamelog::Logger::new()
                         .npc_name(&name.name)
-                        .append("considers attacking")
+                        .append(&"considers attacking")
                         .npc_name(&target_name.name)
-                        .append("but misjudges the timing!")
+                        .append(&"but misjudges the timing!")
                         .log();
                     add_effect(
                         None,
@@ -237,10 +238,10 @@ impl<'a> System<'a> for RangedCombatSystem {
                     // Miss
                     crate::gamelog::Logger::new()
                         .npc_name(&name.name)
-                        .append("attacks")
+                        .append(&"attacks")
                         .npc_name(&target_name.name)
                         .color(rltk::WHITE)
-                        .append("but can't connect.")
+                        .append(&"but can't connect.")
                         .log();
                     add_effect(
                         None,

@@ -69,7 +69,7 @@ fn fire_on_target(ecs: &World) -> RunState {
     current_target.map_or_else(
         || {
             crate::gamelog::Logger::new()
-                .append("You don't have a target selected!")
+                .append(&"You don't have a target selected!")
                 .log();
             RunState::AwaitingInput
         },
@@ -79,7 +79,7 @@ fn fire_on_target(ecs: &World) -> RunState {
             let names = ecs.read_storage::<Name>();
             if let Some(name) = names.get(target) {
                 crate::gamelog::Logger::new()
-                    .append("You fire at")
+                    .append(&"You fire at")
                     .color(rltk::CYAN)
                     .append(&name.name)
                     .log();
@@ -263,7 +263,7 @@ pub fn try_next_level(ecs: &World) -> bool {
         true
     } else {
         crate::gamelog::Logger::new()
-            .append("There is no way down from here.")
+            .append(&"There is no way down from here.")
             .log();
         false
     }
@@ -277,7 +277,7 @@ pub fn try_previous_level(ecs: &World) -> bool {
         true
     } else {
         crate::gamelog::Logger::new()
-            .append("There is no way up from here.")
+            .append(&"There is no way up from here.")
             .log();
         false
     }
@@ -299,7 +299,7 @@ fn get_item(ecs: &World) {
 
     match target_item {
         None => crate::gamelog::Logger::new()
-            .append("There is nothing here to pick up.")
+            .append(&"There is nothing here to pick up.")
             .log(),
         Some(item) => {
             let mut pickup = ecs.write_storage::<WantsToPickupItem>();
@@ -443,7 +443,7 @@ fn use_spell_hotkey(gs: &State, key: i32) -> RunState {
             }
         } else {
             crate::gamelog::Logger::new()
-                .append("You don't have enough mana to cast that!")
+                .append(&"You don't have enough mana to cast that!")
                 .log();
         }
     }

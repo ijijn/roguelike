@@ -21,7 +21,7 @@ pub fn delete_the_dead(ecs: &mut World) {
                         crate::gamelog::Logger::new()
                             .color(rltk::RED)
                             .append(&victim_name.name)
-                            .append("is dead!")
+                            .append(&"is dead!")
                             .log();
                     }
                     dead.push(entity);

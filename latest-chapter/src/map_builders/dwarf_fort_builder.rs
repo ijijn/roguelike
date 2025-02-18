@@ -5,7 +5,7 @@ use super::{
 };
 
 pub fn dwarf_fort_builder(new_depth: i32, width: i32, height: i32) -> BuilderChain {
-    let mut chain = BuilderChain::new(new_depth, width, height, "Dwarven Fortress");
+    let mut chain = BuilderChain::new(new_depth, width, height, &"Dwarven Fortress");
     chain.start_with(BspDungeonBuilder::new());
     chain.with(RoomSorter::new(RoomSort::Central));
     chain.with(RoomDrawer::new());
@@ -40,7 +40,7 @@ impl DragonsLair {
         build_data.map.depth = 7;
         build_data.take_snapshot();
 
-        let mut builder = BuilderChain::new(6, build_data.width, build_data.height, "New Map");
+        let mut builder = BuilderChain::new(6, build_data.width, build_data.height, &"New Map");
         builder.start_with(DLABuilder::insectoid());
         builder.build_map();
 

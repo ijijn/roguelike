@@ -91,7 +91,7 @@ impl DLABuilder {
     }
 
     #[allow(clippy::map_entry)]
-    fn build(&mut self, build_data: &mut BuilderMap) {
+    fn build(&self, build_data: &mut BuilderMap) {
         // Carve a starting seed
         let starting_position = Position {
             x: build_data.map.width / 2,

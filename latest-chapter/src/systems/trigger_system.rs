@@ -1,4 +1,7 @@
-use crate::{effects::{EffectType, Targets, add_effect, aoe_tiles}, AreaOfEffect, EntityMoved, EntryTrigger, Map, Name, Position};
+use crate::{
+    effects::{add_effect, aoe_tiles, EffectType, Targets},
+    AreaOfEffect, EntityMoved, EntryTrigger, Map, Name, Position,
+};
 use specs::prelude::*;
 
 pub struct TriggerSystem {}
@@ -34,7 +37,7 @@ impl<'a> System<'a> for TriggerSystem {
                             if let Some(name) = name {
                                 crate::gamelog::Logger::new()
                                     .item_name(&name.name)
-                                    .append("triggers!")
+                                    .append(&"triggers!")
                                     .log();
                             }
 

@@ -192,7 +192,7 @@ pub struct Attributes {
     pub intelligence: Attribute,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, Eq, PartialEq, Hash)]
+#[derive(Debug, Serialize, Deserialize, Clone, Copy, Eq, PartialEq, Hash)]
 pub enum Skill {
     Melee,
     Defense,
