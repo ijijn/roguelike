@@ -3,7 +3,7 @@ use crate::{Equipped, InBackpack, Item, MasterDungeonMap, Name, ObfuscatedName, 
 use rltk::prelude::*;
 use specs::prelude::*;
 
-pub fn identify_menu(gs: &mut State, ctx: &mut Rltk) -> (ItemMenuResult, Option<Entity>) {
+pub fn identify_menu(gs: &State, ctx: &Rltk) -> (ItemMenuResult, Option<Entity>) {
     let mut draw_batch = DrawBatch::new();
 
     let player_entity = gs.ecs.fetch::<Entity>();

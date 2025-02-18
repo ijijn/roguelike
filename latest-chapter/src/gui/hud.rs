@@ -114,11 +114,11 @@ pub fn map_label(ecs: &World, draw_batch: &mut DrawBatch) {
     );
 }
 
-fn draw_stats(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity) {
+fn draw_stats(ecs: &World, draw_batch: &mut DrawBatch, player_entity: Entity) {
     let black = RGB::named(rltk::BLACK);
     let white = RGB::named(rltk::WHITE);
     let pools = ecs.read_storage::<Pools>();
-    let player_pools = pools.get(*player_entity).unwrap();
+    let player_pools = pools.get(player_entity).unwrap();
     let health = format!(
         "Health: {}/{}",
         player_pools.hit_points.current, player_pools.hit_points.max
@@ -155,22 +155,22 @@ fn draw_stats(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity) {
     );
 }
 
-fn draw_attributes(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity) {
+fn draw_attributes(ecs: &World, draw_batch: &mut DrawBatch, player_entity: Entity) {
     let attributes = ecs.read_storage::<Attributes>();
-    let attr = attributes.get(*player_entity).unwrap();
+    let attr = attributes.get(player_entity).unwrap();
     draw_attribute("Might:", &attr.might, 4, draw_batch);
     draw_attribute("Quickness:", &attr.quickness, 5, draw_batch);
     draw_attribute("Fitness:", &attr.fitness, 6, draw_batch);
     draw_attribute("Intelligence:", &attr.intelligence, 7, draw_batch);
 }
 
-fn initiative_weight(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity) {
+fn initiative_weight(ecs: &World, draw_batch: &mut DrawBatch, player_entity: Entity) {
     let attributes = ecs.read_storage::<Attributes>();
-    let attr = attributes.get(*player_entity).unwrap();
+    let attr = attributes.get(player_entity).unwrap();
     let black = RGB::named(rltk::BLACK);
     let white = RGB::named(rltk::WHITE);
     let pools = ecs.read_storage::<Pools>();
-    let player_pools = pools.get(*player_entity).unwrap();
+    let player_pools = pools.get(player_entity).unwrap();
     draw_batch.print_color(
         Point::new(50, 9),
         format!(
@@ -195,7 +195,7 @@ fn initiative_weight(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &En
     );
 }
 
-fn equipped(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity) -> i32 {
+fn equipped(ecs: &World, draw_batch: &mut DrawBatch, player_entity: Entity) -> i32 {
     let black = RGB::named(rltk::BLACK);
     let yellow = RGB::named(rltk::YELLOW);
     let mut y = 13;
@@ -203,7 +203,7 @@ fn equipped(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity) -> 
     let equipped = ecs.read_storage::<Equipped>();
     let weapon = ecs.read_storage::<Weapon>();
     for (entity, equipped_by) in (&entities, &equipped).join() {
-        if equipped_by.owner == *player_entity {
+        if equipped_by.owner == player_entity {
             let name = get_item_display_name(ecs, entity);
             draw_batch.print_color(
                 Point::new(50, y),
@@ -229,7 +229,7 @@ fn equipped(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity) -> 
                 };
 
                 if let Some(range) = weapon.range {
-                    weapon_info += &format!(" (range: {}, F to fire, V cycle targets)", range);
+                    weapon_info += &format!(" (range: {range}, F to fire, V cycle targets)");
                 }
                 weapon_info += " ├";
                 draw_batch.print_color(
@@ -243,7 +243,7 @@ fn equipped(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity) -> 
     y
 }
 
-fn consumables(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity, mut y: i32) -> i32 {
+fn consumables(ecs: &World, draw_batch: &mut DrawBatch, player_entity: Entity, mut y: i32) -> i32 {
     y += 1;
     let black = RGB::named(rltk::BLACK);
     let yellow = RGB::named(rltk::YELLOW);
@@ -252,10 +252,10 @@ fn consumables(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity, 
     let backpack = ecs.read_storage::<InBackpack>();
     let mut index = 1;
     for (entity, carried_by, _consumable) in (&entities, &backpack, &consumables).join() {
-        if carried_by.owner == *player_entity && index < 10 {
+        if carried_by.owner == player_entity && index < 10 {
             draw_batch.print_color(
                 Point::new(50, y),
-                format!("↑{}", index),
+                format!("↑{index}"),
                 ColorPair::new(yellow, black),
             );
             draw_batch.print_color(
@@ -270,17 +270,17 @@ fn consumables(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity, 
     y
 }
 
-fn spells(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity, mut y: i32) -> i32 {
+fn spells(ecs: &World, draw_batch: &mut DrawBatch, player_entity: Entity, mut y: i32) -> i32 {
     y += 1;
     let black = RGB::named(rltk::BLACK);
     let blue = RGB::named(rltk::CYAN);
     let known_spells_storage = ecs.read_storage::<KnownSpells>();
-    let known_spells = &known_spells_storage.get(*player_entity).unwrap().spells;
+    let known_spells = &known_spells_storage.get(player_entity).unwrap().spells;
     let mut index = 1;
-    for spell in known_spells.iter() {
+    for spell in known_spells {
         draw_batch.print_color(
             Point::new(50, y),
-            format!("^{}", index),
+            format!("^{index}"),
             ColorPair::new(blue, black),
         );
         draw_batch.print_color(
@@ -294,10 +294,10 @@ fn spells(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity, mut y
     y
 }
 
-fn status(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity) {
+fn status(ecs: &World, draw_batch: &mut DrawBatch, player_entity: Entity) {
     let mut y = 44;
     let hunger = ecs.read_storage::<HungerClock>();
-    let hc = hunger.get(*player_entity).unwrap();
+    let hc = hunger.get(player_entity).unwrap();
     match hc.state {
         HungerState::WellFed => {
             draw_batch.print_color(
@@ -329,7 +329,7 @@ fn status(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity) {
     let durations = ecs.read_storage::<Duration>();
     let names = ecs.read_storage::<Name>();
     for (status, duration, name) in (&statuses, &durations, &names).join() {
-        if status.target == *player_entity {
+        if status.target == player_entity {
             draw_batch.print_color(
                 Point::new(50, y),
                 format!("{} ({})", name.name, duration.turns),
@@ -342,17 +342,17 @@ fn status(ecs: &World, draw_batch: &mut DrawBatch, player_entity: &Entity) {
 
 pub fn draw_ui(ecs: &World, ctx: &mut Rltk) {
     let mut draw_batch = DrawBatch::new();
-    let player_entity = ecs.fetch::<Entity>();
+    let player_entity = *ecs.fetch::<Entity>();
 
     box_framework(&mut draw_batch);
     map_label(ecs, &mut draw_batch);
-    draw_stats(ecs, &mut draw_batch, &player_entity);
-    draw_attributes(ecs, &mut draw_batch, &player_entity);
-    initiative_weight(ecs, &mut draw_batch, &player_entity);
-    let mut y = equipped(ecs, &mut draw_batch, &player_entity);
-    y += consumables(ecs, &mut draw_batch, &player_entity, y);
-    spells(ecs, &mut draw_batch, &player_entity, y);
-    status(ecs, &mut draw_batch, &player_entity);
+    draw_stats(ecs, &mut draw_batch, player_entity);
+    draw_attributes(ecs, &mut draw_batch, player_entity);
+    initiative_weight(ecs, &mut draw_batch, player_entity);
+    let mut y = equipped(ecs, &mut draw_batch, player_entity);
+    y += consumables(ecs, &mut draw_batch, player_entity, y);
+    spells(ecs, &mut draw_batch, player_entity, y);
+    status(ecs, &mut draw_batch, player_entity);
     gamelog::print_log(
         &mut rltk::BACKEND_INTERNAL.lock().consoles[1].console,
         Point::new(1, 23),

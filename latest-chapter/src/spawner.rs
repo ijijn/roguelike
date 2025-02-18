@@ -1,9 +1,10 @@
 use super::{
-    random_table::MasterTable, raws::*, Attribute, AttributeBonus, Attributes, Duration,
-    EntryTrigger, EquipmentChanged, Faction, HungerClock, HungerState, Initiative, KnownSpells,
-    LightSource, Map, MasterDungeonMap, Name, OtherLevelPosition, Player, Pool, Pools, Position,
-    Rect, Renderable, SerializeMe, SingleActivation, Skill, Skills, StatusEffect, TeleportTo,
-    TileType, Viewshed,
+    random_table::MasterTable,
+    raws::{get_spawn_table_for_depth, spawn_all_spells, spawn_named_entity, SpawnType, RAWS},
+    Attribute, AttributeBonus, Attributes, Duration, EntryTrigger, EquipmentChanged, Faction,
+    HungerClock, HungerState, Initiative, KnownSpells, LightSource, Map, MasterDungeonMap, Name,
+    OtherLevelPosition, Player, Pool, Pools, Position, Rect, Renderable, SerializeMe,
+    SingleActivation, Skill, Skills, StatusEffect, TeleportTo, TileType, Viewshed,
 };
 use crate::{attr_bonus, mana_at_level, player_hp_at_level};
 use rltk::RGB;

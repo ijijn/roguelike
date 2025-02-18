@@ -1,12 +1,12 @@
 use rltk::prelude::*;
 
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum GameOverResult {
     NoSelection,
     QuitToMenu,
 }
 
-pub fn game_over(ctx: &mut Rltk) -> GameOverResult {
+pub fn game_over(ctx: &Rltk) -> GameOverResult {
     let mut draw_batch = DrawBatch::new();
     draw_batch.print_color_centered(
         15,

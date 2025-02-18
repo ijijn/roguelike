@@ -1,4 +1,7 @@
-use super::*;
+use super::{
+    add_effect, entity_position, Builder, EffectSpawner, EffectType, Entity, Targets, World,
+    WorldExt,
+};
 use crate::components::{
     Attributes, Confusion, DamageOverTime, Duration, EquipmentChanged, Name, Player, Pools,
     SerializeMe, Skills, Slow, StatusEffect,
@@ -7,7 +10,7 @@ use crate::gamesystem::{mana_at_level, player_hp_at_level};
 use crate::map::Map;
 use specs::saveload::{MarkedBuilder, SimpleMarker};
 
-pub fn inflict_damage(ecs: &mut World, damage: &EffectSpawner, target: Entity) {
+pub fn inflict_damage(ecs: &World, damage: &EffectSpawner, target: Entity) {
     let mut pools = ecs.write_storage::<Pools>();
     let player_entity = ecs.fetch::<Entity>();
     if let Some(pool) = pools.get_mut(target) {
@@ -51,12 +54,12 @@ pub fn inflict_damage(ecs: &mut World, damage: &EffectSpawner, target: Entity) {
     }
 }
 
-pub fn bloodstain(ecs: &mut World, tile_idx: i32) {
+pub fn bloodstain(ecs: &World, tile_idx: i32) {
     let mut map = ecs.fetch_mut::<Map>();
     map.bloodstains.insert(tile_idx as usize);
 }
 
-pub fn death(ecs: &mut World, effect: &EffectSpawner, target: Entity) {
+pub fn death(ecs: &World, effect: &EffectSpawner, target: Entity) {
     let mut xp_gain = 0;
     let mut gold_gain = 0.0f32;
 

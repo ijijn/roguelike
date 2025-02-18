@@ -2,7 +2,7 @@ use super::{menu_box, menu_option};
 use crate::State;
 use rltk::prelude::*;
 
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum CheatMenuResult {
     NoResponse,
     Cancel,
@@ -12,7 +12,7 @@ pub enum CheatMenuResult {
     GodMode,
 }
 
-pub fn show_cheat_mode(_gs: &mut State, ctx: &mut Rltk) -> CheatMenuResult {
+pub fn show_cheat_mode(_gs: &mut State, ctx: &Rltk) -> CheatMenuResult {
     let mut draw_batch = DrawBatch::new();
     let count = 4;
     let mut y = 25 - (count / 2);
@@ -57,15 +57,13 @@ pub fn show_cheat_mode(_gs: &mut State, ctx: &mut Rltk) -> CheatMenuResult {
 
     let _result = draw_batch.submit(6000);
 
-    match ctx.key {
-        None => CheatMenuResult::NoResponse,
-        Some(key) => match key {
+    ctx.key
+        .map_or(CheatMenuResult::NoResponse, |key| match key {
             VirtualKeyCode::T => CheatMenuResult::TeleportToExit,
             VirtualKeyCode::H => CheatMenuResult::Heal,
             VirtualKeyCode::R => CheatMenuResult::Reveal,
             VirtualKeyCode::G => CheatMenuResult::GodMode,
             VirtualKeyCode::Escape => CheatMenuResult::Cancel,
             _ => CheatMenuResult::NoResponse,
-        },
-    }
+        })
 }

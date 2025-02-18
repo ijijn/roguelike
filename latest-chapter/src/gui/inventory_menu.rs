@@ -3,14 +3,14 @@ use crate::{InBackpack, State};
 use rltk::prelude::*;
 use specs::prelude::*;
 
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum ItemMenuResult {
     Cancel,
     NoResponse,
     Selected,
 }
 
-pub fn show_inventory(gs: &mut State, ctx: &mut Rltk) -> (ItemMenuResult, Option<Entity>) {
+pub fn show_inventory(gs: &State, ctx: &Rltk) -> (ItemMenuResult, Option<Entity>) {
     let player_entity = gs.ecs.fetch::<Entity>();
     let backpack = gs.ecs.read_storage::<InBackpack>();
     let entities = gs.ecs.entities();
