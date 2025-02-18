@@ -368,12 +368,13 @@ pub fn get_potion_tags() -> Vec<String> {
 
 #[must_use]
 pub fn is_tag_magic(tag: &str) -> bool {
-    let raws = &super::RAWS.lock().unwrap();
+    let raws = super::RAWS.lock().unwrap();
 
     if raws.item_index.contains_key(tag) {
         let item_template = &raws.raws.items[raws.item_index[tag]];
         item_template.magic.is_some()
     } else {
+        drop(raws);
         false
     }
 }

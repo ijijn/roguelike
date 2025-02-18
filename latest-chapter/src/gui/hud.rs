@@ -6,6 +6,8 @@ use crate::{
 use rltk::prelude::*;
 use specs::prelude::*;
 
+use std::fmt::Write as _;
+
 fn draw_attribute(name: &str, attribute: &Attribute, y: i32, draw_batch: &mut DrawBatch) {
     let black = RGB::named(rltk::BLACK);
     let attr_gray: RGB = RGB::from_hex("#CCCCCC").expect("Oops");
@@ -229,7 +231,10 @@ fn equipped(ecs: &World, draw_batch: &mut DrawBatch, player_entity: Entity) -> i
                 };
 
                 if let Some(range) = weapon.range {
-                    weapon_info += &format!(" (range: {range}, F to fire, V cycle targets)");
+                    let _result = write!(
+                        &mut weapon_info,
+                        " (range: {range}, F to fire, V cycle targets)"
+                    );
                 }
                 weapon_info += " ├";
                 draw_batch.print_color(
