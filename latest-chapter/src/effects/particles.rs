@@ -1,9 +1,9 @@
-use super::{Builder, EffectSpawner, EffectType, SystemData, World, WorldExt};
+use super::{Builder, EffectSpawner, EffectType, World, WorldExt};
 use crate::components::{ParticleAnimation, ParticleLifetime, Position, Renderable};
 use crate::map::Map;
 use crate::systems::particle_system::ParticleBuilder;
 
-pub fn particle_to_tile(ecs: &mut World, tile_idx: i32, effect: &EffectSpawner) {
+pub fn particle_to_tile(ecs: &World, tile_idx: i32, effect: &EffectSpawner) {
     if let EffectType::Particle {
         glyph,
         fg,

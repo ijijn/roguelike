@@ -171,7 +171,7 @@ pub fn death(ecs: &World, effect: &EffectSpawner, target: Entity) {
     }
 }
 
-pub fn heal_damage(ecs: &mut World, heal: &EffectSpawner, target: Entity) {
+pub fn heal_damage(ecs: &World, heal: &EffectSpawner, target: Entity) {
     let mut pools = ecs.write_storage::<Pools>();
     if let Some(pool) = pools.get_mut(target) {
         if let EffectType::Healing { amount } = heal.effect_type {
@@ -191,7 +191,7 @@ pub fn heal_damage(ecs: &mut World, heal: &EffectSpawner, target: Entity) {
     }
 }
 
-pub fn restore_mana(ecs: &mut World, mana: &EffectSpawner, target: Entity) {
+pub fn restore_mana(ecs: &World, mana: &EffectSpawner, target: Entity) {
     let mut pools = ecs.write_storage::<Pools>();
     if let Some(pool) = pools.get_mut(target) {
         if let EffectType::Mana { amount } = mana.effect_type {

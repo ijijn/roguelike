@@ -1,7 +1,7 @@
-use super::{EffectSpawner, EffectType, Entity, SystemData, World, WorldExt};
+use super::{EffectSpawner, EffectType, Entity, World, WorldExt};
 use crate::components::ApplyTeleport;
 
-pub fn apply_teleport(ecs: &mut World, destination: &EffectSpawner, target: Entity) {
+pub fn apply_teleport(ecs: &World, destination: &EffectSpawner, target: Entity) {
     let player_entity = ecs.fetch::<Entity>();
     if let EffectType::TeleportTo {
         x,

@@ -1,4 +1,7 @@
 use super::{Equipped, InBackpack, LootTable, Name, Player, Pools, Position, RunState};
+use crate::components::{AreaOfEffect, OnDeath};
+use crate::effects::{add_effect, aoe_tiles, EffectType, Targets};
+use crate::Map;
 use specs::prelude::*;
 
 pub fn delete_the_dead(ecs: &mut World) {
@@ -94,9 +97,7 @@ pub fn delete_the_dead(ecs: &mut World) {
     }
 
     // Fire death events
-    use crate::components::{AreaOfEffect, OnDeath};
-    use crate::effects::{EffectType, Targets, add_effect, aoe_tiles};
-    use crate::Map;
+
     for victim in &dead {
         let death_effects = ecs.read_storage::<OnDeath>();
         if let Some(death_effect) = death_effects.get(*victim) {
@@ -107,17 +108,14 @@ pub fn delete_the_dead(ecs: &mut World) {
                         let spell_entity =
                             crate::raws::find_spell_entity(ecs, &effect.spell).unwrap();
                         let tile_idx = map.xy_idx(pos.x, pos.y);
-                        let target = if let Some(aoe) =
-                            ecs.read_storage::<AreaOfEffect>().get(spell_entity)
-                        {
-                            Targets::Tiles {
-                                tiles: aoe_tiles(&map, rltk::Point::new(pos.x, pos.y), aoe.radius),
-                            }
-                        } else {
+                        let target = ecs.read_storage::<AreaOfEffect>().get(spell_entity).map_or(
                             Targets::Tile {
                                 tile_idx: tile_idx as i32,
-                            }
-                        };
+                            },
+                            |aoe| Targets::Tiles {
+                                tiles: aoe_tiles(&map, rltk::Point::new(pos.x, pos.y), aoe.radius),
+                            },
+                        );
                         add_effect(
                             None,
                             EffectType::SpellUse {

@@ -6,7 +6,7 @@ pub struct RandomEntry {
 }
 
 impl RandomEntry {
-    pub fn new<S: ToString>(name: S, weight: i32) -> Self {
+    pub fn new<S: ToString>(name: &S, weight: i32) -> Self {
         Self {
             name: name.to_string(),
             weight,
@@ -22,7 +22,8 @@ pub struct MasterTable {
 }
 
 impl MasterTable {
-    #[must_use] pub const fn new() -> Self {
+    #[must_use]
+    pub const fn new() -> Self {
         Self {
             items: RandomTable::new(),
             mobs: RandomTable::new(),
@@ -30,7 +31,7 @@ impl MasterTable {
         }
     }
 
-    pub fn add<S: ToString>(&mut self, name: S, weight: i32, raws: &RawMaster) {
+    pub fn add<S: ToString>(&mut self, name: &S, weight: i32, raws: &RawMaster) {
         match spawn_type_by_name(raws, &name.to_string()) {
             SpawnTableType::Item => self.items.add(name, weight),
             SpawnTableType::Mob => self.mobs.add(name, weight),
@@ -38,7 +39,8 @@ impl MasterTable {
         }
     }
 
-    #[must_use] pub fn roll(&self) -> String {
+    #[must_use]
+    pub fn roll(&self) -> String {
         let roll = crate::rng::roll_dice(1, 4);
         match roll {
             1 => self.items.roll(),
@@ -56,22 +58,23 @@ pub struct RandomTable {
 }
 
 impl RandomTable {
-    #[must_use] pub const fn new() -> Self {
+    #[must_use]
+    pub const fn new() -> Self {
         Self {
             entries: Vec::new(),
             total_weight: 0,
         }
     }
 
-    pub fn add<S: ToString>(&mut self, name: S, weight: i32) {
+    pub fn add<S: ToString>(&mut self, name: &S, weight: i32) {
         if weight > 0 {
             self.total_weight += weight;
-            self.entries
-                .push(RandomEntry::new(name.to_string(), weight));
+            self.entries.push(RandomEntry::new(name, weight));
         }
     }
 
-    #[must_use] pub fn roll(&self) -> String {
+    #[must_use]
+    pub fn roll(&self) -> String {
         if self.total_weight == 0 {
             return "None".to_string();
         }

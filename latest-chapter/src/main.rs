@@ -3,6 +3,8 @@
     clippy::cast_possible_wrap,
     clippy::cast_precision_loss,
     clippy::cast_sign_loss,
+    clippy::missing_panics_doc,
+    clippy::non_std_lazy_statics,
     clippy::too_many_lines
 )]
 
@@ -116,8 +118,7 @@ impl GameState for State {
         systems::particle_system::update_particles(&mut self.ecs, ctx);
 
         match newrunstate {
-            RunState::MainMenu { .. } => {}
-            RunState::GameOver => {}
+            RunState::MainMenu { .. } | RunState::GameOver => {}
             _ => {
                 camera::render_camera(&self.ecs, ctx);
                 gui::draw_ui(&self.ecs, ctx);

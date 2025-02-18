@@ -8,7 +8,7 @@ use rltk::{Point, Rltk, VirtualKeyCode};
 use specs::prelude::*;
 use std::cmp::{max, min};
 
-fn get_player_target_list(ecs: &mut World) -> Vec<(f32, Entity)> {
+fn get_player_target_list(ecs: &World) -> Vec<(f32, Entity)> {
     let mut possible_targets: Vec<(f32, Entity)> = Vec::new();
     let viewsheds = ecs.read_storage::<Viewshed>();
     let player_entity = ecs.fetch::<Entity>();
@@ -45,7 +45,7 @@ fn get_player_target_list(ecs: &mut World) -> Vec<(f32, Entity)> {
     possible_targets
 }
 
-pub fn end_turn_targeting(ecs: &mut World) {
+pub fn end_turn_targeting(ecs: &World) {
     let possible_targets = get_player_target_list(ecs);
     let mut targets = ecs.write_storage::<Target>();
     targets.clear();
@@ -57,7 +57,7 @@ pub fn end_turn_targeting(ecs: &mut World) {
     }
 }
 
-fn fire_on_target(ecs: &mut World) -> RunState {
+fn fire_on_target(ecs: &World) -> RunState {
     let targets = ecs.write_storage::<Target>();
     let entities = ecs.entities();
     let mut current_target: Option<Entity> = None;
@@ -66,31 +66,34 @@ fn fire_on_target(ecs: &mut World) -> RunState {
         current_target = Some(e);
     }
 
-    if let Some(target) = current_target {
-        let player_entity = ecs.fetch::<Entity>();
-        let mut shoot_store = ecs.write_storage::<WantsToShoot>();
-        let names = ecs.read_storage::<Name>();
-        if let Some(name) = names.get(target) {
+    current_target.map_or_else(
+        || {
             crate::gamelog::Logger::new()
-                .append("You fire at")
-                .color(rltk::CYAN)
-                .append(&name.name)
+                .append("You don't have a target selected!")
                 .log();
-        }
-        shoot_store
-            .insert(*player_entity, WantsToShoot { target })
-            .expect("Insert Fail");
+            RunState::AwaitingInput
+        },
+        |target| {
+            let player_entity = ecs.fetch::<Entity>();
+            let mut shoot_store = ecs.write_storage::<WantsToShoot>();
+            let names = ecs.read_storage::<Name>();
+            if let Some(name) = names.get(target) {
+                crate::gamelog::Logger::new()
+                    .append("You fire at")
+                    .color(rltk::CYAN)
+                    .append(&name.name)
+                    .log();
+            }
+            shoot_store
+                .insert(*player_entity, WantsToShoot { target })
+                .expect("Insert Fail");
 
-        RunState::Ticking
-    } else {
-        crate::gamelog::Logger::new()
-            .append("You don't have a target selected!")
-            .log();
-        RunState::AwaitingInput
-    }
+            RunState::Ticking
+        },
+    )
 }
 
-fn cycle_target(ecs: &mut World) {
+fn cycle_target(ecs: &World) {
     let possible_targets = get_player_target_list(ecs);
     let mut targets = ecs.write_storage::<Target>();
     let entities = ecs.entities();
@@ -123,7 +126,7 @@ fn cycle_target(ecs: &mut World) {
     }
 }
 
-pub fn try_move_player(delta_x: i32, delta_y: i32, ecs: &mut World) -> RunState {
+pub fn try_move_player(delta_x: i32, delta_y: i32, ecs: &World) -> RunState {
     let mut positions = ecs.write_storage::<Position>();
     let players = ecs.read_storage::<Player>();
     let mut viewsheds = ecs.write_storage::<Viewshed>();
@@ -233,9 +236,9 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, ecs: &mut World) -> RunState 
             ppos.x = pos.x;
             ppos.y = pos.y;
             result = RunState::Ticking;
-            match map.tiles[destination_idx] {
-                TileType::DownStairs => result = RunState::NextLevel,
-                TileType::UpStairs => result = RunState::PreviousLevel,
+            match map.tiles.get(destination_idx) {
+                Some(TileType::DownStairs) => result = RunState::NextLevel,
+                Some(TileType::UpStairs) => result = RunState::PreviousLevel,
                 _ => {}
             }
         }
@@ -252,7 +255,7 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, ecs: &mut World) -> RunState 
     result
 }
 
-pub fn try_next_level(ecs: &mut World) -> bool {
+pub fn try_next_level(ecs: &World) -> bool {
     let player_pos = ecs.fetch::<Point>();
     let map = ecs.fetch::<Map>();
     let player_idx = map.xy_idx(player_pos.x, player_pos.y);
@@ -266,7 +269,7 @@ pub fn try_next_level(ecs: &mut World) -> bool {
     }
 }
 
-pub fn try_previous_level(ecs: &mut World) -> bool {
+pub fn try_previous_level(ecs: &World) -> bool {
     let player_pos = ecs.fetch::<Point>();
     let map = ecs.fetch::<Map>();
     let player_idx = map.xy_idx(player_pos.x, player_pos.y);
@@ -280,7 +283,7 @@ pub fn try_previous_level(ecs: &mut World) -> bool {
     }
 }
 
-fn get_item(ecs: &mut World) {
+fn get_item(ecs: &World) {
     let player_pos = ecs.fetch::<Point>();
     let player_entity = ecs.fetch::<Entity>();
     let entities = ecs.entities();
@@ -313,7 +316,7 @@ fn get_item(ecs: &mut World) {
     }
 }
 
-fn skip_turn(ecs: &mut World) -> RunState {
+fn skip_turn(ecs: &World) -> RunState {
     let player_entity = ecs.fetch::<Entity>();
     let viewshed_components = ecs.read_storage::<Viewshed>();
     let factions = ecs.read_storage::<Faction>();
@@ -346,8 +349,7 @@ fn skip_turn(ecs: &mut World) -> RunState {
     let hc = hunger_clocks.get(*player_entity);
     if let Some(hc) = hc {
         match hc.state {
-            HungerState::Hungry => can_heal = false,
-            HungerState::Starving => can_heal = false,
+            HungerState::Hungry | HungerState::Starving => can_heal = false,
             _ => {}
         }
     }
@@ -364,7 +366,7 @@ fn skip_turn(ecs: &mut World) -> RunState {
     RunState::Ticking
 }
 
-fn use_consumable_hotkey(gs: &mut State, key: i32) -> RunState {
+fn use_consumable_hotkey(gs: &State, key: i32) -> RunState {
     use super::{Consumable, InBackpack, WantsToUseItem};
 
     let consumables = gs.ecs.read_storage::<Consumable>();
@@ -405,7 +407,7 @@ fn use_consumable_hotkey(gs: &mut State, key: i32) -> RunState {
     RunState::Ticking
 }
 
-fn use_spell_hotkey(gs: &mut State, key: i32) -> RunState {
+fn use_spell_hotkey(gs: &State, key: i32) -> RunState {
     use super::raws::find_spell_entity;
     use super::KnownSpells;
 
@@ -449,7 +451,7 @@ fn use_spell_hotkey(gs: &mut State, key: i32) -> RunState {
     RunState::Ticking
 }
 
-pub fn player_input(gs: &mut State, ctx: &mut Rltk) -> RunState {
+pub fn player_input(gs: &State, ctx: &Rltk) -> RunState {
     // Hotkeys
     if ctx.shift && ctx.key.is_some() {
         let key: Option<i32> = match ctx.key.unwrap() {
@@ -491,65 +493,57 @@ pub fn player_input(gs: &mut State, ctx: &mut Rltk) -> RunState {
         None => return RunState::AwaitingInput, // Nothing happened
         Some(key) => match key {
             VirtualKeyCode::Left | VirtualKeyCode::Numpad4 | VirtualKeyCode::H => {
-                return try_move_player(-1, 0, &mut gs.ecs)
+                return try_move_player(-1, 0, &gs.ecs)
             }
 
             VirtualKeyCode::Right | VirtualKeyCode::Numpad6 | VirtualKeyCode::L => {
-                return try_move_player(1, 0, &mut gs.ecs)
+                return try_move_player(1, 0, &gs.ecs)
             }
 
             VirtualKeyCode::Up | VirtualKeyCode::Numpad8 | VirtualKeyCode::K => {
-                return try_move_player(0, -1, &mut gs.ecs)
+                return try_move_player(0, -1, &gs.ecs)
             }
 
             VirtualKeyCode::Down | VirtualKeyCode::Numpad2 | VirtualKeyCode::J => {
-                return try_move_player(0, 1, &mut gs.ecs)
+                return try_move_player(0, 1, &gs.ecs)
             }
 
             // Diagonals
-            VirtualKeyCode::Numpad9 | VirtualKeyCode::U => {
-                return try_move_player(1, -1, &mut gs.ecs)
-            }
+            VirtualKeyCode::Numpad9 | VirtualKeyCode::U => return try_move_player(1, -1, &gs.ecs),
 
-            VirtualKeyCode::Numpad7 | VirtualKeyCode::Y => {
-                return try_move_player(-1, -1, &mut gs.ecs)
-            }
+            VirtualKeyCode::Numpad7 | VirtualKeyCode::Y => return try_move_player(-1, -1, &gs.ecs),
 
-            VirtualKeyCode::Numpad3 | VirtualKeyCode::N => {
-                return try_move_player(1, 1, &mut gs.ecs)
-            }
+            VirtualKeyCode::Numpad3 | VirtualKeyCode::N => return try_move_player(1, 1, &gs.ecs),
 
-            VirtualKeyCode::Numpad1 | VirtualKeyCode::B => {
-                return try_move_player(-1, 1, &mut gs.ecs)
-            }
+            VirtualKeyCode::Numpad1 | VirtualKeyCode::B => return try_move_player(-1, 1, &gs.ecs),
 
             // Skip Turn
-            VirtualKeyCode::Numpad5 | VirtualKeyCode::Space => return skip_turn(&mut gs.ecs),
+            VirtualKeyCode::Numpad5 | VirtualKeyCode::Space => return skip_turn(&gs.ecs),
 
             // Level changes
             VirtualKeyCode::Period => {
-                if try_next_level(&mut gs.ecs) {
+                if try_next_level(&gs.ecs) {
                     return RunState::NextLevel;
                 }
             }
             VirtualKeyCode::Comma => {
-                if try_previous_level(&mut gs.ecs) {
+                if try_previous_level(&gs.ecs) {
                     return RunState::PreviousLevel;
                 }
             }
 
             // Picking up items
-            VirtualKeyCode::G => get_item(&mut gs.ecs),
+            VirtualKeyCode::G => get_item(&gs.ecs),
             VirtualKeyCode::I => return RunState::ShowInventory,
             VirtualKeyCode::D => return RunState::ShowDropItem,
             VirtualKeyCode::R => return RunState::ShowRemoveItem,
 
             // Ranged
             VirtualKeyCode::V => {
-                cycle_target(&mut gs.ecs);
+                cycle_target(&gs.ecs);
                 return RunState::AwaitingInput;
             }
-            VirtualKeyCode::F => return fire_on_target(&mut gs.ecs),
+            VirtualKeyCode::F => return fire_on_target(&gs.ecs),
 
             // Save and Quit
             VirtualKeyCode::Escape => return RunState::SaveGame,

@@ -1,5 +1,15 @@
 use super::{faction_structs::Reaction, Raws};
-use crate::components::{AlwaysTargetsSelf, AreaOfEffect, Attribute, AttributeBonus, Attributes, BlocksTile, BlocksVisibility, Confusion, CursedItem, DamageOverTime, Door, Duration, EntryTrigger, EquipmentChanged, EquipmentSlot, Equippable, Equipped, Faction, Hidden, InBackpack, InflictsDamage, Initiative, LightSource, LootTable, MagicItem, MagicItemClass, MagicMapper, MoveMode, Movement, Name, NaturalAttack, NaturalAttackDefense, ObfuscatedName, OnDeath, Pool, Pools, Position, ProvidesFood, ProvidesHealing, ProvidesIdentification, ProvidesMana, ProvidesRemoveCurse, Quips, Ranged, SerializeMe, SingleActivation, Skill, Skills, Slow, SpawnParticleBurst, SpawnParticleLine, SpecialAbilities, SpecialAbility, SpellTemplate, TeachesSpell, TileSize, TownPortal, Vendor, Viewshed, Weapon, WeaponAttribute, Wearable};
+use crate::components::{
+    AlwaysTargetsSelf, AreaOfEffect, Attribute, AttributeBonus, Attributes, BlocksTile,
+    BlocksVisibility, Confusion, CursedItem, DamageOverTime, Door, Duration, EntryTrigger,
+    EquipmentChanged, EquipmentSlot, Equippable, Equipped, Faction, Hidden, InBackpack,
+    InflictsDamage, Initiative, LightSource, LootTable, MagicItem, MagicItemClass, MagicMapper,
+    MoveMode, Movement, Name, NaturalAttack, NaturalAttackDefense, ObfuscatedName, OnDeath, Pool,
+    Pools, Position, ProvidesFood, ProvidesHealing, ProvidesIdentification, ProvidesMana,
+    ProvidesRemoveCurse, Quips, Ranged, SerializeMe, SingleActivation, Skill, Skills, Slow,
+    SpawnParticleBurst, SpawnParticleLine, SpecialAbilities, SpecialAbility, SpellTemplate,
+    TeachesSpell, TileSize, TownPortal, Vendor, Viewshed, Weapon, WeaponAttribute, Wearable,
+};
 use crate::random_table::{MasterTable, RandomTable};
 use crate::{attr_bonus, mana_at_level, npc_hp};
 use regex::Regex;
@@ -7,7 +17,8 @@ use specs::prelude::*;
 use specs::saveload::{MarkedBuilder, SimpleMarker};
 use std::collections::{HashMap, HashSet};
 
-#[must_use] pub fn parse_dice_string(dice: &str) -> (i32, i32, i32) {
+#[must_use]
+pub fn parse_dice_string(dice: &str) -> (i32, i32, i32) {
     lazy_static! {
         static ref DICE_RE: Regex = Regex::new(r"(\d+)d(\d+)([\+\-]\d+)?").unwrap();
     }
@@ -51,7 +62,8 @@ struct NewMagicItem {
 }
 
 impl RawMaster {
-    #[must_use] pub fn empty() -> Self {
+    #[must_use]
+    pub fn empty() -> Self {
         Self {
             raws: Raws {
                 items: Vec::new(),
@@ -278,7 +290,8 @@ impl RawMaster {
 }
 
 #[inline(always)]
-#[must_use] pub fn faction_reaction(my_faction: &str, their_faction: &str, raws: &RawMaster) -> Reaction {
+#[must_use]
+pub fn faction_reaction(my_faction: &str, their_faction: &str, raws: &RawMaster) -> Reaction {
     //println!("Looking for reaction to [{}] by [{}]", my_faction, their_faction);
     if raws.faction_index.contains_key(my_faction) {
         let mf = &raws.faction_index[my_faction];
@@ -297,7 +310,10 @@ impl RawMaster {
 }
 
 fn find_slot_for_equippable_item(tag: &str, raws: &RawMaster) -> EquipmentSlot {
-    assert!(raws.item_index.contains_key(tag), "Trying to equip an unknown item: {tag}");
+    assert!(
+        raws.item_index.contains_key(tag),
+        "Trying to equip an unknown item: {tag}"
+    );
     let item_index = raws.item_index[tag];
     let item = &raws.raws.items[item_index];
     if let Some(_wpn) = &item.weapon {
@@ -308,7 +324,8 @@ fn find_slot_for_equippable_item(tag: &str, raws: &RawMaster) -> EquipmentSlot {
     panic!("Trying to equip {tag}, but it has no slot tag.");
 }
 
-#[must_use] pub fn get_vendor_items(categories: &[String], raws: &RawMaster) -> Vec<(String, f32)> {
+#[must_use]
+pub fn get_vendor_items(categories: &[String], raws: &RawMaster) -> Vec<(String, f32)> {
     let mut result: Vec<(String, f32)> = Vec::new();
 
     for item in &raws.raws.items {
@@ -322,7 +339,8 @@ fn find_slot_for_equippable_item(tag: &str, raws: &RawMaster) -> EquipmentSlot {
     result
 }
 
-#[must_use] pub fn get_scroll_tags() -> Vec<String> {
+#[must_use]
+pub fn get_scroll_tags() -> Vec<String> {
     let raws = &super::RAWS.lock().unwrap();
     let mut result = Vec::new();
 
@@ -337,7 +355,8 @@ fn find_slot_for_equippable_item(tag: &str, raws: &RawMaster) -> EquipmentSlot {
     result
 }
 
-#[must_use] pub fn get_potion_tags() -> Vec<String> {
+#[must_use]
+pub fn get_potion_tags() -> Vec<String> {
     let raws = &super::RAWS.lock().unwrap();
     let mut result = Vec::new();
 
@@ -352,7 +371,8 @@ fn find_slot_for_equippable_item(tag: &str, raws: &RawMaster) -> EquipmentSlot {
     result
 }
 
-#[must_use] pub fn is_tag_magic(tag: &str) -> bool {
+#[must_use]
+pub fn is_tag_magic(tag: &str) -> bool {
     let raws = &super::RAWS.lock().unwrap();
     if raws.item_index.contains_key(tag) {
         let item_template = &raws.raws.items[raws.item_index[tag]];
@@ -392,7 +412,8 @@ fn get_renderable_component(
     }
 }
 
-#[must_use] pub fn string_to_slot(slot: &str) -> EquipmentSlot {
+#[must_use]
+pub fn string_to_slot(slot: &str) -> EquipmentSlot {
     match slot {
         "Shield" => EquipmentSlot::Shield,
         "Head" => EquipmentSlot::Head,
@@ -769,12 +790,10 @@ pub fn spawn_named_mob(
             },
             total_weight: 0.0,
             total_initiative_penalty: 0.0,
-            gold: if let Some(gold) = &mob_template.gold {
+            gold: mob_template.gold.as_ref().map_or(0.0, |gold| {
                 let (n, d, b) = parse_dice_string(gold);
                 (crate::rng::roll_dice(n, d) + b) as f32
-            } else {
-                0.0
-            },
+            }),
             god_mode: false,
         };
         eb = eb.with(pools);
@@ -999,7 +1018,8 @@ pub fn spawn_all_spells(ecs: &mut World) {
     }
 }
 
-#[must_use] pub fn find_spell_entity(ecs: &World, name: &str) -> Option<Entity> {
+#[must_use]
+pub fn find_spell_entity(ecs: &World, name: &str) -> Option<Entity> {
     let names = ecs.read_storage::<Name>();
     let spell_templates = ecs.read_storage::<SpellTemplate>();
     let entities = ecs.entities();
@@ -1012,7 +1032,8 @@ pub fn spawn_all_spells(ecs: &mut World) {
     None
 }
 
-#[must_use] pub fn find_spell_entity_by_name(
+#[must_use]
+pub fn find_spell_entity_by_name(
     name: &str,
     names: &ReadStorage<Name>,
     spell_templates: &ReadStorage<SpellTemplate>,
@@ -1049,7 +1070,8 @@ pub enum SpawnTableType {
     Prop,
 }
 
-#[must_use] pub fn spawn_type_by_name(raws: &RawMaster, key: &str) -> SpawnTableType {
+#[must_use]
+pub fn spawn_type_by_name(raws: &RawMaster, key: &str) -> SpawnTableType {
     if raws.item_index.contains_key(key) {
         SpawnTableType::Item
     } else if raws.mob_index.contains_key(key) {
@@ -1059,7 +1081,8 @@ pub enum SpawnTableType {
     }
 }
 
-#[must_use] pub fn get_spawn_table_for_depth(raws: &RawMaster, depth: i32) -> MasterTable {
+#[must_use]
+pub fn get_spawn_table_for_depth(raws: &RawMaster, depth: i32) -> MasterTable {
     use super::SpawnTableEntry;
 
     let available_options: Vec<&SpawnTableEntry> = raws
@@ -1075,18 +1098,19 @@ pub enum SpawnTableType {
         if e.add_map_depth_to_weight.is_some() {
             weight += depth;
         }
-        rt.add(e.name.clone(), weight, raws);
+        rt.add(&e.name, weight, raws);
     }
 
     rt
 }
 
-#[must_use] pub fn get_item_drop(raws: &RawMaster, table: &str) -> Option<String> {
+#[must_use]
+pub fn get_item_drop(raws: &RawMaster, table: &str) -> Option<String> {
     if raws.loot_index.contains_key(table) {
         let mut rt = RandomTable::new();
         let available_options = &raws.raws.loot_tables[raws.loot_index[table]];
         for item in &available_options.drops {
-            rt.add(item.name.clone(), item.weight);
+            rt.add(&item.name, item.weight);
         }
         let result = rt.roll();
         return Some(result);

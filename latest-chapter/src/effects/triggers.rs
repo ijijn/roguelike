@@ -1,5 +1,14 @@
-use super::{EffectType, Entity, Join, LendJoin, Map, ParJoin, ParallelIterator, SystemData, Targets, World, WorldExt, add_effect, aoe_tiles, entity_position, targeting};
-use crate::components::{AlwaysTargetsSelf, AreaOfEffect, AttributeBonus, Confusion, Consumable, DamageOverTime, Duration, Hidden, InflictsDamage, KnownSpell, KnownSpells, MagicMapper, Name, Pools, Position, ProvidesFood, ProvidesHealing, ProvidesIdentification, ProvidesMana, ProvidesRemoveCurse, SingleActivation, Slow, SpawnParticleBurst, SpawnParticleLine, SpellTemplate, TeachesSpell, TeleportTo, TownPortal};
+use super::{
+    add_effect, aoe_tiles, entity_position, targeting, EffectType, Entity, Map, Targets, World,
+    WorldExt,
+};
+use crate::components::{
+    AlwaysTargetsSelf, AreaOfEffect, AttributeBonus, Confusion, Consumable, DamageOverTime,
+    Duration, Hidden, InflictsDamage, KnownSpell, KnownSpells, MagicMapper, Name, Pools, Position,
+    ProvidesFood, ProvidesHealing, ProvidesIdentification, ProvidesMana, ProvidesRemoveCurse,
+    SingleActivation, Slow, SpawnParticleBurst, SpawnParticleLine, SpellTemplate, TeachesSpell,
+    TeleportTo, TownPortal,
+};
 use crate::RunState;
 
 pub fn item_trigger(creator: Option<Entity>, item: Entity, targets: &Targets, ecs: &mut World) {
@@ -46,15 +55,14 @@ pub fn spell_trigger(creator: Option<Entity>, spell: Entity, targets: &Targets, 
             if ecs.read_storage::<AlwaysTargetsSelf>().get(spell).is_some() {
                 if let Some(pos) = ecs.read_storage::<Position>().get(caster) {
                     let map = ecs.fetch::<Map>();
-                    targeting = if let Some(aoe) = ecs.read_storage::<AreaOfEffect>().get(spell) {
-                        Targets::Tiles {
-                            tiles: aoe_tiles(&map, rltk::Point::new(pos.x, pos.y), aoe.radius),
-                        }
-                    } else {
-                        Targets::Tile {
+                    targeting = ecs.read_storage::<AreaOfEffect>().get(spell).map_or_else(
+                        || Targets::Tile {
                             tile_idx: map.xy_idx(pos.x, pos.y) as i32,
-                        }
-                    }
+                        },
+                        |aoe| Targets::Tiles {
+                            tiles: aoe_tiles(&map, rltk::Point::new(pos.x, pos.y), aoe.radius),
+                        },
+                    );
                 }
             }
         }
@@ -92,12 +100,7 @@ pub fn trigger(creator: Option<Entity>, trigger: Entity, targets: &Targets, ecs:
 }
 
 #[allow(clippy::cognitive_complexity)]
-fn event_trigger(
-    creator: Option<Entity>,
-    entity: Entity,
-    targets: &Targets,
-    ecs: &mut World,
-) -> bool {
+fn event_trigger(creator: Option<Entity>, entity: Entity, targets: &Targets, ecs: &World) -> bool {
     let mut did_something = false;
 
     // Simple particle spawn
