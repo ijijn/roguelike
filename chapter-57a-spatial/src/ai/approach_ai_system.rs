@@ -20,7 +20,7 @@ impl<'a> System<'a> for ApproachAI {
             mut turns,
             mut want_approach,
             mut positions,
-            mut map,
+            map,
             mut viewsheds,
             mut entity_moved,
             entities,
