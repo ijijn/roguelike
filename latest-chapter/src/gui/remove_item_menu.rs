@@ -3,7 +3,7 @@ use crate::{Equipped, State};
 use rltk::prelude::*;
 use specs::prelude::*;
 
-pub fn remove_item_menu(gs: &mut State, ctx: &mut Rltk) -> (ItemMenuResult, Option<Entity>) {
+pub fn remove_item_menu(gs: &State, ctx: &Rltk) -> (ItemMenuResult, Option<Entity>) {
     let mut draw_batch = DrawBatch::new();
 
     let player_entity = gs.ecs.fetch::<Entity>();
@@ -18,7 +18,7 @@ pub fn remove_item_menu(gs: &mut State, ctx: &mut Rltk) -> (ItemMenuResult, Opti
 
     let result = item_result_menu(
         &mut draw_batch,
-        "Remove which item?",
+        &"Remove which item?",
         items.len(),
         &items,
         ctx.key,

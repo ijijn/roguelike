@@ -3,11 +3,7 @@ use crate::{camera, State, Viewshed};
 use rltk::prelude::*;
 use specs::prelude::*;
 
-pub fn ranged_target(
-    gs: &mut State,
-    ctx: &mut Rltk,
-    range: i32,
-) -> (ItemMenuResult, Option<Point>) {
+pub fn ranged_target(gs: &State, ctx: &mut Rltk, range: i32) -> (ItemMenuResult, Option<Point>) {
     let (min_x, max_x, min_y, max_y) = camera::get_screen_bounds(&gs.ecs, ctx);
     let player_entity = gs.ecs.fetch::<Entity>();
     let player_pos = gs.ecs.fetch::<Point>();
@@ -26,7 +22,7 @@ pub fn ranged_target(
     let visible = viewsheds.get(*player_entity);
     if let Some(visible) = visible {
         // We have a viewshed
-        for idx in visible.visible_tiles.iter() {
+        for idx in &visible.visible_tiles {
             let distance = rltk::DistanceAlg::Pythagoras.distance2d(*player_pos, *idx);
             if distance <= range as f32 {
                 let screen_x = idx.x - min_x;
@@ -51,7 +47,7 @@ pub fn ranged_target(
     mouse_map_pos.0 += min_x - 1;
     mouse_map_pos.1 += min_y - 1;
     let mut valid_target = false;
-    for idx in available_cells.iter() {
+    for idx in &available_cells {
         if idx.x == mouse_map_pos.0 && idx.y == mouse_map_pos.1 {
             valid_target = true;
         }

@@ -18,7 +18,7 @@ pub fn drop_item_menu(gs: &State, ctx: &Rltk) -> (ItemMenuResult, Option<Entity>
 
     let result = item_result_menu(
         &mut draw_batch,
-        "Drop which item?",
+        &"Drop which item?",
         items.len(),
         &items,
         ctx.key,

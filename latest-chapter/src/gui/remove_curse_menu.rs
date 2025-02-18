@@ -3,7 +3,7 @@ use crate::{CursedItem, Equipped, InBackpack, Item, MasterDungeonMap, Name, Stat
 use rltk::prelude::*;
 use specs::prelude::*;
 
-pub fn remove_curse_menu(gs: &mut State, ctx: &mut Rltk) -> (ItemMenuResult, Option<Entity>) {
+pub fn remove_curse_menu(gs: &State, ctx: &Rltk) -> (ItemMenuResult, Option<Entity>) {
     let player_entity = gs.ecs.fetch::<Entity>();
     let equipped = gs.ecs.read_storage::<Equipped>();
     let backpack = gs.ecs.read_storage::<InBackpack>();
@@ -39,7 +39,7 @@ pub fn remove_curse_menu(gs: &mut State, ctx: &mut Rltk) -> (ItemMenuResult, Opt
         })
         .for_each(|item| items.push((item.0, get_item_display_name(&gs.ecs, item.0))));
 
-    let result = item_result_menu(&mut draw_batch, "Inventory", items.len(), &items, ctx.key);
+    let result = item_result_menu(&mut draw_batch, &"Inventory", items.len(), &items, ctx.key);
     let _result = draw_batch.submit(6000);
     result
 }

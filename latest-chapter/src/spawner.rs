@@ -222,7 +222,7 @@ pub fn spawn_region(
     }
 
     // Actually spawn the monsters
-    for spawn in spawn_points.iter() {
+    for spawn in &spawn_points {
         spawn_list.push((*spawn.0, spawn.1.to_string()));
     }
 }

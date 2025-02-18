@@ -1,3 +1,11 @@
+#![allow(
+    clippy::cast_possible_truncation,
+    clippy::cast_possible_wrap,
+    clippy::cast_precision_loss,
+    clippy::cast_sign_loss,
+    clippy::too_many_lines
+)]
+
 extern crate serde;
 use rltk::{GameState, Point, Rltk};
 use specs::prelude::*;
@@ -8,7 +16,7 @@ pub use components::*;
 mod map;
 pub use map::*;
 mod player;
-use player::*;
+use player::player_input;
 mod rect;
 pub use rect::Rect;
 mod damage_system;
@@ -32,13 +40,13 @@ mod systems;
 const SHOW_MAPGEN_VISUALIZER: bool = false;
 const SHOW_FPS: bool = true;
 
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum VendorMode {
     Buy,
     Sell,
 }
 
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum RunState {
     AwaitingInput,
     PreRun,
@@ -118,9 +126,7 @@ impl GameState for State {
 
         match newrunstate {
             RunState::MapGeneration => {
-                if !SHOW_MAPGEN_VISUALIZER {
-                    newrunstate = self.mapgen_next_state.unwrap();
-                } else {
+                if SHOW_MAPGEN_VISUALIZER {
                     ctx.cls();
                     if self.mapgen_index < self.mapgen_history.len()
                         && self.mapgen_index < self.mapgen_history.len()
@@ -137,6 +143,8 @@ impl GameState for State {
                             newrunstate = self.mapgen_next_state.unwrap();
                         }
                     }
+                } else {
+                    newrunstate = self.mapgen_next_state.unwrap();
                 }
             }
             RunState::PreRun => {
@@ -225,7 +233,7 @@ impl GameState for State {
                     }
                     gui::CheatMenuResult::Reveal => {
                         let mut map = self.ecs.fetch_mut::<Map>();
-                        for v in map.revealed_tiles.iter_mut() {
+                        for v in &mut map.revealed_tiles {
                             *v = true;
                         }
                         newrunstate = RunState::AwaitingInput;
@@ -337,7 +345,7 @@ impl GameState for State {
                 }
             }
             RunState::ShowVendor { vendor, mode } => {
-                use crate::raws::*;
+                use crate::raws::{SpawnType, RAWS};
                 let result = gui::show_vendor_menu(self, ctx, vendor, mode);
                 match result.0 {
                     gui::VendorResult::Cancel => newrunstate = RunState::AwaitingInput,
@@ -516,7 +524,7 @@ impl State {
         for e in self.ecs.entities().join() {
             to_delete.push(e);
         }
-        for del in to_delete.iter() {
+        for del in &to_delete {
             self.ecs.delete_entity(*del).expect("Deletion failed");
         }
 

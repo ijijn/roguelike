@@ -45,7 +45,7 @@ pub fn menu_option<T: ToString>(
 
 pub fn item_result_menu<S: ToString>(
     draw_batch: &mut DrawBatch,
-    title: S,
+    title: &S,
     count: usize,
     items: &[(Entity, String)],
     key: Option<VirtualKeyCode>,

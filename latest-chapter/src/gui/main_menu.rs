@@ -1,14 +1,14 @@
 use crate::{rex_assets::RexAssets, RunState, State};
 use rltk::prelude::*;
 
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum MainMenuSelection {
     NewGame,
     LoadGame,
     Quit,
 }
 
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum MainMenuResult {
     NoSelection { selected: MainMenuSelection },
     Selected { selected: MainMenuSelection },

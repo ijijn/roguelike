@@ -8,17 +8,17 @@ struct Tooltip {
 }
 
 impl Tooltip {
-    fn new() -> Tooltip {
-        Tooltip { lines: Vec::new() }
+    const fn new() -> Self {
+        Self { lines: Vec::new() }
     }
 
-    fn add<S: ToString>(&mut self, line: S) {
+    fn add<S: ToString>(&mut self, line: &S) {
         self.lines.push(line.to_string());
     }
 
     fn width(&self) -> i32 {
         let mut max = 0;
-        for s in self.lines.iter() {
+        for s in &self.lines {
             if s.len() > max {
                 max = s.len();
             }
@@ -87,46 +87,46 @@ pub fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
             return;
         }
         let mut tip = Tooltip::new();
-        tip.add(get_item_display_name(ecs, entity));
+        tip.add(&get_item_display_name(ecs, entity));
 
         // Comment on attributes
         let attr = attributes.get(entity);
         if let Some(attr) = attr {
-            let mut s = "".to_string();
+            let mut s = String::new();
             if attr.might.bonus < 0 {
-                s += "Weak. "
-            };
+                s += "Weak. ";
+            }
             if attr.might.bonus > 0 {
-                s += "Strong. "
-            };
+                s += "Strong. ";
+            }
             if attr.quickness.bonus < 0 {
-                s += "Clumsy. "
-            };
+                s += "Clumsy. ";
+            }
             if attr.quickness.bonus > 0 {
-                s += "Agile. "
-            };
+                s += "Agile. ";
+            }
             if attr.fitness.bonus < 0 {
-                s += "Unheathy. "
-            };
+                s += "Unheathy. ";
+            }
             if attr.fitness.bonus > 0 {
-                s += "Healthy."
-            };
+                s += "Healthy.";
+            }
             if attr.intelligence.bonus < 0 {
-                s += "Unintelligent. "
-            };
+                s += "Unintelligent. ";
+            }
             if attr.intelligence.bonus > 0 {
-                s += "Smart. "
-            };
+                s += "Smart. ";
+            }
             if s.is_empty() {
                 s = "Quite Average".to_string();
             }
-            tip.add(s);
+            tip.add(&s);
         }
 
         // Comment on pools
         let stat = pools.get(entity);
         if let Some(stat) = stat {
-            tip.add(format!("Level: {}", stat.level));
+            tip.add(&format!("Level: {}", stat.level));
         }
 
         // Status effects
@@ -135,7 +135,7 @@ pub fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
         let names = ecs.read_storage::<Name>();
         for (status, duration, name) in (&statuses, &durations, &names).join() {
             if status.target == entity {
-                tip.add(format!("{} ({})", name.name, duration.turns));
+                tip.add(&format!("{} ({})", name.name, duration.turns));
             }
         }
 
@@ -168,7 +168,7 @@ pub fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
     );
 
     let mut total_height = 0;
-    for tt in tip_boxes.iter() {
+    for tt in &tip_boxes {
         total_height += tt.height();
     }
 
