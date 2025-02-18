@@ -52,7 +52,8 @@ pub fn index_entity(entity: Entity, idx: usize, blocks_tile: bool) {
     }
 }
 
-#[must_use] pub fn is_blocked(idx: usize) -> bool {
+#[must_use]
+pub fn is_blocked(idx: usize) -> bool {
     let lock = SPATIAL_MAP.lock().unwrap();
     lock.blocked[idx].0 || lock.blocked[idx].1
 }
@@ -76,8 +77,7 @@ pub fn for_each_tile_content_with_gamemode<F>(idx: usize, mut f: F) -> RunState
 where
     F: FnMut(Entity) -> Option<RunState>,
 {
-    let lock = SPATIAL_MAP.lock().unwrap();
-    for entity in &lock.tile_content[idx] {
+    for entity in &SPATIAL_MAP.lock().unwrap().tile_content[idx] {
         if let Some(rs) = f(entity.0) {
             return rs;
         }
@@ -86,7 +86,8 @@ where
     RunState::AwaitingInput
 }
 
-#[must_use] pub fn get_tile_content_clone(idx: usize) -> Vec<Entity> {
+#[must_use]
+pub fn get_tile_content_clone(idx: usize) -> Vec<Entity> {
     let lock = SPATIAL_MAP.lock().unwrap();
     lock.tile_content[idx].iter().map(|(e, _)| *e).collect()
 }
