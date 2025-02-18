@@ -1,4 +1,4 @@
-use super::components::*;
+use super::components::{AlwaysTargetsSelf, ApplyMove, ApplyTeleport, AreaOfEffect, AttributeBonus, Attributes, BlocksTile, BlocksVisibility, Chasing, Confusion, Consumable, CursedItem, DMSerializationHelper, DamageOverTime, Door, Duration, EntityMoved, EntryTrigger, EquipmentChanged, Equippable, Equipped, Faction, Hidden, HungerClock, IdentifiedItem, InBackpack, InflictsDamage, Initiative, Item, KnownSpells, LightSource, LootTable, MagicItem, MagicMapper, MoveMode, MyTurn, Name, NaturalAttackDefense, ObfuscatedName, OnDeath, OtherLevelPosition, ParticleLifetime, Player, Pools, Position, ProvidesFood, ProvidesHealing, ProvidesIdentification, ProvidesMana, ProvidesRemoveCurse, Quips, Ranged, Renderable, SerializationHelper, SerializeMe, SingleActivation, Skills, Slow, SpawnParticleBurst, SpawnParticleLine, SpecialAbilities, SpellTemplate, StatusEffect, Target, TeachesSpell, TeleportTo, TileSize, TownPortal, Vendor, Viewshed, WantsToApproach, WantsToCastSpell, WantsToDropItem, WantsToFlee, WantsToMelee, WantsToPickupItem, WantsToRemoveItem, WantsToShoot, WantsToUseItem, Weapon, Wearable};
 use specs::error::NoError;
 use specs::prelude::*;
 use specs::saveload::{
@@ -149,7 +149,7 @@ pub fn save_game(ecs: &mut World) {
     ecs.delete_entity(savehelper2).expect("Crash on cleanup");
 }
 
-pub fn does_save_exist() -> bool {
+#[must_use] pub fn does_save_exist() -> bool {
     Path::new("./savegame.json").exists()
 }
 
@@ -175,7 +175,7 @@ pub fn load_game(ecs: &mut World) {
         for e in ecs.entities().join() {
             to_delete.push(e);
         }
-        for del in to_delete.iter() {
+        for del in &to_delete {
             ecs.delete_entity(*del).expect("Deletion failed");
         }
     }

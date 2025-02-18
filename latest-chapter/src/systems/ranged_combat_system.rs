@@ -1,5 +1,5 @@
 use crate::{
-    effects::*, skill_bonus, Attributes, EquipmentSlot, Equipped, HungerClock, HungerState, Map,
+    effects::{EffectType, Targets, add_effect}, skill_bonus, Attributes, EquipmentSlot, Equipped, HungerClock, HungerState, Map,
     Name, NaturalAttackDefense, Pools, Position, Skill, Skills, WantsToShoot, Weapon,
     WeaponAttribute, Wearable,
 };
@@ -210,7 +210,7 @@ impl<'a> System<'a> for RangedCombatSystem {
                                     item: weapon_entity.unwrap(),
                                 },
                                 effect_target,
-                            )
+                            );
                         }
                     }
                 } else if natural_roll == 1 {

@@ -1,7 +1,7 @@
 use super::{
     AreaOfEffect, EquipmentChanged, IdentifiedItem, Map, Name, WantsToCastSpell, WantsToUseItem,
 };
-use crate::effects::*;
+use crate::effects::{EffectType, Targets, add_effect, aoe_tiles};
 use specs::prelude::*;
 
 pub struct ItemUseSystem {}

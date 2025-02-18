@@ -18,7 +18,7 @@ pub fn print_log(console: &mut Box<dyn Console>, pos: Point) {
     let mut y = pos.y;
     let mut x = pos.x;
     LOG.lock().unwrap().iter().rev().take(6).for_each(|log| {
-        log.iter().for_each(|frag| {
+        for frag in log {
             console.print_color(
                 x,
                 y,
@@ -28,7 +28,7 @@ pub fn print_log(console: &mut Box<dyn Console>, pos: Point) {
             );
             x += frag.text.len() as i32;
             x += 1;
-        });
+        }
         y += 1;
         x = pos.x;
     });

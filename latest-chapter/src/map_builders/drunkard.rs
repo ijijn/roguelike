@@ -1,6 +1,6 @@
 use super::{paint, BuilderMap, InitialMapBuilder, MetaMapBuilder, Position, Symmetry, TileType};
 
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 #[allow(dead_code)]
 pub enum DrunkSpawnMode {
     StartingPoint,
@@ -35,13 +35,13 @@ impl MetaMapBuilder for DrunkardsWalkBuilder {
 
 impl DrunkardsWalkBuilder {
     #[allow(dead_code)]
-    pub fn new(settings: DrunkardSettings) -> DrunkardsWalkBuilder {
-        DrunkardsWalkBuilder { settings }
+    pub const fn new(settings: DrunkardSettings) -> Self {
+        Self { settings }
     }
 
     #[allow(dead_code)]
-    pub fn open_area() -> Box<DrunkardsWalkBuilder> {
-        Box::new(DrunkardsWalkBuilder {
+    pub fn open_area() -> Box<Self> {
+        Box::new(Self {
             settings: DrunkardSettings {
                 spawn_mode: DrunkSpawnMode::StartingPoint,
                 drunken_lifetime: 400,
@@ -53,8 +53,8 @@ impl DrunkardsWalkBuilder {
     }
 
     #[allow(dead_code)]
-    pub fn open_halls() -> Box<DrunkardsWalkBuilder> {
-        Box::new(DrunkardsWalkBuilder {
+    pub fn open_halls() -> Box<Self> {
+        Box::new(Self {
             settings: DrunkardSettings {
                 spawn_mode: DrunkSpawnMode::Random,
                 drunken_lifetime: 400,
@@ -66,8 +66,8 @@ impl DrunkardsWalkBuilder {
     }
 
     #[allow(dead_code)]
-    pub fn winding_passages() -> Box<DrunkardsWalkBuilder> {
-        Box::new(DrunkardsWalkBuilder {
+    pub fn winding_passages() -> Box<Self> {
+        Box::new(Self {
             settings: DrunkardSettings {
                 spawn_mode: DrunkSpawnMode::Random,
                 drunken_lifetime: 100,
@@ -79,8 +79,8 @@ impl DrunkardsWalkBuilder {
     }
 
     #[allow(dead_code)]
-    pub fn fat_passages() -> Box<DrunkardsWalkBuilder> {
-        Box::new(DrunkardsWalkBuilder {
+    pub fn fat_passages() -> Box<Self> {
+        Box::new(Self {
             settings: DrunkardSettings {
                 spawn_mode: DrunkSpawnMode::Random,
                 drunken_lifetime: 100,
@@ -92,8 +92,8 @@ impl DrunkardsWalkBuilder {
     }
 
     #[allow(dead_code)]
-    pub fn fearful_symmetry() -> Box<DrunkardsWalkBuilder> {
-        Box::new(DrunkardsWalkBuilder {
+    pub fn fearful_symmetry() -> Box<Self> {
+        Box::new(Self {
             settings: DrunkardSettings {
                 spawn_mode: DrunkSpawnMode::Random,
                 drunken_lifetime: 100,
@@ -190,7 +190,7 @@ impl DrunkardsWalkBuilder {
             }
 
             digger_count += 1;
-            for t in build_data.map.tiles.iter_mut() {
+            for t in &mut build_data.map.tiles {
                 if *t == TileType::DownStairs {
                     *t = TileType::Floor;
                 }

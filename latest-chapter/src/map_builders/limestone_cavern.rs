@@ -55,8 +55,8 @@ impl MetaMapBuilder for CaveDecorator {
 
 impl CaveDecorator {
     #[allow(dead_code)]
-    pub fn new() -> Box<CaveDecorator> {
-        Box::new(CaveDecorator {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn build(&mut self, build_data: &mut BuilderMap) {
@@ -114,8 +114,8 @@ impl MetaMapBuilder for CaveTransition {
 
 impl CaveTransition {
     #[allow(dead_code)]
-    pub fn new() -> Box<CaveTransition> {
-        Box::new(CaveTransition {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn build(&mut self, build_data: &mut BuilderMap) {
@@ -133,7 +133,7 @@ impl CaveTransition {
         builder.build_map();
 
         // Add the history to our history
-        for h in builder.build_data.history.iter() {
+        for h in &builder.build_data.history {
             build_data.history.push(h.clone());
         }
         build_data.take_snapshot();
@@ -155,7 +155,7 @@ impl CaveTransition {
         });
 
         // Keep room spawn data from the right half of the map
-        for s in builder.build_data.spawn_list.iter() {
+        for s in &builder.build_data.spawn_list {
             let x = s.0 as i32 / w;
             if x > w / 2 {
                 build_data.spawn_list.push(s.clone());

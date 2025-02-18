@@ -39,10 +39,10 @@ impl<'a> System<'a> for VisibilitySystem {
                 // If this is the player, reveal what they can see
                 let _p: Option<&Player> = player.get(ent);
                 if let Some(_p) = _p {
-                    for t in map.visible_tiles.iter_mut() {
-                        *t = false
+                    for t in &mut map.visible_tiles {
+                        *t = false;
                     }
-                    for vis in viewshed.visible_tiles.iter() {
+                    for vis in &viewshed.visible_tiles {
                         if vis.x > 0 && vis.x < map.width - 1 && vis.y > 0 && vis.y < map.height - 1
                         {
                             let idx = map.xy_idx(vis.x, vis.y);

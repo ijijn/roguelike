@@ -22,8 +22,8 @@ impl MetaMapBuilder for RoomSorter {
 
 impl RoomSorter {
     #[allow(dead_code)]
-    pub fn new(sort_by: RoomSort) -> Box<RoomSorter> {
-        Box::new(RoomSorter { sort_by })
+    pub fn new(sort_by: RoomSort) -> Box<Self> {
+        Box::new(Self { sort_by })
     }
 
     fn sorter(&mut self, build_data: &mut BuilderMap) {

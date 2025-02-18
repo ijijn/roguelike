@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use specs::error::NoError;
 use specs::prelude::*;
 use specs::saveload::{ConvertSaveload, Marker};
-use specs_derive::*;
+use specs_derive::{Component, ConvertSaveload};
 use std::collections::HashMap;
 
 #[derive(Component, ConvertSaveload, Clone)]
@@ -363,7 +363,7 @@ pub struct WantsToRemoveItem {
     pub item: Entity,
 }
 
-#[derive(PartialEq, Copy, Clone, Serialize, Deserialize)]
+#[derive(PartialEq, Eq, Copy, Clone, Serialize, Deserialize)]
 pub enum EquipmentSlot {
     Melee,
     Shield,
@@ -385,7 +385,7 @@ pub struct Equipped {
     pub slot: EquipmentSlot,
 }
 
-#[derive(PartialEq, Copy, Clone, Serialize, Deserialize)]
+#[derive(PartialEq, Eq, Copy, Clone, Serialize, Deserialize)]
 pub enum WeaponAttribute {
     Might,
     Quickness,
@@ -452,7 +452,7 @@ pub struct SpawnParticleBurst {
     pub lifetime_ms: f32,
 }
 
-#[derive(Serialize, Deserialize, Copy, Clone, PartialEq)]
+#[derive(Serialize, Deserialize, Copy, Clone, PartialEq, Eq)]
 pub enum HungerState {
     WellFed,
     Normal,

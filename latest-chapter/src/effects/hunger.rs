@@ -1,4 +1,4 @@
-use super::*;
+use super::{EffectSpawner, Entity, World, WorldExt};
 use crate::components::{HungerClock, HungerState};
 
 pub fn well_fed(ecs: &mut World, _damage: &EffectSpawner, target: Entity) {

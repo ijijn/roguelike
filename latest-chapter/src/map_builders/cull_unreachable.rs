@@ -10,8 +10,8 @@ impl MetaMapBuilder for CullUnreachable {
 
 impl CullUnreachable {
     #[allow(dead_code)]
-    pub fn new() -> Box<CullUnreachable> {
-        Box::new(CullUnreachable {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn build(&mut self, build_data: &mut BuilderMap) {

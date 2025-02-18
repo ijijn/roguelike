@@ -11,13 +11,13 @@ impl MetaMapBuilder for DoorPlacement {
 
 impl DoorPlacement {
     #[allow(dead_code)]
-    pub fn new() -> Box<DoorPlacement> {
-        Box::new(DoorPlacement {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn door_possible(&self, build_data: &mut BuilderMap, idx: usize) -> bool {
         let mut blocked = false;
-        for spawn in build_data.spawn_list.iter() {
+        for spawn in &build_data.spawn_list {
             if spawn.0 == idx {
                 blocked = true;
             }
@@ -59,7 +59,7 @@ impl DoorPlacement {
     fn doors(&mut self, build_data: &mut BuilderMap) {
         if let Some(halls_original) = &build_data.corridors {
             let halls = halls_original.clone(); // To avoid nested borrowing
-            for hall in halls.iter() {
+            for hall in &halls {
                 if hall.len() > 2 {
                     // We aren't interested in tiny corridors
                     if self.door_possible(build_data, hall[0]) {

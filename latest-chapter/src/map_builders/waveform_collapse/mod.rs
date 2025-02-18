@@ -1,10 +1,10 @@
 use super::{BuilderMap, Map, MetaMapBuilder, TileType};
 mod common;
-use common::*;
+use common::{MapChunk, tile_idx_in_chunk};
 mod constraints;
-use constraints::*;
+use constraints::{build_patterns, patterns_to_constraints, render_pattern_to_map};
 mod solver;
-use solver::*;
+use solver::Solver;
 
 /// Provides a map builder using the Wave Function Collapse algorithm.
 pub struct WaveformCollapseBuilder {}
@@ -18,8 +18,8 @@ impl MetaMapBuilder for WaveformCollapseBuilder {
 impl WaveformCollapseBuilder {
     /// Constructor for waveform collapse.
     #[allow(dead_code)]
-    pub fn new() -> Box<WaveformCollapseBuilder> {
-        Box::new(WaveformCollapseBuilder {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn build(&mut self, build_data: &mut BuilderMap) {

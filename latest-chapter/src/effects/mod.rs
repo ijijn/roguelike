@@ -132,7 +132,7 @@ fn target_applicator(ecs: &mut World, effect: &mut EffectSpawner) {
     }
 }
 
-fn tile_effect_hits_entities(effect: &EffectType) -> bool {
+const fn tile_effect_hits_entities(effect: &EffectType) -> bool {
     matches!(
         effect,
         EffectType::Damage { .. }
@@ -173,12 +173,12 @@ fn affect_entity(ecs: &mut World, effect: &mut EffectSpawner, target: Entity) {
         EffectType::EntityDeath => damage::death(ecs, effect, target),
         EffectType::Bloodstain => {
             if let Some(pos) = entity_position(ecs, target) {
-                damage::bloodstain(ecs, pos)
+                damage::bloodstain(ecs, pos);
             }
         }
         EffectType::Particle { .. } => {
             if let Some(pos) = entity_position(ecs, target) {
-                particles::particle_to_tile(ecs, pos, effect)
+                particles::particle_to_tile(ecs, pos, effect);
             }
         }
         EffectType::WellFed => hunger::well_fed(ecs, effect, target),

@@ -8,7 +8,7 @@ struct SpatialMap {
 }
 
 impl SpatialMap {
-    fn new() -> Self {
+    const fn new() -> Self {
         Self {
             blocked: Vec::new(),
             tile_content: Vec::new(),
@@ -32,7 +32,7 @@ pub fn clear() {
         b.0 = false;
         b.1 = false;
     });
-    for content in lock.tile_content.iter_mut() {
+    for content in &mut lock.tile_content {
         content.clear();
     }
 }
@@ -52,7 +52,7 @@ pub fn index_entity(entity: Entity, idx: usize, blocks_tile: bool) {
     }
 }
 
-pub fn is_blocked(idx: usize) -> bool {
+#[must_use] pub fn is_blocked(idx: usize) -> bool {
     let lock = SPATIAL_MAP.lock().unwrap();
     lock.blocked[idx].0 || lock.blocked[idx].1
 }
@@ -67,7 +67,7 @@ where
     F: FnMut(Entity),
 {
     let lock = SPATIAL_MAP.lock().unwrap();
-    for entity in lock.tile_content[idx].iter() {
+    for entity in &lock.tile_content[idx] {
         f(entity.0);
     }
 }
@@ -77,7 +77,7 @@ where
     F: FnMut(Entity) -> Option<RunState>,
 {
     let lock = SPATIAL_MAP.lock().unwrap();
-    for entity in lock.tile_content[idx].iter() {
+    for entity in &lock.tile_content[idx] {
         if let Some(rs) = f(entity.0) {
             return rs;
         }
@@ -86,7 +86,7 @@ where
     RunState::AwaitingInput
 }
 
-pub fn get_tile_content_clone(idx: usize) -> Vec<Entity> {
+#[must_use] pub fn get_tile_content_clone(idx: usize) -> Vec<Entity> {
     let lock = SPATIAL_MAP.lock().unwrap();
     lock.tile_content[idx].iter().map(|(e, _)| *e).collect()
 }

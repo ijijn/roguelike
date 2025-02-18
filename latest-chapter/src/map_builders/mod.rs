@@ -33,20 +33,20 @@ mod town;
 mod voronoi;
 mod voronoi_spawning;
 mod waveform_collapse;
-use area_ending_point::*;
+use area_ending_point::{AreaEndingPosition, XEnd, YEnd};
 use area_starting_points::{AreaStartingPosition, XStart, YStart};
 use bsp_dungeon::BspDungeonBuilder;
 use bsp_interior::BspInteriorBuilder;
 use cellular_automata::CellularAutomataBuilder;
-use common::*;
+use common::{Symmetry, apply_horizontal_tunnel, apply_vertical_tunnel, draw_corridor, paint};
 use cull_unreachable::CullUnreachable;
 use distant_exit::DistantExit;
 use dla::DLABuilder;
 use door_placement::DoorPlacement;
 use drunkard::DrunkardsWalkBuilder;
-use dwarf_fort_builder::*;
+use dwarf_fort_builder::dwarf_fort_builder;
 use forest::forest_builder;
-use limestone_cavern::*;
+use limestone_cavern::{limestone_cavern_builder, limestone_deep_cavern_builder, limestone_transition_builder};
 use maze::MazeBuilder;
 use prefab_builder::PrefabBuilder;
 use room_based_spawner::RoomBasedSpawner;
@@ -67,9 +67,9 @@ use voronoi::VoronoiCellBuilder;
 use voronoi_spawning::VoronoiSpawning;
 use waveform_collapse::WaveformCollapseBuilder;
 mod mushroom_forest;
-use mushroom_forest::*;
+use mushroom_forest::{mushroom_builder, mushroom_entrance, mushroom_exit};
 mod dark_elves;
-use dark_elves::*;
+use dark_elves::{dark_elf_city, dark_elf_plaza};
 
 pub struct BuilderMap {
     pub spawn_list: Vec<(usize, String)>,
@@ -86,7 +86,7 @@ impl BuilderMap {
     fn take_snapshot(&mut self) {
         if SHOW_MAPGEN_VISUALIZER {
             let mut snapshot = self.map.clone();
-            for v in snapshot.revealed_tiles.iter_mut() {
+            for v in &mut snapshot.revealed_tiles {
                 *v = true;
             }
             self.history.push(snapshot);
@@ -101,8 +101,8 @@ pub struct BuilderChain {
 }
 
 impl BuilderChain {
-    pub fn new<S: ToString>(new_depth: i32, width: i32, height: i32, name: S) -> BuilderChain {
-        BuilderChain {
+    pub fn new<S: ToString>(new_depth: i32, width: i32, height: i32, name: S) -> Self {
+        Self {
             starter: None,
             builders: Vec::new(),
             build_data: BuilderMap {
@@ -122,7 +122,7 @@ impl BuilderChain {
         match self.starter {
             None => self.starter = Some(starter),
             Some(_) => panic!("You can only have one starting builder."),
-        };
+        }
     }
 
     pub fn with(&mut self, metabuilder: Box<dyn MetaMapBuilder>) {
@@ -139,13 +139,13 @@ impl BuilderChain {
         }
 
         // Build additional layers in turn
-        for metabuilder in self.builders.iter_mut() {
+        for metabuilder in &mut self.builders {
             metabuilder.build_map(&mut self.build_data);
         }
     }
 
     pub fn spawn_entities(&mut self, ecs: &mut World) {
-        for entity in self.build_data.spawn_list.iter() {
+        for entity in &self.build_data.spawn_list {
             spawner::spawn_entity(ecs, &(&entity.0, &entity.1));
         }
     }
@@ -221,12 +221,9 @@ fn random_room_builder(builder: &mut BuilderChain) {
     }
 
     let start_roll = crate::rng::roll_dice(1, 2);
-    match start_roll {
-        1 => builder.with(RoomBasedStartingPosition::new()),
-        _ => {
-            let (start_x, start_y) = random_start_position();
-            builder.with(AreaStartingPosition::new(start_x, start_y));
-        }
+    if start_roll == 1 { builder.with(RoomBasedStartingPosition::new()) } else {
+        let (start_x, start_y) = random_start_position();
+        builder.with(AreaStartingPosition::new(start_x, start_y));
     }
 
     let exit_roll = crate::rng::roll_dice(1, 2);
@@ -276,7 +273,7 @@ fn random_shape_builder(builder: &mut BuilderChain) {
     builder.with(DistantExit::new());
 }
 
-pub fn random_builder(new_depth: i32, width: i32, height: i32) -> BuilderChain {
+#[must_use] pub fn random_builder(new_depth: i32, width: i32, height: i32) -> BuilderChain {
     let mut builder = BuilderChain::new(new_depth, width, height, "New Map");
     let type_roll = crate::rng::roll_dice(1, 2);
     match type_roll {
@@ -308,8 +305,8 @@ pub fn random_builder(new_depth: i32, width: i32, height: i32) -> BuilderChain {
     builder
 }
 
-pub fn level_builder(new_depth: i32, width: i32, height: i32) -> BuilderChain {
-    rltk::console::log(format!("Depth: {}", new_depth));
+#[must_use] pub fn level_builder(new_depth: i32, width: i32, height: i32) -> BuilderChain {
+    rltk::console::log(format!("Depth: {new_depth}"));
     match new_depth {
         1 => town_builder(new_depth, width, height),
         2 => forest_builder(new_depth, width, height),

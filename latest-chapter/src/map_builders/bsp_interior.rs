@@ -15,8 +15,8 @@ impl InitialMapBuilder for BspInteriorBuilder {
 
 impl BspInteriorBuilder {
     #[allow(dead_code)]
-    pub fn new() -> Box<BspInteriorBuilder> {
-        Box::new(BspInteriorBuilder { rects: Vec::new() })
+    pub fn new() -> Box<Self> {
+        Box::new(Self { rects: Vec::new() })
     }
 
     fn build(&mut self, build_data: &mut BuilderMap) {
@@ -32,7 +32,7 @@ impl BspInteriorBuilder {
         self.add_subrects(first_room); // Divide the first room
 
         let rooms_copy = self.rects.clone();
-        for r in rooms_copy.iter() {
+        for r in &rooms_copy {
             let room = *r;
             //room.x2 -= 1;
             //room.y2 -= 1;

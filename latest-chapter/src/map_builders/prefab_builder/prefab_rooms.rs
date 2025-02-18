@@ -1,5 +1,5 @@
 #[allow(dead_code)]
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub struct PrefabRoom {
     pub template: &'static str,
     pub width: usize,

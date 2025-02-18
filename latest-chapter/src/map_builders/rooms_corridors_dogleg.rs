@@ -11,8 +11,8 @@ impl MetaMapBuilder for DoglegCorridors {
 
 impl DoglegCorridors {
     #[allow(dead_code)]
-    pub fn new() -> Box<DoglegCorridors> {
-        Box::new(DoglegCorridors {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn corridors(&mut self, build_data: &mut BuilderMap) {

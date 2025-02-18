@@ -62,7 +62,7 @@ pub fn render_camera(ecs: &World, ctx: &mut Rltk) {
         .join()
         .collect::<Vec<_>>();
     data.sort_by(|&a, &b| b.1.render_order.cmp(&a.1.render_order));
-    for (pos, render, entity, _hidden) in data.iter() {
+    for (pos, render, entity, _hidden) in &data {
         if let Some(size) = sizes.get(*entity) {
             for cy in 0..size.y {
                 for cx in 0..size.x {

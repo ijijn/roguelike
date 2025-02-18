@@ -12,7 +12,7 @@ pub struct Solver {
 }
 
 impl Solver {
-    pub fn new(constraints: Vec<MapChunk>, chunk_size: i32, map: &Map) -> Solver {
+    pub fn new(constraints: Vec<MapChunk>, chunk_size: i32, map: &Map) -> Self {
         let chunks_x = (map.width / chunk_size) as usize;
         let chunks_y = (map.height / chunk_size) as usize;
         let mut remaining: Vec<(usize, i32)> = Vec::new();
@@ -20,7 +20,7 @@ impl Solver {
             remaining.push((i, 0));
         }
 
-        Solver {
+        Self {
             constraints,
             chunk_size,
             chunks: vec![None; chunks_x * chunks_y],
@@ -31,7 +31,7 @@ impl Solver {
         }
     }
 
-    fn chunk_idx(&self, x: usize, y: usize) -> usize {
+    const fn chunk_idx(&self, x: usize, y: usize) -> usize {
         (y * self.chunks_x) + x
     }
 
@@ -88,7 +88,7 @@ impl Solver {
         // Populate the neighbor count of the remaining list
         let mut remain_copy = self.remaining.clone();
         let mut neighbors_exist = false;
-        for r in remain_copy.iter_mut() {
+        for r in &mut remain_copy {
             let idx = r.0;
             let chunk_x = idx % self.chunks_x;
             let chunk_y = idx / self.chunks_x;
@@ -102,10 +102,10 @@ impl Solver {
         self.remaining = remain_copy;
 
         // Pick a random chunk we haven't dealt with yet and get its index, remove from remaining list
-        let remaining_index = if !neighbors_exist {
-            (crate::rng::roll_dice(1, self.remaining.len() as i32) - 1) as usize
-        } else {
+        let remaining_index = if neighbors_exist {
             0usize
+        } else {
+            (crate::rng::roll_dice(1, self.remaining.len() as i32) - 1) as usize
         };
         let chunk_index = self.remaining[remaining_index].0;
         self.remaining.remove(remaining_index);
@@ -182,16 +182,16 @@ impl Solver {
         } else {
             // There are neighbors, so we try to be compatible with them
             let mut options_to_check: HashSet<usize> = HashSet::new();
-            for o in options.iter() {
-                for i in o.iter() {
+            for o in &options {
+                for i in o {
                     options_to_check.insert(*i);
                 }
             }
 
             let mut possible_options: Vec<usize> = Vec::new();
-            for new_chunk_idx in options_to_check.iter() {
+            for new_chunk_idx in &options_to_check {
                 let mut possible = true;
-                for o in options.iter() {
+                for o in &options {
                     if !o.contains(new_chunk_idx) {
                         possible = false;
                     }

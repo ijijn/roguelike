@@ -12,8 +12,8 @@ impl MetaMapBuilder for NearestCorridors {
 
 impl NearestCorridors {
     #[allow(dead_code)]
-    pub fn new() -> Box<NearestCorridors> {
-        Box::new(NearestCorridors {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn corridors(&mut self, build_data: &mut BuilderMap) {

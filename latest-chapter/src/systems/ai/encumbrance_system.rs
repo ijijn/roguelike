@@ -114,7 +114,7 @@ impl<'a> System<'a> for EncumbranceSystem {
         }
 
         // Apply the data to Pools
-        for (entity, item) in to_update.iter() {
+        for (entity, item) in &to_update {
             if let Some(pool) = pools.get_mut(*entity) {
                 pool.total_weight = item.weight;
                 pool.total_initiative_penalty = item.initiative;

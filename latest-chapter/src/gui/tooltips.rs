@@ -177,7 +177,7 @@ pub fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
         y -= 1;
     }
 
-    for tt in tip_boxes.iter() {
+    for tt in &tip_boxes {
         let x = if mouse_pos.0 < 40 {
             mouse_pos.0 - (1 + tt.width())
         } else {

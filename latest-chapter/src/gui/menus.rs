@@ -75,18 +75,15 @@ pub fn item_result_menu<S: ToString>(
 
     match key {
         None => (ItemMenuResult::NoResponse, None),
-        Some(key) => match key {
-            VirtualKeyCode::Escape => (ItemMenuResult::Cancel, None),
-            _ => {
-                let selection = rltk::letter_to_option(key);
-                if selection > -1 && selection < count as i32 {
-                    return (
-                        ItemMenuResult::Selected,
-                        Some(item_list[selection as usize]),
-                    );
-                }
-                (ItemMenuResult::NoResponse, None)
+        Some(key) => if key == VirtualKeyCode::Escape { (ItemMenuResult::Cancel, None) } else {
+            let selection = rltk::letter_to_option(key);
+            if selection > -1 && selection < count as i32 {
+                return (
+                    ItemMenuResult::Selected,
+                    Some(item_list[selection as usize]),
+                );
             }
+            (ItemMenuResult::NoResponse, None)
         },
     }
 }

@@ -11,8 +11,8 @@ impl MetaMapBuilder for VoronoiSpawning {
 
 impl VoronoiSpawning {
     #[allow(dead_code)]
-    pub fn new() -> Box<VoronoiSpawning> {
-        Box::new(VoronoiSpawning {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     #[allow(clippy::map_entry)]
@@ -40,7 +40,7 @@ impl VoronoiSpawning {
         }
 
         // Spawn the entities
-        for area in noise_areas.iter() {
+        for area in &noise_areas {
             spawner::spawn_region(
                 &build_data.map,
                 area.1,

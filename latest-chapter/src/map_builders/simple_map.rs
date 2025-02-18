@@ -11,8 +11,8 @@ impl InitialMapBuilder for SimpleMapBuilder {
 
 impl SimpleMapBuilder {
     #[allow(dead_code)]
-    pub fn new() -> Box<SimpleMapBuilder> {
-        Box::new(SimpleMapBuilder {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn build_rooms(&mut self, build_data: &mut BuilderMap) {
@@ -28,9 +28,9 @@ impl SimpleMapBuilder {
             let y = crate::rng::roll_dice(1, build_data.map.height - h - 1) - 1;
             let new_room = Rect::new(x, y, w, h);
             let mut ok = true;
-            for other_room in rooms.iter() {
+            for other_room in &rooms {
                 if new_room.intersect(other_room) {
-                    ok = false
+                    ok = false;
                 }
             }
             if ok {

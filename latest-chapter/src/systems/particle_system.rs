@@ -29,7 +29,7 @@ pub fn update_particles(ecs: &mut World, ctx: &Rltk) {
             }
         }
     }
-    for dead in dead_particles.iter() {
+    for dead in &dead_particles {
         ecs.delete_entity(*dead).expect("Particle will not die");
     }
 }
@@ -49,8 +49,8 @@ pub struct ParticleBuilder {
 
 impl ParticleBuilder {
     #[allow(clippy::new_without_default)]
-    pub fn new() -> ParticleBuilder {
-        ParticleBuilder {
+    pub const fn new() -> Self {
+        Self {
             requests: Vec::new(),
         }
     }
@@ -89,7 +89,7 @@ impl<'a> System<'a> for ParticleSpawnSystem {
 
     fn run(&mut self, data: Self::SystemData) {
         let (entities, mut positions, mut renderables, mut particles, mut particle_builder) = data;
-        for new_particle in particle_builder.requests.iter() {
+        for new_particle in &particle_builder.requests {
             let p = entities.create();
             positions
                 .insert(

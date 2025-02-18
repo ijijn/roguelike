@@ -23,7 +23,7 @@ fn get_player_target_list(ecs: &mut World) -> Vec<(f32, Entity)> {
 
             if let Some(vs) = viewsheds.get(*player_entity) {
                 let player_pos = positions.get(*player_entity).unwrap();
-                for tile_point in vs.visible_tiles.iter() {
+                for tile_point in &vs.visible_tiles {
                     let tile_idx = map.xy_idx(tile_point.x, tile_point.y);
                     let distance_to_target = rltk::DistanceAlg::Pythagoras
                         .distance2d(*tile_point, rltk::Point::new(player_pos.x, player_pos.y));
@@ -177,7 +177,20 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, ecs: &mut World) -> RunState 
                         }
                     }
                 }
-                if !hostile {
+                if hostile {
+                    let target = combat_stats.get(potential_target);
+                    if let Some(_target) = target {
+                        wants_to_melee
+                            .insert(
+                                entity,
+                                WantsToMelee {
+                                    target: potential_target,
+                                },
+                            )
+                            .expect("Add target failed");
+                        return Some(RunState::Ticking);
+                    }
+                } else {
                     // Note that we want to move the bystander
                     swap_entities.push((potential_target, pos.x, pos.y));
 
@@ -193,19 +206,6 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, ecs: &mut World) -> RunState 
                     ppos.x = pos.x;
                     ppos.y = pos.y;
                     return Some(RunState::Ticking);
-                } else {
-                    let target = combat_stats.get(potential_target);
-                    if let Some(_target) = target {
-                        wants_to_melee
-                            .insert(
-                                entity,
-                                WantsToMelee {
-                                    target: potential_target,
-                                },
-                            )
-                            .expect("Add target failed");
-                        return Some(RunState::Ticking);
-                    }
                 }
                 let door = doors.get_mut(potential_target);
                 if let Some(door) = door {
@@ -241,7 +241,7 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, ecs: &mut World) -> RunState 
         }
     }
 
-    for m in swap_entities.iter() {
+    for m in &swap_entities {
         let their_pos = positions.get_mut(m.0);
         if let Some(their_pos) = their_pos {
             their_pos.x = m.1;
@@ -322,7 +322,7 @@ fn skip_turn(ecs: &mut World) -> RunState {
 
     let mut can_heal = true;
     let viewshed = viewshed_components.get(*player_entity).unwrap();
-    for tile in viewshed.visible_tiles.iter() {
+    for tile in &viewshed.visible_tiles {
         let idx = worldmap_resource.xy_idx(tile.x, tile.y);
         crate::spatial::for_each_tile_content(idx, |entity_id| {
             let faction = factions.get(entity_id);
@@ -426,7 +426,7 @@ fn use_spell_hotkey(gs: &mut State, key: i32) -> RunState {
                         range: ranged.range,
                         item: spell_entity,
                     };
-                };
+                }
                 let mut intent = gs.ecs.write_storage::<WantsToCastSpell>();
                 intent
                     .insert(

@@ -1,4 +1,4 @@
-use crate::{effects::*, HungerClock, HungerState, MyTurn};
+use crate::{effects::{EffectType, Targets, add_effect}, HungerClock, HungerState, MyTurn};
 use specs::prelude::*;
 
 pub struct HungerSystem {}

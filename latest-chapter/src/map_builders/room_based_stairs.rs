@@ -9,8 +9,8 @@ impl MetaMapBuilder for RoomBasedStairs {
 
 impl RoomBasedStairs {
     #[allow(dead_code)]
-    pub fn new() -> Box<RoomBasedStairs> {
-        Box::new(RoomBasedStairs {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn build(&mut self, build_data: &mut BuilderMap) {

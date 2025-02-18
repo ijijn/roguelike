@@ -127,7 +127,7 @@ pub fn death(ecs: &World, effect: &EffectSpawner, target: Entity) {
                     // Improve all skills
                     let mut skills = ecs.write_storage::<Skills>();
                     let player_skills = skills.get_mut(*ecs.fetch::<Entity>()).unwrap();
-                    for sk in player_skills.skills.iter_mut() {
+                    for sk in &mut player_skills.skills {
                         *sk.1 += 1;
                     }
 

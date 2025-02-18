@@ -18,8 +18,8 @@ impl MetaMapBuilder for CellularAutomataBuilder {
 
 impl CellularAutomataBuilder {
     #[allow(dead_code)]
-    pub fn new() -> Box<CellularAutomataBuilder> {
-        Box::new(CellularAutomataBuilder {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn apply_iteration(&mut self, build_data: &mut BuilderMap) {
@@ -78,9 +78,9 @@ impl CellularAutomataBuilder {
                 let roll = crate::rng::roll_dice(1, 100);
                 let idx = build_data.map.xy_idx(x, y);
                 if roll > 55 {
-                    build_data.map.tiles[idx] = TileType::Floor
+                    build_data.map.tiles[idx] = TileType::Floor;
                 } else {
-                    build_data.map.tiles[idx] = TileType::Wall
+                    build_data.map.tiles[idx] = TileType::Wall;
                 }
             }
         }

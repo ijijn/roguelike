@@ -92,7 +92,7 @@ impl<'a> System<'a> for InitiativeSystem {
 
         // Handle durations
         if *runstate == RunState::AwaitingInput {
-            use crate::effects::*;
+            use crate::effects::{EffectType, Targets, add_effect};
             for (effect_entity, duration, status) in (&entities, &mut durations, &statuses).join() {
                 if entities.is_alive(status.target) {
                     duration.turns -= 1;

@@ -48,7 +48,7 @@ impl<'a> System<'a> for FleeAI {
         want_flee.clear();
 
         // Remove turn marker for those that are done
-        for done in turn_done.iter() {
+        for done in &turn_done {
             turns.remove(*done);
         }
     }

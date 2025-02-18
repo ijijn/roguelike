@@ -10,8 +10,8 @@ impl MetaMapBuilder for RoomExploder {
 
 impl RoomExploder {
     #[allow(dead_code)]
-    pub fn new() -> Box<RoomExploder> {
-        Box::new(RoomExploder {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn build(&mut self, build_data: &mut BuilderMap) {
@@ -22,7 +22,7 @@ impl RoomExploder {
             panic!("Room Explosions require a builder with room structures");
         }
 
-        for room in rooms.iter() {
+        for room in &rooms {
             let start = room.center();
             let n_diggers = crate::rng::roll_dice(1, 20) - 5;
             if n_diggers > 0 {
@@ -71,7 +71,7 @@ impl RoomExploder {
                         build_data.take_snapshot();
                     }
 
-                    for t in build_data.map.tiles.iter_mut() {
+                    for t in &mut build_data.map.tiles {
                         if *t == TileType::DownStairs {
                             *t = TileType::Floor;
                         }

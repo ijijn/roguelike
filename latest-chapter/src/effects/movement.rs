@@ -1,4 +1,4 @@
-use super::*;
+use super::{EffectSpawner, EffectType, Entity, SystemData, World, WorldExt};
 use crate::components::ApplyTeleport;
 
 pub fn apply_teleport(ecs: &mut World, destination: &EffectSpawner, target: Entity) {

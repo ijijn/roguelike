@@ -1,13 +1,13 @@
 mod item_structs;
-use item_structs::*;
+use item_structs::{Item, MagicItem, Renderable};
 mod mob_structs;
-use mob_structs::*;
+use mob_structs::Mob;
 mod prop_structs;
-use prop_structs::*;
+use prop_structs::Prop;
 mod spawn_table_structs;
-use spawn_table_structs::*;
+use spawn_table_structs::SpawnTableEntry;
 mod loot_structs;
-use loot_structs::*;
+use loot_structs::LootTable;
 mod faction_structs;
 pub use faction_structs::*;
 mod spell_structs;

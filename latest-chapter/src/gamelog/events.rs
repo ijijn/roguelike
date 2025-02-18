@@ -37,7 +37,7 @@ pub fn clone_events() -> HashMap<String, i32> {
 
 pub fn load_events(events: HashMap<String, i32>) {
     EVENTS.lock().unwrap().clear();
-    events.iter().for_each(|(k, v)| {
+    for (k, v) in &events {
         EVENTS.lock().unwrap().insert(k.to_string(), *v);
-    });
+    }
 }

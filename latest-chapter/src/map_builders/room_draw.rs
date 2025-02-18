@@ -10,8 +10,8 @@ impl MetaMapBuilder for RoomDrawer {
 
 impl RoomDrawer {
     #[allow(dead_code)]
-    pub fn new() -> Box<RoomDrawer> {
-        Box::new(RoomDrawer {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     #[allow(dead_code)]
@@ -54,7 +54,7 @@ impl RoomDrawer {
             panic!("Room Drawing require a builder with room structures");
         }
 
-        for room in rooms.iter() {
+        for room in &rooms {
             let room_type = crate::rng::roll_dice(1, 4);
             match room_type {
                 1 => self.circle(build_data, room),

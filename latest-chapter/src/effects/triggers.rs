@@ -1,5 +1,5 @@
-use super::*;
-use crate::components::*;
+use super::{EffectType, Entity, Join, LendJoin, Map, ParJoin, ParallelIterator, SystemData, Targets, World, WorldExt, add_effect, aoe_tiles, entity_position, targeting};
+use crate::components::{AlwaysTargetsSelf, AreaOfEffect, AttributeBonus, Confusion, Consumable, DamageOverTime, Duration, Hidden, InflictsDamage, KnownSpell, KnownSpells, MagicMapper, Name, Pools, Position, ProvidesFood, ProvidesHealing, ProvidesIdentification, ProvidesMana, ProvidesRemoveCurse, SingleActivation, Slow, SpawnParticleBurst, SpawnParticleLine, SpellTemplate, TeachesSpell, TeleportTo, TownPortal};
 use crate::RunState;
 
 pub fn item_trigger(creator: Option<Entity>, item: Entity, targets: &Targets, ecs: &mut World) {
@@ -12,9 +12,8 @@ pub fn item_trigger(creator: Option<Entity>, item: Entity, targets: &Targets, ec
                 .append("is out of charges!")
                 .log();
             return;
-        } else {
-            c.charges -= 1;
         }
+        c.charges -= 1;
     }
 
     // Use the item via the generic system
@@ -129,11 +128,11 @@ fn event_trigger(
                     }
                 }
                 Targets::TargetList { targets } => {
-                    targets.iter().for_each(|target| {
+                    for target in targets {
                         if let Some(end_pos) = entity_position(ecs, *target) {
                             spawn_line_particles(ecs, start_pos, end_pos, part);
                         }
-                    });
+                    }
                 }
             }
         }
@@ -286,7 +285,7 @@ fn event_trigger(
                     let mut already_known = false;
                     known.spells.iter().for_each(|s| {
                         if s.display_name == spell.spell {
-                            already_known = true
+                            already_known = true;
                         }
                     });
                     if !already_known {
@@ -333,7 +332,7 @@ fn spawn_line_particles(ecs: &World, start: i32, end: i32, part: &SpawnParticleL
     let start_pt = rltk::Point::new(start % map.width, end / map.width);
     let end_pt = rltk::Point::new(end % map.width, end / map.width);
     let line = rltk::line2d(rltk::LineAlg::Bresenham, start_pt, end_pt);
-    for pt in line.iter() {
+    for pt in &line {
         add_effect(
             None,
             EffectType::Particle {

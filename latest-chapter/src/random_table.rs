@@ -6,8 +6,8 @@ pub struct RandomEntry {
 }
 
 impl RandomEntry {
-    pub fn new<S: ToString>(name: S, weight: i32) -> RandomEntry {
-        RandomEntry {
+    pub fn new<S: ToString>(name: S, weight: i32) -> Self {
+        Self {
             name: name.to_string(),
             weight,
         }
@@ -22,8 +22,8 @@ pub struct MasterTable {
 }
 
 impl MasterTable {
-    pub fn new() -> MasterTable {
-        MasterTable {
+    #[must_use] pub const fn new() -> Self {
+        Self {
             items: RandomTable::new(),
             mobs: RandomTable::new(),
             props: RandomTable::new(),
@@ -38,7 +38,7 @@ impl MasterTable {
         }
     }
 
-    pub fn roll(&self) -> String {
+    #[must_use] pub fn roll(&self) -> String {
         let roll = crate::rng::roll_dice(1, 4);
         match roll {
             1 => self.items.roll(),
@@ -56,8 +56,8 @@ pub struct RandomTable {
 }
 
 impl RandomTable {
-    pub fn new() -> RandomTable {
-        RandomTable {
+    #[must_use] pub const fn new() -> Self {
+        Self {
             entries: Vec::new(),
             total_weight: 0,
         }
@@ -71,7 +71,7 @@ impl RandomTable {
         }
     }
 
-    pub fn roll(&self) -> String {
+    #[must_use] pub fn roll(&self) -> String {
         if self.total_weight == 0 {
             return "None".to_string();
         }

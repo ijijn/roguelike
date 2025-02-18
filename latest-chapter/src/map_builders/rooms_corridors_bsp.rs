@@ -11,8 +11,8 @@ impl MetaMapBuilder for BspCorridors {
 
 impl BspCorridors {
     #[allow(dead_code)]
-    pub fn new() -> Box<BspCorridors> {
-        Box::new(BspCorridors {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn corridors(&mut self, build_data: &mut BuilderMap) {

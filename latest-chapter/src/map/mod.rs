@@ -25,7 +25,7 @@ pub struct Map {
 }
 
 impl Map {
-    pub fn xy_idx(&self, x: i32, y: i32) -> usize {
+    #[must_use] pub const fn xy_idx(&self, x: i32, y: i32) -> usize {
         (y as usize * self.width as usize) + x as usize
     }
 
@@ -71,10 +71,10 @@ impl Map {
     }
 
     /// Generates an empty map, consisting entirely of solid walls
-    pub fn new<S: ToString>(new_depth: i32, width: i32, height: i32, name: S) -> Map {
+    pub fn new<S: ToString>(new_depth: i32, width: i32, height: i32, name: S) -> Self {
         let map_tile_count = (width * height) as usize;
         crate::spatial::set_size(map_tile_count);
-        Map {
+        Self {
             tiles: vec![TileType::Wall; map_tile_count],
             width,
             height,
@@ -109,17 +109,17 @@ impl BaseMap for Map {
 
         // Cardinal directions
         if self.is_exit_valid(x - 1, y) {
-            exits.push((idx - 1, tile_cost(tt)))
-        };
+            exits.push((idx - 1, tile_cost(tt)));
+        }
         if self.is_exit_valid(x + 1, y) {
-            exits.push((idx + 1, tile_cost(tt)))
-        };
+            exits.push((idx + 1, tile_cost(tt)));
+        }
         if self.is_exit_valid(x, y - 1) {
-            exits.push((idx - w, tile_cost(tt)))
-        };
+            exits.push((idx - w, tile_cost(tt)));
+        }
         if self.is_exit_valid(x, y + 1) {
-            exits.push((idx + w, tile_cost(tt)))
-        };
+            exits.push((idx + w, tile_cost(tt)));
+        }
 
         // Diagonals
         if self.is_exit_valid(x - 1, y - 1) {

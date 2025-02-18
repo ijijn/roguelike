@@ -17,7 +17,7 @@ pub enum TileType {
     UpStairs,
 }
 
-pub fn tile_walkable(tt: TileType) -> bool {
+#[must_use] pub const fn tile_walkable(tt: TileType) -> bool {
     matches!(
         tt,
         TileType::Floor
@@ -32,14 +32,14 @@ pub fn tile_walkable(tt: TileType) -> bool {
     )
 }
 
-pub fn tile_opaque(tt: TileType) -> bool {
+#[must_use] pub const fn tile_opaque(tt: TileType) -> bool {
     matches!(
         tt,
         TileType::Wall | TileType::Stalactite | TileType::Stalagmite
     )
 }
 
-pub fn tile_cost(tt: TileType) -> f32 {
+#[must_use] pub const fn tile_cost(tt: TileType) -> f32 {
     match tt {
         TileType::Road => 0.8,
         TileType::Grass => 1.1,

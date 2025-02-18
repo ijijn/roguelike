@@ -1,5 +1,5 @@
 use super::{faction_structs::Reaction, Raws};
-use crate::components::*;
+use crate::components::{AlwaysTargetsSelf, AreaOfEffect, Attribute, AttributeBonus, Attributes, BlocksTile, BlocksVisibility, Confusion, CursedItem, DamageOverTime, Door, Duration, EntryTrigger, EquipmentChanged, EquipmentSlot, Equippable, Equipped, Faction, Hidden, InBackpack, InflictsDamage, Initiative, LightSource, LootTable, MagicItem, MagicItemClass, MagicMapper, MoveMode, Movement, Name, NaturalAttack, NaturalAttackDefense, ObfuscatedName, OnDeath, Pool, Pools, Position, ProvidesFood, ProvidesHealing, ProvidesIdentification, ProvidesMana, ProvidesRemoveCurse, Quips, Ranged, SerializeMe, SingleActivation, Skill, Skills, Slow, SpawnParticleBurst, SpawnParticleLine, SpecialAbilities, SpecialAbility, SpellTemplate, TeachesSpell, TileSize, TownPortal, Vendor, Viewshed, Weapon, WeaponAttribute, Wearable};
 use crate::random_table::{MasterTable, RandomTable};
 use crate::{attr_bonus, mana_at_level, npc_hp};
 use regex::Regex;
@@ -7,7 +7,7 @@ use specs::prelude::*;
 use specs::saveload::{MarkedBuilder, SimpleMarker};
 use std::collections::{HashMap, HashSet};
 
-pub fn parse_dice_string(dice: &str) -> (i32, i32, i32) {
+#[must_use] pub fn parse_dice_string(dice: &str) -> (i32, i32, i32) {
     lazy_static! {
         static ref DICE_RE: Regex = Regex::new(r"(\d+)d(\d+)([\+\-]\d+)?").unwrap();
     }
@@ -51,8 +51,8 @@ struct NewMagicItem {
 }
 
 impl RawMaster {
-    pub fn empty() -> RawMaster {
-        RawMaster {
+    #[must_use] pub fn empty() -> Self {
+        Self {
             raws: Raws {
                 items: Vec::new(),
                 mobs: Vec::new(),
@@ -140,7 +140,7 @@ impl RawMaster {
                 }
                 std::cmp::Ordering::Equal => {}
                 std::cmp::Ordering::Greater => {
-                    weapon.base_damage = format!("{}d{}+{}", n, die, final_bonus)
+                    weapon.base_damage = format!("{n}d{die}+{final_bonus}");
                 }
             }
         }
@@ -151,7 +151,7 @@ impl RawMaster {
     }
 
     fn build_magic_weapon_or_armor(&mut self, items_to_build: &[NewMagicItem]) {
-        for nmw in items_to_build.iter() {
+        for nmw in items_to_build {
             let base_item_copy = self.build_base_magic_item(nmw);
 
             let real_name = base_item_copy.name.clone();
@@ -174,7 +174,7 @@ impl RawMaster {
             .iter()
             .filter(|i| i.bonus > 0)
             .for_each(|nmw| {
-                for wt in self.raws.weapon_traits.iter() {
+                for wt in &self.raws.weapon_traits {
                     let mut base_item_copy = self.build_base_magic_item(nmw);
                     if let Some(weapon) = base_item_copy.weapon.as_mut() {
                         base_item_copy.name = format!("{} {}", wt.name, base_item_copy.name);
@@ -217,7 +217,7 @@ impl RawMaster {
             self.item_index.insert(item.name.clone(), i);
             used_names.insert(item.name.clone());
 
-            RawMaster::append_magic_template(&mut items_to_build, item);
+            Self::append_magic_template(&mut items_to_build, item);
         }
         for (i, mob) in self.raws.mobs.iter().enumerate() {
             if used_names.contains(&mob.name) {
@@ -240,7 +240,7 @@ impl RawMaster {
             used_names.insert(prop.name.clone());
         }
 
-        for spawn in self.raws.spawn_table.iter() {
+        for spawn in &self.raws.spawn_table {
             if !used_names.contains(&spawn.name) {
                 rltk::console::log(format!(
                     "WARNING - Spawn tables references unspecified entity {}",
@@ -253,9 +253,9 @@ impl RawMaster {
             self.loot_index.insert(loot.name.clone(), i);
         }
 
-        for faction in self.raws.faction_table.iter() {
+        for faction in &self.raws.faction_table {
             let mut reactions: HashMap<String, Reaction> = HashMap::new();
-            for other in faction.responses.iter() {
+            for other in &faction.responses {
                 reactions.insert(
                     other.0.clone(),
                     match other.1.as_str() {
@@ -278,7 +278,7 @@ impl RawMaster {
 }
 
 #[inline(always)]
-pub fn faction_reaction(my_faction: &str, their_faction: &str, raws: &RawMaster) -> Reaction {
+#[must_use] pub fn faction_reaction(my_faction: &str, their_faction: &str, raws: &RawMaster) -> Reaction {
     //println!("Looking for reaction to [{}] by [{}]", my_faction, their_faction);
     if raws.faction_index.contains_key(my_faction) {
         let mf = &raws.faction_index[my_faction];
@@ -288,19 +288,16 @@ pub fn faction_reaction(my_faction: &str, their_faction: &str, raws: &RawMaster)
         } else if mf.contains_key("Default") {
             //println!("  :  {:?}", mf["Default"]);
             return mf["Default"];
-        } else {
-            //println!("   : IGNORE");
-            return Reaction::Ignore;
         }
+        //println!("   : IGNORE");
+        return Reaction::Ignore;
     }
     //println!("   : IGNORE");
     Reaction::Ignore
 }
 
 fn find_slot_for_equippable_item(tag: &str, raws: &RawMaster) -> EquipmentSlot {
-    if !raws.item_index.contains_key(tag) {
-        panic!("Trying to equip an unknown item: {}", tag);
-    }
+    assert!(raws.item_index.contains_key(tag), "Trying to equip an unknown item: {tag}");
     let item_index = raws.item_index[tag];
     let item = &raws.raws.items[item_index];
     if let Some(_wpn) = &item.weapon {
@@ -308,13 +305,13 @@ fn find_slot_for_equippable_item(tag: &str, raws: &RawMaster) -> EquipmentSlot {
     } else if let Some(wearable) = &item.wearable {
         return string_to_slot(&wearable.slot);
     }
-    panic!("Trying to equip {}, but it has no slot tag.", tag);
+    panic!("Trying to equip {tag}, but it has no slot tag.");
 }
 
-pub fn get_vendor_items(categories: &[String], raws: &RawMaster) -> Vec<(String, f32)> {
+#[must_use] pub fn get_vendor_items(categories: &[String], raws: &RawMaster) -> Vec<(String, f32)> {
     let mut result: Vec<(String, f32)> = Vec::new();
 
-    for item in raws.raws.items.iter() {
+    for item in &raws.raws.items {
         if let Some(cat) = &item.vendor_category {
             if categories.contains(cat) && item.base_value.is_some() {
                 result.push((item.name.clone(), item.base_value.unwrap()));
@@ -325,11 +322,11 @@ pub fn get_vendor_items(categories: &[String], raws: &RawMaster) -> Vec<(String,
     result
 }
 
-pub fn get_scroll_tags() -> Vec<String> {
+#[must_use] pub fn get_scroll_tags() -> Vec<String> {
     let raws = &super::RAWS.lock().unwrap();
     let mut result = Vec::new();
 
-    for item in raws.raws.items.iter() {
+    for item in &raws.raws.items {
         if let Some(magic) = &item.magic {
             if &magic.naming == "scroll" {
                 result.push(item.name.clone());
@@ -340,11 +337,11 @@ pub fn get_scroll_tags() -> Vec<String> {
     result
 }
 
-pub fn get_potion_tags() -> Vec<String> {
+#[must_use] pub fn get_potion_tags() -> Vec<String> {
     let raws = &super::RAWS.lock().unwrap();
     let mut result = Vec::new();
 
-    for item in raws.raws.items.iter() {
+    for item in &raws.raws.items {
         if let Some(magic) = &item.magic {
             if &magic.naming == "potion" {
                 result.push(item.name.clone());
@@ -355,7 +352,7 @@ pub fn get_potion_tags() -> Vec<String> {
     result
 }
 
-pub fn is_tag_magic(tag: &str) -> bool {
+#[must_use] pub fn is_tag_magic(tag: &str) -> bool {
     let raws = &super::RAWS.lock().unwrap();
     if raws.item_index.contains_key(tag) {
         let item_template = &raws.raws.items[raws.item_index[tag]];
@@ -395,7 +392,7 @@ fn get_renderable_component(
     }
 }
 
-pub fn string_to_slot(slot: &str) -> EquipmentSlot {
+#[must_use] pub fn string_to_slot(slot: &str) -> EquipmentSlot {
     match slot {
         "Shield" => EquipmentSlot::Shield,
         "Head" => EquipmentSlot::Head,
@@ -405,7 +402,7 @@ pub fn string_to_slot(slot: &str) -> EquipmentSlot {
         "Hands" => EquipmentSlot::Hands,
         "Melee" => EquipmentSlot::Melee,
         _ => {
-            rltk::console::log(format!("Warning: unknown equipment slot type [{}])", slot));
+            rltk::console::log(format!("Warning: unknown equipment slot type [{slot}])"));
             EquipmentSlot::Melee
         }
     }
@@ -671,17 +668,17 @@ pub fn spawn_named_mob(
             "random" => {
                 eb = eb.with(MoveMode {
                     mode: Movement::Random,
-                })
+                });
             }
             "random_waypoint" => {
                 eb = eb.with(MoveMode {
                     mode: Movement::RandomWaypoint { path: None },
-                })
+                });
             }
             _ => {
                 eb = eb.with(MoveMode {
                     mode: Movement::Static,
-                })
+                });
             }
         }
 
@@ -790,7 +787,7 @@ pub fn spawn_named_mob(
         skills.skills.insert(Skill::Defense, 1);
         skills.skills.insert(Skill::Magic, 1);
         if let Some(mobskills) = &mob_template.skills {
-            for sk in mobskills.iter() {
+            for sk in mobskills {
                 match sk.0.as_str() {
                     "Melee" => {
                         skills.skills.insert(Skill::Melee, *sk.1);
@@ -821,7 +818,7 @@ pub fn spawn_named_mob(
                 attacks: Vec::new(),
             };
             if let Some(attacks) = &na.attacks {
-                for nattack in attacks.iter() {
+                for nattack in attacks {
                     let (n, d, b) = parse_dice_string(&nattack.damage);
                     let attack = NaturalAttack {
                         name: nattack.name.clone(),
@@ -856,7 +853,7 @@ pub fn spawn_named_mob(
         } else {
             eb = eb.with(Faction {
                 name: "Mindless".to_string(),
-            })
+            });
         }
 
         if let Some(vendor) = &mob_template.vendor {
@@ -869,7 +866,7 @@ pub fn spawn_named_mob(
             let mut a = SpecialAbilities {
                 abilities: Vec::new(),
             };
-            for ability in ability_list.iter() {
+            for ability in ability_list {
                 a.abilities.push(SpecialAbility {
                     chance: ability.chance,
                     spell: ability.spell.clone(),
@@ -884,7 +881,7 @@ pub fn spawn_named_mob(
             let mut a = OnDeath {
                 abilities: Vec::new(),
             };
-            for ability in ability_list.iter() {
+            for ability in ability_list {
                 a.abilities.push(SpecialAbility {
                     chance: ability.chance,
                     spell: ability.spell.clone(),
@@ -899,7 +896,7 @@ pub fn spawn_named_mob(
 
         // Are they wielding anyting?
         if let Some(wielding) = &mob_template.equipped {
-            for tag in wielding.iter() {
+            for tag in wielding {
                 spawn_named_entity(raws, ecs, tag, SpawnType::Equipped { by: new_mob });
             }
         }
@@ -940,18 +937,18 @@ pub fn spawn_named_prop(
 
         if let Some(hidden) = prop_template.hidden {
             if hidden {
-                eb = eb.with(Hidden {})
-            };
+                eb = eb.with(Hidden {});
+            }
         }
         if let Some(blocks_tile) = prop_template.blocks_tile {
             if blocks_tile {
-                eb = eb.with(BlocksTile {})
-            };
+                eb = eb.with(BlocksTile {});
+            }
         }
         if let Some(blocks_visibility) = prop_template.blocks_visibility {
             if blocks_visibility {
-                eb = eb.with(BlocksVisibility {})
-            };
+                eb = eb.with(BlocksVisibility {});
+            }
         }
         if let Some(door_open) = prop_template.door_open {
             eb = eb.with(Door { open: door_open });
@@ -997,12 +994,12 @@ pub fn spawn_named_spell(raws: &RawMaster, ecs: &mut World, key: &str) -> Option
 
 pub fn spawn_all_spells(ecs: &mut World) {
     let raws = &super::RAWS.lock().unwrap();
-    for spell in raws.raws.spells.iter() {
+    for spell in &raws.raws.spells {
         spawn_named_spell(raws, ecs, &spell.name);
     }
 }
 
-pub fn find_spell_entity(ecs: &World, name: &str) -> Option<Entity> {
+#[must_use] pub fn find_spell_entity(ecs: &World, name: &str) -> Option<Entity> {
     let names = ecs.read_storage::<Name>();
     let spell_templates = ecs.read_storage::<SpellTemplate>();
     let entities = ecs.entities();
@@ -1015,7 +1012,7 @@ pub fn find_spell_entity(ecs: &World, name: &str) -> Option<Entity> {
     None
 }
 
-pub fn find_spell_entity_by_name(
+#[must_use] pub fn find_spell_entity_by_name(
     name: &str,
     names: &ReadStorage<Name>,
     spell_templates: &ReadStorage<SpellTemplate>,
@@ -1052,7 +1049,7 @@ pub enum SpawnTableType {
     Prop,
 }
 
-pub fn spawn_type_by_name(raws: &RawMaster, key: &str) -> SpawnTableType {
+#[must_use] pub fn spawn_type_by_name(raws: &RawMaster, key: &str) -> SpawnTableType {
     if raws.item_index.contains_key(key) {
         SpawnTableType::Item
     } else if raws.mob_index.contains_key(key) {
@@ -1062,7 +1059,7 @@ pub fn spawn_type_by_name(raws: &RawMaster, key: &str) -> SpawnTableType {
     }
 }
 
-pub fn get_spawn_table_for_depth(raws: &RawMaster, depth: i32) -> MasterTable {
+#[must_use] pub fn get_spawn_table_for_depth(raws: &RawMaster, depth: i32) -> MasterTable {
     use super::SpawnTableEntry;
 
     let available_options: Vec<&SpawnTableEntry> = raws
@@ -1073,7 +1070,7 @@ pub fn get_spawn_table_for_depth(raws: &RawMaster, depth: i32) -> MasterTable {
         .collect();
 
     let mut rt = MasterTable::new();
-    for e in available_options.iter() {
+    for e in &available_options {
         let mut weight = e.weight;
         if e.add_map_depth_to_weight.is_some() {
             weight += depth;
@@ -1084,11 +1081,11 @@ pub fn get_spawn_table_for_depth(raws: &RawMaster, depth: i32) -> MasterTable {
     rt
 }
 
-pub fn get_item_drop(raws: &RawMaster, table: &str) -> Option<String> {
+#[must_use] pub fn get_item_drop(raws: &RawMaster, table: &str) -> Option<String> {
     if raws.loot_index.contains_key(table) {
         let mut rt = RandomTable::new();
         let available_options = &raws.raws.loot_tables[raws.loot_index[table]];
-        for item in available_options.drops.iter() {
+        for item in &available_options.drops {
             rt.add(item.name.clone(), item.weight);
         }
         let result = rt.roll();

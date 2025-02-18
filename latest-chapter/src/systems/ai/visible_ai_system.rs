@@ -56,7 +56,7 @@ impl<'a> System<'a> for VisibleAI {
                 let my_idx = map.xy_idx(pos.x, pos.y);
                 let mut reactions: Vec<(usize, Reaction, Entity)> = Vec::new();
                 let mut flee: Vec<usize> = Vec::new();
-                for visible_tile in viewshed.visible_tiles.iter() {
+                for visible_tile in &viewshed.visible_tiles {
                     let idx = map.xy_idx(visible_tile.x, visible_tile.y);
                     if my_idx != idx {
                         evaluate(idx, &map, &factions, &my_faction.name, &mut reactions);
@@ -64,7 +64,7 @@ impl<'a> System<'a> for VisibleAI {
                 }
 
                 let mut done = false;
-                for reaction in reactions.iter() {
+                for reaction in &reactions {
                     match reaction.1 {
                         Reaction::Attack => {
                             let range = rltk::DistanceAlg::Pythagoras.distance2d(
@@ -75,7 +75,7 @@ impl<'a> System<'a> for VisibleAI {
                                 ),
                             );
                             if let Some(abilities) = abilities.get(entity) {
-                                for ability in abilities.abilities.iter() {
+                                for ability in &abilities.abilities {
                                     if range >= ability.min_range
                                         && range <= ability.range
                                         && crate::rng::roll_dice(1, 100)

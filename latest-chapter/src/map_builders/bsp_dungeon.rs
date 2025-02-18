@@ -13,8 +13,8 @@ impl InitialMapBuilder for BspDungeonBuilder {
 
 impl BspDungeonBuilder {
     #[allow(dead_code)]
-    pub fn new() -> Box<BspDungeonBuilder> {
-        Box::new(BspDungeonBuilder { rects: Vec::new() })
+    pub fn new() -> Box<Self> {
+        Box::new(Self { rects: Vec::new() })
     }
 
     fn build(&mut self, build_data: &mut BuilderMap) {
@@ -109,7 +109,7 @@ impl BspDungeonBuilder {
 
         let mut can_build = true;
 
-        for r in rooms.iter() {
+        for r in rooms {
             if r.intersect(&rect) {
                 can_build = false;
             }

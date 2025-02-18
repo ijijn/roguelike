@@ -1,7 +1,7 @@
 use super::{Map, TileType};
 use rltk::RGB;
 
-pub fn tile_glyph(idx: usize, map: &Map) -> (rltk::FontCharType, RGB, RGB) {
+#[must_use] pub fn tile_glyph(idx: usize, map: &Map) -> (rltk::FontCharType, RGB, RGB) {
     let (glyph, mut fg, mut bg) = match map.depth {
         9 => get_mushroom_glyph(idx, map),
         8 => get_mushroom_glyph(idx, map),

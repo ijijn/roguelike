@@ -1,6 +1,6 @@
 use super::{paint, BuilderMap, InitialMapBuilder, MetaMapBuilder, Position, Symmetry, TileType};
 
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 #[allow(dead_code)]
 pub enum DLAAlgorithm {
     WalkInwards,
@@ -31,8 +31,8 @@ impl MetaMapBuilder for DLABuilder {
 
 impl DLABuilder {
     #[allow(dead_code)]
-    pub fn new() -> Box<DLABuilder> {
-        Box::new(DLABuilder {
+    pub fn new() -> Box<Self> {
+        Box::new(Self {
             algorithm: DLAAlgorithm::WalkInwards,
             brush_size: 2,
             symmetry: Symmetry::None,
@@ -41,8 +41,8 @@ impl DLABuilder {
     }
 
     #[allow(dead_code)]
-    pub fn walk_inwards() -> Box<DLABuilder> {
-        Box::new(DLABuilder {
+    pub fn walk_inwards() -> Box<Self> {
+        Box::new(Self {
             algorithm: DLAAlgorithm::WalkInwards,
             brush_size: 1,
             symmetry: Symmetry::None,
@@ -51,8 +51,8 @@ impl DLABuilder {
     }
 
     #[allow(dead_code)]
-    pub fn walk_outwards() -> Box<DLABuilder> {
-        Box::new(DLABuilder {
+    pub fn walk_outwards() -> Box<Self> {
+        Box::new(Self {
             algorithm: DLAAlgorithm::WalkOutwards,
             brush_size: 2,
             symmetry: Symmetry::None,
@@ -61,8 +61,8 @@ impl DLABuilder {
     }
 
     #[allow(dead_code)]
-    pub fn heavy_erosion() -> Box<DLABuilder> {
-        Box::new(DLABuilder {
+    pub fn heavy_erosion() -> Box<Self> {
+        Box::new(Self {
             algorithm: DLAAlgorithm::WalkInwards,
             brush_size: 2,
             symmetry: Symmetry::None,
@@ -71,8 +71,8 @@ impl DLABuilder {
     }
 
     #[allow(dead_code)]
-    pub fn central_attractor() -> Box<DLABuilder> {
-        Box::new(DLABuilder {
+    pub fn central_attractor() -> Box<Self> {
+        Box::new(Self {
             algorithm: DLAAlgorithm::CentralAttractor,
             brush_size: 2,
             symmetry: Symmetry::None,
@@ -81,8 +81,8 @@ impl DLABuilder {
     }
 
     #[allow(dead_code)]
-    pub fn insectoid() -> Box<DLABuilder> {
-        Box::new(DLABuilder {
+    pub fn insectoid() -> Box<Self> {
+        Box::new(Self {
             algorithm: DLAAlgorithm::CentralAttractor,
             brush_size: 2,
             symmetry: Symmetry::Horizontal,

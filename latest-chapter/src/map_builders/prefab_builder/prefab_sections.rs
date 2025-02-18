@@ -1,5 +1,5 @@
 #[allow(dead_code)]
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum HorizontalPlacement {
     Left,
     Center,
@@ -7,7 +7,7 @@ pub enum HorizontalPlacement {
 }
 
 #[allow(dead_code)]
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum VerticalPlacement {
     Top,
     Center,
@@ -15,7 +15,7 @@ pub enum VerticalPlacement {
 }
 
 #[allow(dead_code)]
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub struct PrefabSection {
     pub template: &'static str,
     pub width: usize,

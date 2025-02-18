@@ -12,8 +12,8 @@ impl MetaMapBuilder for StraightLineCorridors {
 
 impl StraightLineCorridors {
     #[allow(dead_code)]
-    pub fn new() -> Box<StraightLineCorridors> {
-        Box::new(StraightLineCorridors {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn corridors(&mut self, build_data: &mut BuilderMap) {
@@ -49,7 +49,7 @@ impl StraightLineCorridors {
                     rltk::Point::new(dest_center.0, dest_center.1),
                 );
                 let mut corridor = Vec::new();
-                for cell in line.iter() {
+                for cell in &line {
                     let idx = build_data.map.xy_idx(cell.x, cell.y);
                     if build_data.map.tiles[idx] != TileType::Floor {
                         build_data.map.tiles[idx] = TileType::Floor;

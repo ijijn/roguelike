@@ -15,22 +15,22 @@ pub struct MasterDungeonMap {
 }
 
 impl MasterDungeonMap {
-    pub fn new() -> MasterDungeonMap {
-        let mut dm = MasterDungeonMap {
+    #[must_use] pub fn new() -> Self {
+        let mut dm = Self {
             maps: HashMap::new(),
             identified_items: HashSet::new(),
             scroll_mappings: HashMap::new(),
             potion_mappings: HashMap::new(),
         };
 
-        for scroll_tag in crate::raws::get_scroll_tags().iter() {
+        for scroll_tag in &crate::raws::get_scroll_tags() {
             let masked_name = make_scroll_name();
             dm.scroll_mappings
                 .insert(scroll_tag.to_string(), masked_name);
         }
 
         let mut used_potion_names: HashSet<String> = HashSet::new();
-        for potion_tag in crate::raws::get_potion_tags().iter() {
+        for potion_tag in &crate::raws::get_potion_tags() {
             let masked_name = make_potion_name(&mut used_potion_names);
             dm.potion_mappings
                 .insert(potion_tag.to_string(), masked_name);
@@ -43,7 +43,7 @@ impl MasterDungeonMap {
         self.maps.insert(map.depth, map.clone());
     }
 
-    pub fn get_map(&self, depth: i32) -> Option<Map> {
+    #[must_use] pub fn get_map(&self, depth: i32) -> Option<Map> {
         if self.maps.contains_key(&depth) {
             let result = self.maps[&depth].clone();
             Some(result)
@@ -242,7 +242,7 @@ pub fn freeze_level_entities(ecs: &mut World) {
     }
 
     // Remove positions
-    for p in pos_to_delete.iter() {
+    for p in &pos_to_delete {
         positions.remove(*p);
     }
 }
@@ -267,7 +267,7 @@ pub fn thaw_level_entities(ecs: &mut World) {
     }
 
     // Remove positions
-    for p in pos_to_delete.iter() {
+    for p in &pos_to_delete {
         other_level_positions.remove(*p);
     }
 }

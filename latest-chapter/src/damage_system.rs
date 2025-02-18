@@ -12,22 +12,19 @@ pub fn delete_the_dead(ecs: &mut World) {
         for (entity, stats) in (&entities, &combat_stats).join() {
             if stats.hit_points.current < 1 {
                 let player = players.get(entity);
-                match player {
-                    None => {
-                        let victim_name = names.get(entity);
-                        if let Some(victim_name) = victim_name {
-                            crate::gamelog::Logger::new()
-                                .color(rltk::RED)
-                                .append(&victim_name.name)
-                                .append("is dead!")
-                                .log();
-                        }
-                        dead.push(entity)
+                if player.is_none() {
+                    let victim_name = names.get(entity);
+                    if let Some(victim_name) = victim_name {
+                        crate::gamelog::Logger::new()
+                            .color(rltk::RED)
+                            .append(&victim_name.name)
+                            .append("is dead!")
+                            .log();
                     }
-                    Some(_) => {
-                        let mut runstate = ecs.write_resource::<RunState>();
-                        *runstate = RunState::GameOver;
-                    }
+                    dead.push(entity);
+                } else {
+                    let mut runstate = ecs.write_resource::<RunState>();
+                    *runstate = RunState::GameOver;
                 }
             }
         }
@@ -43,7 +40,7 @@ pub fn delete_the_dead(ecs: &mut World) {
         let mut carried = ecs.write_storage::<InBackpack>();
         let mut positions = ecs.write_storage::<Position>();
         let loot_tables = ecs.read_storage::<LootTable>();
-        for victim in dead.iter() {
+        for victim in &dead {
             let pos = positions.get(*victim);
             for (entity, equipped) in (&entities, &equipped).join() {
                 if equipped.owner == *victim {
@@ -73,7 +70,7 @@ pub fn delete_the_dead(ecs: &mut World) {
             }
         }
 
-        for drop in to_drop.iter() {
+        for drop in &to_drop {
             equipped.remove(drop.0);
             carried.remove(drop.0);
             positions
@@ -83,7 +80,7 @@ pub fn delete_the_dead(ecs: &mut World) {
     }
 
     {
-        for drop in to_spawn.iter() {
+        for drop in &to_spawn {
             crate::raws::spawn_named_item(
                 &crate::raws::RAWS.lock().unwrap(),
                 ecs,
@@ -98,12 +95,12 @@ pub fn delete_the_dead(ecs: &mut World) {
 
     // Fire death events
     use crate::components::{AreaOfEffect, OnDeath};
-    use crate::effects::*;
+    use crate::effects::{EffectType, Targets, add_effect, aoe_tiles};
     use crate::Map;
-    for victim in dead.iter() {
+    for victim in &dead {
         let death_effects = ecs.read_storage::<OnDeath>();
         if let Some(death_effect) = death_effects.get(*victim) {
-            for effect in death_effect.abilities.iter() {
+            for effect in &death_effect.abilities {
                 if crate::rng::roll_dice(1, 100) <= (effect.chance * 100.0) as i32 {
                     let map = ecs.fetch::<Map>();
                     if let Some(pos) = ecs.read_storage::<Position>().get(*victim) {

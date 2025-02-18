@@ -39,8 +39,8 @@ impl InitialMapBuilder for PlazaMapBuilder {
 
 impl PlazaMapBuilder {
     #[allow(dead_code)]
-    pub fn new() -> Box<PlazaMapBuilder> {
-        Box::new(PlazaMapBuilder {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn empty_map(&mut self, build_data: &mut BuilderMap) {
@@ -100,7 +100,7 @@ impl PlazaMapBuilder {
                 0 => self.portal_park(build_data, &voronoi_membership, *zone, &voronoi_seeds),
                 1 | 2 => self.park(build_data, &voronoi_membership, *zone, &voronoi_seeds),
                 i if i > 20 => {
-                    self.fill_zone(build_data, &voronoi_membership, *zone, TileType::Wall)
+                    self.fill_zone(build_data, &voronoi_membership, *zone, TileType::Wall);
                 }
                 _ => {
                     let roll = crate::rng::roll_dice(1, 6);
@@ -245,7 +245,7 @@ impl PlazaMapBuilder {
             _ => vec!["Cirro Dark Elf", "Cirro Dark Priestess", "Cirro Spider"],
         };
 
-        zone_tiles.iter().for_each(|idx| {
+        for idx in &zone_tiles {
             if build_data.map.tiles[*idx] == TileType::Grass {
                 match crate::rng::roll_dice(1, 10) {
                     1 => build_data.spawn_list.push((*idx, "Chair".to_string())),
@@ -258,7 +258,7 @@ impl PlazaMapBuilder {
                     _ => {}
                 }
             }
-        });
+        }
     }
 
     fn make_roads(&mut self, build_data: &mut BuilderMap, voronoi_membership: &[i32]) {

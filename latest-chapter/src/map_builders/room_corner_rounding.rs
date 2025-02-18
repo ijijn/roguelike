@@ -10,8 +10,8 @@ impl MetaMapBuilder for RoomCornerRounder {
 
 impl RoomCornerRounder {
     #[allow(dead_code)]
-    pub fn new() -> Box<RoomCornerRounder> {
-        Box::new(RoomCornerRounder {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn fill_if_corner(&mut self, x: i32, y: i32, build_data: &mut BuilderMap) {
@@ -45,7 +45,7 @@ impl RoomCornerRounder {
             panic!("Room Rounding require a builder with room structures");
         }
 
-        for room in rooms.iter() {
+        for room in &rooms {
             self.fill_if_corner(room.x1 + 1, room.y1 + 1, build_data);
             self.fill_if_corner(room.x2, room.y1 + 1, build_data);
             self.fill_if_corner(room.x1 + 1, room.y2, build_data);

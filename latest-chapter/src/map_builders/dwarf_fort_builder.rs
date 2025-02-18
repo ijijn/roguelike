@@ -32,8 +32,8 @@ impl MetaMapBuilder for DragonsLair {
 
 impl DragonsLair {
     #[allow(dead_code)]
-    pub fn new() -> Box<DragonsLair> {
-        Box::new(DragonsLair {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn build(&mut self, build_data: &mut BuilderMap) {
@@ -45,7 +45,7 @@ impl DragonsLair {
         builder.build_map();
 
         // Add the history to our history
-        for h in builder.build_data.history.iter() {
+        for h in &builder.build_data.history {
             build_data.history.push(h.clone());
         }
         build_data.take_snapshot();
@@ -70,8 +70,8 @@ impl MetaMapBuilder for DragonSpawner {
 
 impl DragonSpawner {
     #[allow(dead_code)]
-    pub fn new() -> Box<DragonSpawner> {
-        Box::new(DragonSpawner {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn build(&mut self, build_data: &mut BuilderMap) {
@@ -93,9 +93,7 @@ impl DragonSpawner {
                 ));
             }
         }
-        if available_floors.is_empty() {
-            panic!("No valid floors to start on");
-        }
+        assert!(!available_floors.is_empty(), "No valid floors to start on");
 
         available_floors.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
 

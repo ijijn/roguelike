@@ -42,7 +42,7 @@ impl<'a> System<'a> for ApproachAI {
         want_approach.clear();
 
         // Remove turn marker for those that are done
-        for done in turn_done.iter() {
+        for done in &turn_done {
             turns.remove(*done);
         }
     }

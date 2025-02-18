@@ -3,7 +3,7 @@ use crate::{InBackpack, Item, Name, State, Vendor, VendorMode};
 use rltk::prelude::*;
 use specs::prelude::*;
 
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum VendorResult {
     NoResponse,
     Cancel,
@@ -112,7 +112,7 @@ fn vendor_buy_menu(
     vendor: Entity,
     _mode: VendorMode,
 ) -> (VendorResult, Option<Entity>, Option<String>, Option<f32>) {
-    use crate::raws::*;
+    use crate::raws::RAWS;
     let mut draw_batch = DrawBatch::new();
 
     let vendors = gs.ecs.read_storage::<Vendor>();

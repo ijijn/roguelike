@@ -28,8 +28,8 @@ impl MetaMapBuilder for AreaEndingPosition {
 
 impl AreaEndingPosition {
     #[allow(dead_code)]
-    pub fn new(x: XEnd, y: YEnd) -> Box<AreaEndingPosition> {
-        Box::new(AreaEndingPosition { x, y })
+    pub fn new(x: XEnd, y: YEnd) -> Box<Self> {
+        Box::new(Self { x, y })
     }
 
     fn build(&mut self, build_data: &mut BuilderMap) {
@@ -60,9 +60,7 @@ impl AreaEndingPosition {
                 ));
             }
         }
-        if available_floors.is_empty() {
-            panic!("No valid floors to start on");
-        }
+        assert!(!available_floors.is_empty(), "No valid floors to start on");
 
         available_floors.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
 

@@ -11,8 +11,8 @@ impl InitialMapBuilder for MazeBuilder {
 
 impl MazeBuilder {
     #[allow(dead_code)]
-    pub fn new() -> Box<MazeBuilder> {
-        Box::new(MazeBuilder {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     #[allow(clippy::map_entry)]
@@ -42,8 +42,8 @@ struct Cell {
 }
 
 impl Cell {
-    fn new(row: i32, column: i32) -> Cell {
-        Cell {
+    const fn new(row: i32, column: i32) -> Self {
+        Self {
             row,
             column,
             walls: [true, true, true, true],
@@ -51,7 +51,7 @@ impl Cell {
         }
     }
 
-    fn remove_walls(&mut self, next: &mut Cell) {
+    const fn remove_walls(&mut self, next: &mut Self) {
         let x = self.column - next.column;
         let y = self.row - next.row;
 
@@ -80,8 +80,8 @@ struct Grid {
 }
 
 impl Grid {
-    fn new(width: i32, height: i32) -> Grid {
-        let mut grid = Grid {
+    fn new(width: i32, height: i32) -> Self {
+        let mut grid = Self {
             width,
             height,
             cells: Vec::new(),
@@ -98,7 +98,7 @@ impl Grid {
         grid
     }
 
-    fn calculate_index(&self, row: i32, column: i32) -> i32 {
+    const fn calculate_index(&self, row: i32, column: i32) -> i32 {
         if row < 0 || column < 0 || column > self.width - 1 || row > self.height - 1 {
             -1
         } else {
@@ -119,7 +119,7 @@ impl Grid {
             self.calculate_index(current_row, current_column - 1),
         ];
 
-        for i in neighbor_indices.iter() {
+        for i in &neighbor_indices {
             if *i != -1 && !self.cells[*i as usize].visited {
                 neighbors.push(*i as usize);
             }
@@ -133,11 +133,10 @@ impl Grid {
         if !neighbors.is_empty() {
             if neighbors.len() == 1 {
                 return Some(neighbors[0]);
-            } else {
-                return Some(
-                    neighbors[(crate::rng::roll_dice(1, neighbors.len() as i32) - 1) as usize],
-                );
             }
+            return Some(
+                neighbors[(crate::rng::roll_dice(1, neighbors.len() as i32) - 1) as usize],
+            );
         }
         None
     }
@@ -148,28 +147,24 @@ impl Grid {
             self.cells[self.current].visited = true;
             let next = self.find_next_cell();
 
-            match next {
-                Some(next) => {
-                    self.cells[next].visited = true;
-                    self.backtrace.push(self.current);
-                    //   __lower_part__      __higher_part_
-                    //   /            \      /            \
-                    // --------cell1------ | cell2-----------
-                    let (lower_part, higher_part) =
-                        self.cells.split_at_mut(std::cmp::max(self.current, next));
-                    let cell1 = &mut lower_part[std::cmp::min(self.current, next)];
-                    let cell2 = &mut higher_part[0];
-                    cell1.remove_walls(cell2);
-                    self.current = next;
+            if let Some(next) = next {
+                self.cells[next].visited = true;
+                self.backtrace.push(self.current);
+                //   __lower_part__      __higher_part_
+                //   /            \      /            \
+                // --------cell1------ | cell2-----------
+                let (lower_part, higher_part) =
+                    self.cells.split_at_mut(std::cmp::max(self.current, next));
+                let cell1 = &mut lower_part[std::cmp::min(self.current, next)];
+                let cell2 = &mut higher_part[0];
+                cell1.remove_walls(cell2);
+                self.current = next;
+            } else {
+                if self.backtrace.is_empty() {
+                    break;
                 }
-                None => {
-                    if !self.backtrace.is_empty() {
-                        self.current = self.backtrace[0];
-                        self.backtrace.remove(0);
-                    } else {
-                        break;
-                    }
-                }
+                self.current = self.backtrace[0];
+                self.backtrace.remove(0);
             }
 
             if i % 50 == 0 {
@@ -182,27 +177,27 @@ impl Grid {
 
     fn copy_to_map(&self, map: &mut Map) {
         // Clear the map
-        for i in map.tiles.iter_mut() {
+        for i in &mut map.tiles {
             *i = TileType::Wall;
         }
 
-        for cell in self.cells.iter() {
+        for cell in &self.cells {
             let x = cell.column + 1;
             let y = cell.row + 1;
             let idx = map.xy_idx(x * 2, y * 2);
 
             map.tiles[idx] = TileType::Floor;
             if !cell.walls[TOP] {
-                map.tiles[idx - map.width as usize] = TileType::Floor
+                map.tiles[idx - map.width as usize] = TileType::Floor;
             }
             if !cell.walls[RIGHT] {
-                map.tiles[idx + 1] = TileType::Floor
+                map.tiles[idx + 1] = TileType::Floor;
             }
             if !cell.walls[BOTTOM] {
-                map.tiles[idx + map.width as usize] = TileType::Floor
+                map.tiles[idx + map.width as usize] = TileType::Floor;
             }
             if !cell.walls[LEFT] {
-                map.tiles[idx - 1] = TileType::Floor
+                map.tiles[idx - 1] = TileType::Floor;
             }
         }
     }

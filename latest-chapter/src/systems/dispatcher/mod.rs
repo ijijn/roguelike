@@ -12,7 +12,7 @@ pub use single_thread::*;
 #[cfg(not(target_arch = "wasm32"))]
 pub use multi_thread::*;
 
-use super::*;
+use super::{AdjacentAI, ApproachAI, ChaseAI, DefaultMoveAI, EncumbranceSystem, FleeAI, HungerSystem, InitiativeSystem, ItemCollectionSystem, ItemDropSystem, ItemEquipOnUse, ItemIdentificationSystem, ItemRemoveSystem, ItemUseSystem, LightingSystem, MapIndexingSystem, MeleeCombatSystem, MovementSystem, ParticleSpawnSystem, QuipSystem, RangedCombatSystem, SpellUseSystem, TriggerSystem, TurnStatusSystem, VisibilitySystem, VisibleAI};
 use specs::prelude::World;
 
 pub trait UnifiedDispatcher {

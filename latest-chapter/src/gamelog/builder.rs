@@ -8,7 +8,7 @@ pub struct Logger {
 
 impl Logger {
     pub fn new() -> Self {
-        Logger {
+        Self {
             current_color: RGB::named(rltk::WHITE),
             fragments: Vec::new(),
         }
@@ -28,7 +28,7 @@ impl Logger {
     }
 
     pub fn log(self) {
-        append_entry(self.fragments)
+        append_entry(self.fragments);
     }
 
     pub fn npc_name<T: ToString>(mut self, text: T) -> Self {
@@ -50,7 +50,7 @@ impl Logger {
     pub fn damage(mut self, damage: i32) -> Self {
         self.fragments.push(LogFragment {
             color: RGB::named(rltk::RED),
-            text: format!("{}", damage).to_string(),
+            text: format!("{damage}"),
         });
         self
     }

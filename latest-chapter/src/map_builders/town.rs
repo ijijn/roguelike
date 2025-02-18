@@ -29,8 +29,8 @@ enum BuildingTag {
 }
 
 impl TownBuilder {
-    pub fn new() -> Box<TownBuilder> {
-        Box::new(TownBuilder {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     pub fn build_rooms(&mut self, build_data: &mut BuilderMap) {
@@ -53,7 +53,7 @@ impl TownBuilder {
         self.spawn_townsfolk(build_data, &mut available_building_tiles);
 
         // Make visible for screenshot
-        for t in build_data.map.visible_tiles.iter_mut() {
+        for t in &mut build_data.map.visible_tiles {
             *t = true;
         }
         build_data.take_snapshot();
@@ -61,7 +61,7 @@ impl TownBuilder {
 
     fn grass_layer(&mut self, build_data: &mut BuilderMap) {
         // We'll start with a nice layer of grass
-        for t in build_data.map.tiles.iter_mut() {
+        for t in &mut build_data.map.tiles {
             *t = TileType::Grass;
         }
         build_data.take_snapshot();
@@ -100,7 +100,12 @@ impl TownBuilder {
         let mut available_building_tiles: HashSet<usize> = HashSet::new();
         let wall_gap_y = crate::rng::roll_dice(1, build_data.height - 9) + 5;
         for y in 1..build_data.height - 2 {
-            if !(y > wall_gap_y - 4 && y < wall_gap_y + 4) {
+            if y > wall_gap_y - 4 && y < wall_gap_y + 4 {
+                for x in 30..build_data.width {
+                    let road_idx = build_data.map.xy_idx(x, y);
+                    build_data.map.tiles[road_idx] = TileType::Road;
+                }
+            } else {
                 let idx = build_data.map.xy_idx(30, y);
                 build_data.map.tiles[idx] = TileType::Wall;
                 build_data.map.tiles[idx - 1] = TileType::Floor;
@@ -112,11 +117,6 @@ impl TownBuilder {
                     if y > 2 && y < build_data.height - 1 {
                         available_building_tiles.insert(gravel_idx);
                     }
-                }
-            } else {
-                for x in 30..build_data.width {
-                    let road_idx = build_data.map.xy_idx(x, y);
-                    build_data.map.tiles[road_idx] = TileType::Road;
                 }
             }
         }
@@ -244,13 +244,13 @@ impl TownBuilder {
         }
 
         build_data.map.populate_blocked();
-        for door_idx in doors.iter() {
+        for door_idx in doors {
             let mut nearest_roads: Vec<(usize, f32)> = Vec::new();
             let door_pt = rltk::Point::new(
                 *door_idx as i32 % build_data.map.width,
                 *door_idx as i32 / build_data.map.width,
             );
-            for r in roads.iter() {
+            for r in &roads {
                 nearest_roads.push((
                     *r,
                     rltk::DistanceAlg::PythagorasSquared.distance2d(
@@ -267,7 +267,7 @@ impl TownBuilder {
             let destination = nearest_roads[0].0;
             let path = rltk::a_star_search(*door_idx, destination, &build_data.map);
             if path.success {
-                for step in path.steps.iter() {
+                for step in &path.steps {
                     let idx = { *step };
                     build_data.map.tiles[idx] = TileType::Road;
                     roads.push(idx);

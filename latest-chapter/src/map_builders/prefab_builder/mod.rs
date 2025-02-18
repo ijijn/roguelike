@@ -4,7 +4,7 @@ pub mod prefab_rooms;
 pub mod prefab_sections;
 use std::collections::HashSet;
 
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 #[allow(dead_code)]
 pub enum PrefabMode {
     RexLevel {
@@ -39,36 +39,36 @@ impl InitialMapBuilder for PrefabBuilder {
 
 impl PrefabBuilder {
     #[allow(dead_code)]
-    pub fn new() -> Box<PrefabBuilder> {
-        Box::new(PrefabBuilder {
+    pub fn new() -> Box<Self> {
+        Box::new(Self {
             mode: PrefabMode::RoomVaults,
         })
     }
 
     #[allow(dead_code)]
-    pub fn rex_level(template: &'static str) -> Box<PrefabBuilder> {
-        Box::new(PrefabBuilder {
+    pub fn rex_level(template: &'static str) -> Box<Self> {
+        Box::new(Self {
             mode: PrefabMode::RexLevel { template },
         })
     }
 
     #[allow(dead_code)]
-    pub fn constant(level: prefab_levels::PrefabLevel) -> Box<PrefabBuilder> {
-        Box::new(PrefabBuilder {
+    pub fn constant(level: prefab_levels::PrefabLevel) -> Box<Self> {
+        Box::new(Self {
             mode: PrefabMode::Constant { level },
         })
     }
 
     #[allow(dead_code)]
-    pub fn sectional(section: prefab_sections::PrefabSection) -> Box<PrefabBuilder> {
-        Box::new(PrefabBuilder {
+    pub fn sectional(section: prefab_sections::PrefabSection) -> Box<Self> {
+        Box::new(Self {
             mode: PrefabMode::Sectional { section },
         })
     }
 
     #[allow(dead_code)]
-    pub fn vaults() -> Box<PrefabBuilder> {
-        Box::new(PrefabBuilder {
+    pub fn vaults() -> Box<Self> {
+        Box::new(Self {
             mode: PrefabMode::RoomVaults,
         })
     }
@@ -162,7 +162,7 @@ impl PrefabBuilder {
             .chars()
             .filter(|a| *a != '\r' && *a != '\n')
             .collect();
-        for c in string_vec.iter_mut() {
+        for c in &mut string_vec {
             if *c as u8 == 160u8 {
                 *c = ' ';
             }
@@ -172,7 +172,7 @@ impl PrefabBuilder {
 
     #[allow(dead_code)]
     fn load_ascii_map(&mut self, level: &prefab_levels::PrefabLevel, build_data: &mut BuilderMap) {
-        let string_vec = PrefabBuilder::read_ascii_to_vec(level.template);
+        let string_vec = Self::read_ascii_to_vec(level.template);
 
         let mut i = 0;
         for ty in 0..level.height {
@@ -205,9 +205,9 @@ impl PrefabBuilder {
         section: &prefab_sections::PrefabSection,
         build_data: &mut BuilderMap,
     ) {
-        use prefab_sections::*;
+        use prefab_sections::{HorizontalPlacement, VerticalPlacement};
 
-        let string_vec = PrefabBuilder::read_ascii_to_vec(section.template);
+        let string_vec = Self::read_ascii_to_vec(section.template);
 
         // Place the new section
         let chunk_x = match section.placement.0 {
@@ -255,7 +255,7 @@ impl PrefabBuilder {
     }
 
     fn apply_room_vaults(&mut self, build_data: &mut BuilderMap) {
-        use prefab_rooms::*;
+        use prefab_rooms::{CHECKERBOARD, PrefabRoom, SILLY_SMILE, TOTALLY_NOT_A_TRAP};
 
         // Apply the previous builder, and keep all entities it spawns (for now)
         self.apply_previous_iteration(|_x, _y| true, build_data);
@@ -354,7 +354,7 @@ impl PrefabBuilder {
                         || y > chunk_y + vault.height as i32
                 });
 
-                let string_vec = PrefabBuilder::read_ascii_to_vec(vault.template);
+                let string_vec = Self::read_ascii_to_vec(vault.template);
                 let mut i = 0;
                 for ty in 0..vault.height {
                     for tx in 0..vault.width {

@@ -10,8 +10,8 @@ impl MetaMapBuilder for DistantExit {
 
 impl DistantExit {
     #[allow(dead_code)]
-    pub fn new() -> Box<DistantExit> {
-        Box::new(DistantExit {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn build(&mut self, build_data: &mut BuilderMap) {

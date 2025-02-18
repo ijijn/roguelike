@@ -10,8 +10,8 @@ impl MetaMapBuilder for RoomBasedStartingPosition {
 
 impl RoomBasedStartingPosition {
     #[allow(dead_code)]
-    pub fn new() -> Box<RoomBasedStartingPosition> {
-        Box::new(RoomBasedStartingPosition {})
+    pub fn new() -> Box<Self> {
+        Box::new(Self {})
     }
 
     fn build(&mut self, build_data: &mut BuilderMap) {

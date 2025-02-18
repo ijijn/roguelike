@@ -1,5 +1,5 @@
 use crate::{
-    effects::*, skill_bonus, Attributes, EquipmentSlot, Equipped, HungerClock, HungerState, Name,
+    effects::{EffectType, Targets, add_effect}, skill_bonus, Attributes, EquipmentSlot, Equipped, HungerClock, HungerState, Name,
     NaturalAttackDefense, Pools, Skill, Skills, WantsToMelee, Weapon, WeaponAttribute, Wearable,
 };
 use specs::prelude::*;
@@ -182,7 +182,7 @@ impl<'a> System<'a> for MeleeCombatSystem {
                                     item: weapon_entity.unwrap(),
                                 },
                                 effect_target,
-                            )
+                            );
                         }
                     }
                 } else if natural_roll == 1 {
