@@ -127,7 +127,7 @@ fn apply_previous_iteration<F>(&mut self, mut filter: F)
 }
 ```
 
-There's a lot of new Rust here! Lets walk through it: 
+There's a lot of new Rust here! Lets walk through it:
 
 1. You'll notice that we've added a *template* type to the function. `fn apply_previous_iteration<F>`. This specifies that we don't know exactly what `F` is when we write the function.
 2. The second parameter (`mut filter: F`) is also of type `F`. So we're telling the function signature to accept the template type as the parameter.
@@ -169,7 +169,7 @@ self.apply_previous_iteration(|x,y,e| {
 
 This is interesting: we're passing in a *closure* - a lambda function to the `filter`. It receives `x`, `y`, and `e` from the previous map's `spawn_list` for each entity. In this case, we're checking against `chunk_x`, `chunk_y`, `section.width` and `section.height` to see if the entity is inside our sectional. You've probably noticed that we didn't declare these anywhere in the lambda function; we are relying on *capture* - you can call a lambda and reference other variables that are *in its scope* - and it can reference them as if they were its own. This is a *very* powerful feature, and you can [learn about it here](https://doc.rust-lang.org/book/ch13-01-closures.html).
 
-## Room Vaults
+## Building Room Vaults
 
 Let's start building `apply_room_vaults`. We'll take it step-by-step, and work our way through. We'll start with the function signature:
 
@@ -411,7 +411,7 @@ self.spawn_list.retain(|e| {
 
 Calling `retain` on a vector iterates through every entry, and calls the passed closure/lambda function. If it returns `true`, then the element is *retained* (kept) - otherwise it is removed. So here we're catching `width` and `height` (to avoid borrowing `self`), and then calculate the location for each entry. If it is outside of the new vault - we keep it.
 
-## I want more than one vault!
+## I want more than one vault
 
 Having only one vault is pretty dull - albeit a good start in terms of proving the functionality works. In `prefab_rooms.rs` we'll go ahead and write a couple more. These aren't intended to be seminal examples of level design, but they illustrate the process. We'll add some more room prefabs:
 
@@ -558,7 +558,7 @@ Now if you `cargo run` your project, you might encounter several vaults. Here's 
 
 ![Screenshot](./c35-s3.jpg).
 
-## I don't *always* want a vault!
+## I don't *always* want a vault
 
 If you offer all of your vaults on every level, the game will be a bit more predictable than you probably want (unless you make a *lot* of vaults!). We'll modify `apply_room_vaults` to only sometimes have any vaults, with an increasing probability as you descend into the dungeon:
 
@@ -712,8 +712,8 @@ pub fn random_builder(new_depth: i32) -> Box<dyn MapBuilder> {
 
 We're taking full advantage of the composability of our layers system now! Our random builder now:
 
-1. In the first layer, we roll `1d17` and pick a map type; we've included our pre-made level as one of the options. 
-2. Next, we roll `1d3` - and on a 1, we run the `WaveformCollapse` algorithm on *that* builder. 
+1. In the first layer, we roll `1d17` and pick a map type; we've included our pre-made level as one of the options.
+2. Next, we roll `1d3` - and on a 1, we run the `WaveformCollapse` algorithm on *that* builder.
 3. We roll `1d20`, and on a 1 - we apply a `PrefabBuilder` sectional, and add our fortress. That way, you'll only occasionally run into it.
 4. We run whatever builder we came up with against our `PrefabBuilder`'s Room Vault system (the focus of this chapter!), to add premade rooms to the mix.
 
@@ -725,8 +725,8 @@ In this chapter, we've gained the ability to prefabricate rooms and include them
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-35-vaults2)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-35-vaults2/)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.
