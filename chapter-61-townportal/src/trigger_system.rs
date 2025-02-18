@@ -85,9 +85,7 @@ impl<'a> System<'a> for TriggerSystem {
 
                             // If its a teleporter, then do that
                             if let Some(teleport) = teleporters.get(entity_id) {
-                                if (teleport.player_only && entity == *player_entity)
-                                    || !teleport.player_only
-                                {
+                                if !teleport.player_only || entity == *player_entity {
                                     apply_teleport
                                         .insert(
                                             entity,
