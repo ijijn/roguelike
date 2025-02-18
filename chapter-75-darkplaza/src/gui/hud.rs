@@ -10,13 +10,12 @@ fn draw_attribute(name: &str, attribute: &Attribute, y: i32, draw_batch: &mut Dr
     let black = RGB::named(rltk::BLACK);
     let attr_gray: RGB = RGB::from_hex("#CCCCCC").expect("Oops");
     draw_batch.print_color(Point::new(50, y), name, ColorPair::new(attr_gray, black));
-    let color: RGB = if attribute.modifiers < 0 {
-        RGB::from_f32(1.0, 0.0, 0.0)
-    } else if attribute.modifiers == 0 {
-        RGB::named(rltk::WHITE)
-    } else {
-        RGB::from_f32(0.0, 1.0, 0.0)
+    let color: RGB = match attribute.modifiers.cmp(&0) {
+        std::cmp::Ordering::Less => RGB::from_f32(1.0, 0.0, 0.0),
+        std::cmp::Ordering::Equal => RGB::named(rltk::WHITE),
+        std::cmp::Ordering::Greater => RGB::from_f32(0.0, 1.0, 0.0),
     };
+
     draw_batch.print_color(
         Point::new(67, y),
         format!("{}", attribute.base + attribute.modifiers),

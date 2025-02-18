@@ -121,7 +121,7 @@ pub fn render_camera(ecs: &World, ctx: &mut Rltk) {
         }
     }
 
-    draw_batch.submit(0);
+    let _result = draw_batch.submit(0);
 }
 
 pub fn render_debug_map(map: &Map, ctx: &mut Rltk) {

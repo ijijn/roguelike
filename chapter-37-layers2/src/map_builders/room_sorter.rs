@@ -3,11 +3,11 @@ use rltk::RandomNumberGenerator;
 
 #[allow(dead_code)]
 pub enum RoomSort {
-    LEFTMOST,
-    RIGHTMOST,
-    TOPMOST,
-    BOTTOMMOST,
-    CENTRAL,
+    Leftmost,
+    Rightmost,
+    Topmost,
+    Bottommost,
+    Central,
 }
 
 pub struct RoomSorter {
@@ -29,27 +29,27 @@ impl RoomSorter {
 
     fn sorter(&mut self, _rng: &mut RandomNumberGenerator, build_data: &mut BuilderMap) {
         match self.sort_by {
-            RoomSort::LEFTMOST => build_data
+            RoomSort::Leftmost => build_data
                 .rooms
                 .as_mut()
                 .unwrap()
                 .sort_by(|a, b| a.x1.cmp(&b.x1)),
-            RoomSort::RIGHTMOST => build_data
+            RoomSort::Rightmost => build_data
                 .rooms
                 .as_mut()
                 .unwrap()
                 .sort_by(|a, b| b.x2.cmp(&a.x2)),
-            RoomSort::TOPMOST => build_data
+            RoomSort::Topmost => build_data
                 .rooms
                 .as_mut()
                 .unwrap()
                 .sort_by(|a, b| a.y1.cmp(&b.y1)),
-            RoomSort::BOTTOMMOST => build_data
+            RoomSort::Bottommost => build_data
                 .rooms
                 .as_mut()
                 .unwrap()
                 .sort_by(|a, b| b.y2.cmp(&a.y2)),
-            RoomSort::CENTRAL => {
+            RoomSort::Central => {
                 let map_center =
                     rltk::Point::new(build_data.map.width / 2, build_data.map.height / 2);
                 let center_sort = |a: &Rect, b: &Rect| {

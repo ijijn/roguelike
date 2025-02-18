@@ -18,25 +18,25 @@ pub enum TileType {
 }
 
 pub fn tile_walkable(tt: TileType) -> bool {
-    match tt {
+    matches!(
+        tt,
         TileType::Floor
-        | TileType::DownStairs
-        | TileType::Road
-        | TileType::Grass
-        | TileType::ShallowWater
-        | TileType::WoodFloor
-        | TileType::Bridge
-        | TileType::Gravel
-        | TileType::UpStairs => true,
-        _ => false,
-    }
+            | TileType::DownStairs
+            | TileType::Road
+            | TileType::Grass
+            | TileType::ShallowWater
+            | TileType::WoodFloor
+            | TileType::Bridge
+            | TileType::Gravel
+            | TileType::UpStairs
+    )
 }
 
 pub fn tile_opaque(tt: TileType) -> bool {
-    match tt {
-        TileType::Wall | TileType::Stalactite | TileType::Stalagmite => true,
-        _ => false,
-    }
+    matches!(
+        tt,
+        TileType::Wall | TileType::Stalactite | TileType::Stalagmite
+    )
 }
 
 pub fn tile_cost(tt: TileType) -> f32 {

@@ -4,7 +4,6 @@ use super::{
 };
 use rltk::{Point, Rltk, VirtualKeyCode};
 use specs::prelude::*;
-use std::cmp::{max, min};
 
 pub fn try_move_player(delta_x: i32, delta_y: i32, ecs: &mut World) {
     let mut positions = ecs.write_storage::<Position>();
@@ -44,7 +43,7 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, ecs: &mut World) {
         }
 
         if !map.blocked[destination_idx] {
-                pos.x = (pos.x + delta_x).clamp(0, 79);
+            pos.x = (pos.x + delta_x).clamp(0, 79);
             pos.y = (pos.y + delta_y).clamp(0, 49);
             entity_moved
                 .insert(entity, EntityMoved {})

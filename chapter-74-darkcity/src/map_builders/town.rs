@@ -211,7 +211,7 @@ impl TownBuilder {
     fn add_doors(
         &mut self,
         build_data: &mut BuilderMap,
-        buildings: &mut Vec<(i32, i32, i32, i32)>,
+        buildings: &mut [(i32, i32, i32, i32)],
         wall_gap_y: i32,
     ) -> Vec<usize> {
         let mut doors = Vec::new();

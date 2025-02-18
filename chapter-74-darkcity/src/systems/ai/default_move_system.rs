@@ -15,12 +15,10 @@ impl<'a> System<'a> for DefaultMoveAI {
     );
 
     fn run(&mut self, data: Self::SystemData) {
-        let (mut turns, mut move_mode, positions, mut map, mut apply_move, entities) = data;
+        let (mut turns, mut move_mode, positions, map, mut apply_move, entities) = data;
 
         let mut turn_done: Vec<Entity> = Vec::new();
-        for (entity, pos, mode, _myturn) in
-            (&entities, &positions, &mut move_mode, &turns).join()
-        {
+        for (entity, pos, mode, _myturn) in (&entities, &positions, &mut move_mode, &turns).join() {
             turn_done.push(entity);
 
             match &mut mode.mode {
@@ -72,7 +70,7 @@ impl<'a> System<'a> for DefaultMoveAI {
                             let path = rltk::a_star_search(
                                 map.xy_idx(pos.x, pos.y),
                                 map.xy_idx(target_x, target_y),
-                                &mut *map,
+                                &*map,
                             );
                             if path.success && path.steps.len() > 1 {
                                 mode.mode = Movement::RandomWaypoint {

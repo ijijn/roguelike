@@ -47,13 +47,13 @@ impl<'a> System<'a> for ChaseAI {
                 path = rltk::a_star_search(
                     map_copy.xy_idx(pos.x, pos.y),
                     map_copy.xy_idx(target_pos.0, target_pos.1),
-                    &mut map_copy,
+                    &map_copy,
                 );
             } else {
                 path = rltk::a_star_search(
                     map.xy_idx(pos.x, pos.y),
                     map.xy_idx(target_pos.0, target_pos.1),
-                    &mut *map,
+                    &*map,
                 );
             }
             if path.success && path.steps.len() > 1 && path.steps.len() < 15 {
