@@ -22,11 +22,11 @@ pub fn dwarf_fort_builder(new_depth: i32, width: i32, height: i32) -> BuilderCha
     chain
 }
 
-pub struct DragonsLair {}
+pub struct DragonsLair;
 
 impl MetaMapBuilder for DragonsLair {
     fn build_map(&mut self, build_data: &mut BuilderMap) {
-        self.build(build_data);
+        Self::build(build_data);
     }
 }
 
@@ -36,7 +36,7 @@ impl DragonsLair {
         Box::new(Self {})
     }
 
-    fn build(&mut self, build_data: &mut BuilderMap) {
+    fn build(build_data: &mut BuilderMap) {
         build_data.map.depth = 7;
         build_data.take_snapshot();
 
@@ -60,21 +60,20 @@ impl DragonsLair {
     }
 }
 
-pub struct DragonSpawner {}
+pub struct DragonSpawner;
 
 impl MetaMapBuilder for DragonSpawner {
     fn build_map(&mut self, build_data: &mut BuilderMap) {
-        self.build(build_data);
+        Self::build(build_data);
     }
 }
 
 impl DragonSpawner {
-    #[allow(dead_code)]
     pub fn new() -> Box<Self> {
         Box::new(Self {})
     }
 
-    fn build(&mut self, build_data: &mut BuilderMap) {
+    fn build(build_data: &mut BuilderMap) {
         // Find a central location that isn't occupied
         let seed_x = build_data.map.width / 2;
         let seed_y = build_data.map.height / 2;

@@ -1,7 +1,7 @@
 use super::{
     AreaOfEffect, EquipmentChanged, IdentifiedItem, Map, Name, WantsToCastSpell, WantsToUseItem,
 };
-use crate::effects::{EffectType, Targets, add_effect, aoe_tiles};
+use crate::effects::{add_effect, aoe_tiles, EffectType, Targets};
 use specs::prelude::*;
 
 pub struct ItemUseSystem {}
@@ -53,22 +53,21 @@ impl<'a> System<'a> for ItemUseSystem {
             add_effect(
                 Some(entity),
                 EffectType::ItemUse { item: useitem.item },
-                match useitem.target {
-                    None => Targets::Single {
+                useitem.target.map_or_else(
+                    || Targets::Single {
                         target: *player_entity,
                     },
-                    Some(target) => {
-                        if let Some(aoe) = aoe.get(useitem.item) {
-                            Targets::Tiles {
-                                tiles: aoe_tiles(&map, target, aoe.radius),
-                            }
-                        } else {
-                            Targets::Tile {
+                    |target| {
+                        aoe.get(useitem.item).map_or_else(
+                            || Targets::Tile {
                                 tile_idx: map.xy_idx(target.x, target.y) as i32,
-                            }
-                        }
-                    }
-                },
+                            },
+                            |aoe| Targets::Tiles {
+                                tiles: aoe_tiles(&map, target, aoe.radius),
+                            },
+                        )
+                    },
+                ),
             );
         }
 
@@ -127,22 +126,21 @@ impl<'a> System<'a> for SpellUseSystem {
                 EffectType::SpellUse {
                     spell: useitem.spell,
                 },
-                match useitem.target {
-                    None => Targets::Single {
+                useitem.target.map_or_else(
+                    || Targets::Single {
                         target: *player_entity,
                     },
-                    Some(target) => {
-                        if let Some(aoe) = aoe.get(useitem.spell) {
-                            Targets::Tiles {
-                                tiles: aoe_tiles(&map, target, aoe.radius),
-                            }
-                        } else {
-                            Targets::Tile {
+                    |target| {
+                        aoe.get(useitem.spell).map_or_else(
+                            || Targets::Tile {
                                 tile_idx: map.xy_idx(target.x, target.y) as i32,
-                            }
-                        }
-                    }
-                },
+                            },
+                            |aoe| Targets::Tiles {
+                                tiles: aoe_tiles(&map, target, aoe.radius),
+                            },
+                        )
+                    },
+                ),
             );
         }
 

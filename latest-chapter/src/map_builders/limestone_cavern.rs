@@ -49,17 +49,16 @@ pub struct CaveDecorator {}
 
 impl MetaMapBuilder for CaveDecorator {
     fn build_map(&mut self, build_data: &mut BuilderMap) {
-        self.build(build_data);
+        Self::build(build_data);
     }
 }
 
 impl CaveDecorator {
-    #[allow(dead_code)]
     pub fn new() -> Box<Self> {
         Box::new(Self {})
     }
 
-    fn build(&mut self, build_data: &mut BuilderMap) {
+    fn build(build_data: &mut BuilderMap) {
         let old_map = build_data.map.clone();
         for (idx, tt) in build_data.map.tiles.iter_mut().enumerate() {
             // Gravel Spawning
@@ -108,17 +107,16 @@ pub struct CaveTransition {}
 
 impl MetaMapBuilder for CaveTransition {
     fn build_map(&mut self, build_data: &mut BuilderMap) {
-        self.build(build_data);
+        Self::build(build_data);
     }
 }
 
 impl CaveTransition {
-    #[allow(dead_code)]
     pub fn new() -> Box<Self> {
         Box::new(Self {})
     }
 
-    fn build(&mut self, build_data: &mut BuilderMap) {
+    fn build(build_data: &mut BuilderMap) {
         build_data.map.depth = 5;
         build_data.take_snapshot();
 

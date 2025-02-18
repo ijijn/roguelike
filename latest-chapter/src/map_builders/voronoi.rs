@@ -46,7 +46,7 @@ impl VoronoiCellBuilder {
     }
 
     #[allow(clippy::map_entry)]
-    fn build(&mut self, build_data: &mut BuilderMap) {
+    fn build(&self, build_data: &mut BuilderMap) {
         // Make a Voronoi diagram. We'll do this the hard way to learn about the technique!
         let mut voronoi_seeds: Vec<(usize, rltk::Point)> = Vec::new();
 

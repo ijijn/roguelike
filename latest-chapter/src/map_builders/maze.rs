@@ -3,27 +3,24 @@ use super::{BuilderMap, InitialMapBuilder, Map, TileType};
 pub struct MazeBuilder {}
 
 impl InitialMapBuilder for MazeBuilder {
-    #[allow(dead_code)]
     fn build_map(&mut self, build_data: &mut BuilderMap) {
-        self.build(build_data);
+        build(build_data);
     }
 }
 
 impl MazeBuilder {
-    #[allow(dead_code)]
     pub fn new() -> Box<Self> {
         Box::new(Self {})
     }
+}
 
-    #[allow(clippy::map_entry)]
-    fn build(&mut self, build_data: &mut BuilderMap) {
-        // Maze gen
-        let mut maze = Grid::new(
-            (build_data.map.width / 2) - 2,
-            (build_data.map.height / 2) - 2,
-        );
-        maze.generate_maze(build_data);
-    }
+fn build(build_data: &mut BuilderMap) {
+    // Maze gen
+    let mut maze = Grid::new(
+        (build_data.map.width / 2) - 2,
+        (build_data.map.height / 2) - 2,
+    );
+    maze.generate_maze(build_data);
 }
 
 /* Maze code taken under MIT from https://github.com/cyucelen/mazeGenerator/ */
@@ -128,7 +125,7 @@ impl Grid {
         neighbors
     }
 
-    fn find_next_cell(&mut self) -> Option<usize> {
+    fn find_next_cell(&self) -> Option<usize> {
         let neighbors = self.get_available_neighbors();
         if !neighbors.is_empty() {
             if neighbors.len() == 1 {

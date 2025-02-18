@@ -224,7 +224,7 @@ fn random_room_builder(builder: &mut BuilderChain) {
 
     let start_roll = crate::rng::roll_dice(1, 2);
     if start_roll == 1 {
-        builder.with(RoomBasedStartingPosition::new())
+        builder.with(RoomBasedStartingPosition::new());
     } else {
         let (start_x, start_y) = random_start_position();
         builder.with(AreaStartingPosition::new(start_x, start_y));

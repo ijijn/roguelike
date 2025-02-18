@@ -120,9 +120,7 @@ impl RawMaster {
 
         base_item_copy.magic = Some(super::MagicItem {
             class: match nmw.bonus {
-                2 => "rare".to_string(),
-                3 => "rare".to_string(),
-                4 => "rare".to_string(),
+                2..=4 => "rare".to_string(),
                 5 => "legendary".to_string(),
                 _ => "common".to_string(),
             },
@@ -289,7 +287,6 @@ impl RawMaster {
     }
 }
 
-#[inline(always)]
 #[must_use]
 pub fn faction_reaction(my_faction: &str, their_faction: &str, raws: &RawMaster) -> Reaction {
     //println!("Looking for reaction to [{}] by [{}]", my_faction, their_faction);
@@ -341,10 +338,9 @@ pub fn get_vendor_items(categories: &[String], raws: &RawMaster) -> Vec<(String,
 
 #[must_use]
 pub fn get_scroll_tags() -> Vec<String> {
-    let raws = &super::RAWS.lock().unwrap();
     let mut result = Vec::new();
 
-    for item in &raws.raws.items {
+    for item in &super::RAWS.lock().unwrap().raws.items {
         if let Some(magic) = &item.magic {
             if &magic.naming == "scroll" {
                 result.push(item.name.clone());
@@ -357,10 +353,9 @@ pub fn get_scroll_tags() -> Vec<String> {
 
 #[must_use]
 pub fn get_potion_tags() -> Vec<String> {
-    let raws = &super::RAWS.lock().unwrap();
     let mut result = Vec::new();
 
-    for item in &raws.raws.items {
+    for item in &super::RAWS.lock().unwrap().raws.items {
         if let Some(magic) = &item.magic {
             if &magic.naming == "potion" {
                 result.push(item.name.clone());
@@ -374,6 +369,7 @@ pub fn get_potion_tags() -> Vec<String> {
 #[must_use]
 pub fn is_tag_magic(tag: &str) -> bool {
     let raws = &super::RAWS.lock().unwrap();
+
     if raws.item_index.contains_key(tag) {
         let item_template = &raws.raws.items[raws.item_index[tag]];
         item_template.magic.is_some()

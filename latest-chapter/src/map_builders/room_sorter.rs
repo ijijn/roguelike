@@ -14,19 +14,17 @@ pub struct RoomSorter {
 }
 
 impl MetaMapBuilder for RoomSorter {
-    #[allow(dead_code)]
     fn build_map(&mut self, build_data: &mut BuilderMap) {
         self.sorter(build_data);
     }
 }
 
 impl RoomSorter {
-    #[allow(dead_code)]
     pub fn new(sort_by: RoomSort) -> Box<Self> {
         Box::new(Self { sort_by })
     }
 
-    fn sorter(&mut self, build_data: &mut BuilderMap) {
+    fn sorter(&self, build_data: &mut BuilderMap) {
         match self.sort_by {
             RoomSort::Leftmost => build_data
                 .rooms

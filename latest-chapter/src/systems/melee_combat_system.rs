@@ -118,10 +118,9 @@ impl<'a> System<'a> for MeleeCombatSystem {
                         armor_item_bonus_f += armor.armor_class;
                     }
                 }
-                let base_armor_class = match natural.get(wants_melee.target) {
-                    None => 10,
-                    Some(nat) => nat.armor_class.unwrap_or(10),
-                };
+                let base_armor_class = natural
+                    .get(wants_melee.target)
+                    .map_or(10, |nat| nat.armor_class.unwrap_or(10));
                 let armor_quickness_bonus = target_attributes.quickness.bonus;
                 let armor_skill_bonus = skill_bonus(Skill::Defense, target_skills);
                 let armor_item_bonus = armor_item_bonus_f as i32;

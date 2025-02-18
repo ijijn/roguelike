@@ -104,7 +104,7 @@ impl DrunkardsWalkBuilder {
         })
     }
 
-    fn build(&mut self, build_data: &mut BuilderMap) {
+    fn build(&self, build_data: &mut BuilderMap) {
         // Set a central starting point
         let starting_position = Position {
             x: build_data.map.width / 2,

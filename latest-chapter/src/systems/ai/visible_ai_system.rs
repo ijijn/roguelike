@@ -143,7 +143,7 @@ impl<'a> System<'a> for VisibleAI {
                         Reaction::Flee => {
                             flee.push(reaction.0);
                         }
-                        _ => {}
+                        Reaction::Ignore => {}
                     }
                 }
 

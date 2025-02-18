@@ -37,8 +37,8 @@ impl<'a> System<'a> for VisibilitySystem {
                     .retain(|p| p.x >= 0 && p.x < map.width && p.y >= 0 && p.y < map.height);
 
                 // If this is the player, reveal what they can see
-                let _p: Option<&Player> = player.get(ent);
-                if let Some(_p) = _p {
+                let p = player.get(ent);
+                if p.is_some() {
                     for t in &mut map.visible_tiles {
                         *t = false;
                     }

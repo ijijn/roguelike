@@ -45,19 +45,18 @@ impl<'a> System<'a> for TriggerSystem {
                             add_effect(
                                 Some(entity),
                                 EffectType::TriggerFire { trigger: entity_id },
-                                if let Some(aoe) = area_of_effect.get(entity_id) {
-                                    Targets::Tiles {
+                                area_of_effect.get(entity_id).map_or(
+                                    Targets::Tile {
+                                        tile_idx: idx as i32,
+                                    },
+                                    |aoe| Targets::Tiles {
                                         tiles: aoe_tiles(
                                             &map,
                                             rltk::Point::new(pos.x, pos.y),
                                             aoe.radius,
                                         ),
-                                    }
-                                } else {
-                                    Targets::Tile {
-                                        tile_idx: idx as i32,
-                                    }
-                                },
+                                    },
+                                ),
                             );
                         }
                     }

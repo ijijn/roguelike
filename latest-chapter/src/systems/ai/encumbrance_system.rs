@@ -24,6 +24,15 @@ impl<'a> System<'a> for EncumbranceSystem {
     );
 
     fn run(&mut self, data: Self::SystemData) {
+        struct ItemUpdate {
+            weight: f32,
+            initiative: f32,
+            might: i32,
+            fitness: i32,
+            quickness: i32,
+            intelligence: i32,
+        }
+
         let (
             mut equip_dirty,
             entities,
@@ -40,15 +49,6 @@ impl<'a> System<'a> for EncumbranceSystem {
 
         if equip_dirty.is_empty() {
             return;
-        }
-
-        struct ItemUpdate {
-            weight: f32,
-            initiative: f32,
-            might: i32,
-            fitness: i32,
-            quickness: i32,
-            intelligence: i32,
         }
 
         // Build the map of who needs updating
