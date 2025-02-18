@@ -69,15 +69,13 @@ use rltk::RandomNumberGenerator;
 pub struct DoorPlacement {}
 
 impl MetaMapBuilder for DoorPlacement {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.doors(rng, build_data);
     }
 }
 
 impl DoorPlacement {
-    #[allow(dead_code)]
-    pub fn new() -> Box<DoorPlacement> {
+        pub fn new() -> Box<DoorPlacement> {
         Box::new(DoorPlacement{ })
     }
 
@@ -408,7 +406,7 @@ If you `cargo run` the project now, you get the desired functionality:
 
 ![Screenshot](./c40-s4.gif).
 
-## Too many doors!
+## Too many doors
 
 On the non-corridor maps, there is a slight problem when play-testing the door placement: there are doors *everywhere*. Lets reduce the frequency of door placement. We'll just add a little randomness:
 
@@ -478,7 +476,6 @@ That's it for doors! There's definitely room for improvement in the future - but
 ...
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-40-doors)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-40-doors)
 ---

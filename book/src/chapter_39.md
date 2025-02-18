@@ -26,15 +26,13 @@ use std::collections::HashSet;
 pub struct NearestCorridors {}
 
 impl MetaMapBuilder for NearestCorridors {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.corridors(rng, build_data);
     }
 }
 
 impl NearestCorridors {
-    #[allow(dead_code)]
-    pub fn new() -> Box<NearestCorridors> {
+        pub fn new() -> Box<NearestCorridors> {
         Box::new(NearestCorridors{})
     }
 
@@ -149,15 +147,13 @@ use std::collections::HashSet;
 pub struct StraightLineCorridors {}
 
 impl MetaMapBuilder for StraightLineCorridors {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.corridors(rng, build_data);
     }
 }
 
 impl StraightLineCorridors {
-    #[allow(dead_code)]
-    pub fn new() -> Box<StraightLineCorridors> {
+        pub fn new() -> Box<StraightLineCorridors> {
         Box::new(StraightLineCorridors{})
     }
 
@@ -478,8 +474,7 @@ impl MetaMapBuilder for CorridorSpawner {
 }
 
 impl CorridorSpawner {
-    #[allow(dead_code)]
-    pub fn new() -> Box<CorridorSpawner> {
+        pub fn new() -> Box<CorridorSpawner> {
         Box::new(CorridorSpawner{})
     }
 
@@ -572,7 +567,6 @@ So we've added an equal chance of straight-line corridors and nearest-neighbor c
 ...
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-39-halls)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-39-halls/)
 ---

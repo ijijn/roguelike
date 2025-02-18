@@ -33,8 +33,7 @@ impl MetaMapBuilder for RoomDrawer {
 }
 
 impl RoomDrawer {
-    #[allow(dead_code)]
-    pub fn new() -> Box<RoomDrawer> {
+        pub fn new() -> Box<RoomDrawer> {
         Box::new(RoomDrawer{})
     }
 
@@ -294,7 +293,6 @@ You can now get the full gamut of random room creation - but with the occasional
 ...
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-38-rooms)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-38-rooms/)
 ---

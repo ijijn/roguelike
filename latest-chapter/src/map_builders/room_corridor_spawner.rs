@@ -9,8 +9,7 @@ impl MetaMapBuilder for CorridorSpawner {
 }
 
 impl CorridorSpawner {
-    #[allow(dead_code)]
-    pub fn new() -> Box<Self> {
+        pub fn new() -> Box<Self> {
         Box::new(Self {})
     }
 }

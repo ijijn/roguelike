@@ -182,6 +182,7 @@ fn get_available_exits(&self, idx:i32) -> Vec<(i32, f32)> {
     exits
 }
 ```
+
 We've replaced all the costs of `1.0` with a call to our `tile_cost` function, and multiplied diagonals by 1.45 to encourage more natural looking movement.
 
 ## Fixing our camera
@@ -284,8 +285,7 @@ Here's an empty skeleton to start with:
 pub struct TownBuilder {}
 
 impl InitialMapBuilder for TownBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.build_rooms(rng, build_data);
     }
 }
@@ -431,6 +431,7 @@ fn town_walls(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mu
     (available_building_tiles, wall_gap_y)
 }
 ```
+
 Again, let's step through how this works:
 
 1. We make a new `HashSet` called `available_building_tiles`. We'll be returning this so that other functions can use it later.
@@ -719,7 +720,6 @@ This chapter has walked through how to use what we know about map generation to 
 It is completely devoid of NPCs, props and anything to do. We'll rectify that in the next chapter.
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-47-town1)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-47-town1)
 ---

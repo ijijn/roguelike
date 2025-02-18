@@ -3,15 +3,13 @@ use super::{apply_horizontal_tunnel, apply_vertical_tunnel, BuilderMap, MetaMapB
 pub struct DoglegCorridors {}
 
 impl MetaMapBuilder for DoglegCorridors {
-    #[allow(dead_code)]
-    fn build_map(&mut self, build_data: &mut BuilderMap) {
+        fn build_map(&mut self, build_data: &mut BuilderMap) {
         corridors(build_data);
     }
 }
 
 impl DoglegCorridors {
-    #[allow(dead_code)]
-    pub fn new() -> Box<Self> {
+        pub fn new() -> Box<Self> {
         Box::new(Self {})
     }
 }

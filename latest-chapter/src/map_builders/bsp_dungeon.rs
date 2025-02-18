@@ -5,14 +5,12 @@ pub struct BspDungeonBuilder {
 }
 
 impl InitialMapBuilder for BspDungeonBuilder {
-    #[allow(dead_code)]
     fn build_map(&mut self, build_data: &mut BuilderMap) {
         self.build(build_data);
     }
 }
 
 impl BspDungeonBuilder {
-    #[allow(dead_code)]
     pub fn new() -> Box<Self> {
         Box::new(Self { rects: Vec::new() })
     }

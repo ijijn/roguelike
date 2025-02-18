@@ -245,15 +245,13 @@ use rltk::RandomNumberGenerator;
 pub struct SimpleMapBuilder {}
 
 impl InitialMapBuilder for SimpleMapBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.rooms_and_corridors(rng, build_data);
     }
 }
 
 impl SimpleMapBuilder {
-    #[allow(dead_code)]
-    pub fn new() -> Box<SimpleMapBuilder> {
+        pub fn new() -> Box<SimpleMapBuilder> {
         Box::new(SimpleMapBuilder{})
     }
 
@@ -321,8 +319,7 @@ impl MetaMapBuilder for RoomBasedSpawner {
 }
 
 impl RoomBasedSpawner {
-    #[allow(dead_code)]
-    pub fn new() -> Box<RoomBasedSpawner> {
+        pub fn new() -> Box<RoomBasedSpawner> {
         Box::new(RoomBasedSpawner{})
     }
 
@@ -359,8 +356,7 @@ impl MetaMapBuilder for RoomBasedStartingPosition {
 }
 
 impl RoomBasedStartingPosition {
-    #[allow(dead_code)]
-    pub fn new() -> Box<RoomBasedStartingPosition> {
+        pub fn new() -> Box<RoomBasedStartingPosition> {
         Box::new(RoomBasedStartingPosition{})
     }
 
@@ -392,8 +388,7 @@ impl MetaMapBuilder for RoomBasedStairs {
 }
 
 impl RoomBasedStairs {
-    #[allow(dead_code)]
-    pub fn new() -> Box<RoomBasedStairs> {
+        pub fn new() -> Box<RoomBasedStairs> {
         Box::new(RoomBasedStairs{})
     }
 
@@ -446,15 +441,13 @@ pub struct BspDungeonBuilder {
 }
 
 impl InitialMapBuilder for BspDungeonBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.build(rng, build_data);
     }
 }
 
 impl BspDungeonBuilder {
-    #[allow(dead_code)]
-    pub fn new() -> Box<BspDungeonBuilder> {
+        pub fn new() -> Box<BspDungeonBuilder> {
         Box::new(BspDungeonBuilder{
             rects: Vec::new(),
         })
@@ -594,15 +587,13 @@ pub struct BspInteriorBuilder {
 }
 
 impl InitialMapBuilder for BspInteriorBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.build(rng, build_data);
     }
 }
 
 impl BspInteriorBuilder {
-    #[allow(dead_code)]
-    pub fn new() -> Box<BspInteriorBuilder> {
+        pub fn new() -> Box<BspInteriorBuilder> {
         Box::new(BspInteriorBuilder{
             rects: Vec::new()
         })
@@ -715,15 +706,13 @@ use rltk::RandomNumberGenerator;
 pub struct CellularAutomataBuilder {}
 
 impl InitialMapBuilder for CellularAutomataBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.build(rng, build_data);
     }
 }
 
 impl CellularAutomataBuilder {
-    #[allow(dead_code)]
-    pub fn new() -> Box<CellularAutomataBuilder> {
+        pub fn new() -> Box<CellularAutomataBuilder> {
         Box::new(CellularAutomataBuilder{})
     }
 
@@ -781,10 +770,8 @@ It's entirely possible that we don't actually *want* to start in the middle of t
 use super::{MetaMapBuilder, BuilderMap, Position, TileType};
 use rltk::RandomNumberGenerator;
 
-#[allow(dead_code)]
 pub enum XStart { LEFT, CENTER, RIGHT }
 
-#[allow(dead_code)]
 pub enum YStart { TOP, CENTER, BOTTOM }
 
 pub struct AreaStartingPosition {
@@ -799,8 +786,7 @@ impl MetaMapBuilder for AreaStartingPosition {
 }
 
 impl AreaStartingPosition {
-    #[allow(dead_code)]
-    pub fn new(x : XStart, y : YStart) -> Box<AreaStartingPosition> {
+        pub fn new(x : XStart, y : YStart) -> Box<AreaStartingPosition> {
         Box::new(AreaStartingPosition{
             x, y
         })
@@ -879,8 +865,7 @@ impl MetaMapBuilder for CullUnreachable {
 }
 
 impl CullUnreachable {
-    #[allow(dead_code)]
-    pub fn new() -> Box<CullUnreachable> {
+        pub fn new() -> Box<CullUnreachable> {
         Box::new(CullUnreachable{})
     }
 
@@ -926,8 +911,7 @@ impl MetaMapBuilder for VoronoiSpawning {
 }
 
 impl VoronoiSpawning {
-    #[allow(dead_code)]
-    pub fn new() -> Box<VoronoiSpawning> {
+        pub fn new() -> Box<VoronoiSpawning> {
         Box::new(VoronoiSpawning{})
     }
 
@@ -982,8 +966,7 @@ impl MetaMapBuilder for DistantExit {
 }
 
 impl DistantExit {
-    #[allow(dead_code)]
-    pub fn new() -> Box<DistantExit> {
+        pub fn new() -> Box<DistantExit> {
         Box::new(DistantExit{})
     }
 
@@ -1045,7 +1028,6 @@ use super::{InitialMapBuilder, BuilderMap, TileType, Position, paint, Symmetry};
 use rltk::RandomNumberGenerator;
 
 #[derive(PartialEq, Copy, Clone)]
-#[allow(dead_code)]
 pub enum DrunkSpawnMode { StartingPoint, Random }
 
 pub struct DrunkardSettings {
@@ -1061,22 +1043,19 @@ pub struct DrunkardsWalkBuilder {
 }
 
 impl InitialMapBuilder for DrunkardsWalkBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.build(rng, build_data);
     }
 }
 
 impl DrunkardsWalkBuilder {
-    #[allow(dead_code)]
-    pub fn new(settings: DrunkardSettings) -> DrunkardsWalkBuilder {
+        pub fn new(settings: DrunkardSettings) -> DrunkardsWalkBuilder {
         DrunkardsWalkBuilder{
             settings
         }
     }
 
-    #[allow(dead_code)]
-    pub fn open_area() -> Box<DrunkardsWalkBuilder> {
+        pub fn open_area() -> Box<DrunkardsWalkBuilder> {
         Box::new(DrunkardsWalkBuilder{
             settings : DrunkardSettings{
                 spawn_mode: DrunkSpawnMode::StartingPoint,
@@ -1088,8 +1067,7 @@ impl DrunkardsWalkBuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn open_halls() -> Box<DrunkardsWalkBuilder> {
+        pub fn open_halls() -> Box<DrunkardsWalkBuilder> {
         Box::new(DrunkardsWalkBuilder{
             settings : DrunkardSettings{
                 spawn_mode: DrunkSpawnMode::Random,
@@ -1101,8 +1079,7 @@ impl DrunkardsWalkBuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn winding_passages() -> Box<DrunkardsWalkBuilder> {
+        pub fn winding_passages() -> Box<DrunkardsWalkBuilder> {
         Box::new(DrunkardsWalkBuilder{
             settings : DrunkardSettings{
                 spawn_mode: DrunkSpawnMode::Random,
@@ -1114,8 +1091,7 @@ impl DrunkardsWalkBuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn fat_passages() -> Box<DrunkardsWalkBuilder> {
+        pub fn fat_passages() -> Box<DrunkardsWalkBuilder> {
         Box::new(DrunkardsWalkBuilder{
             settings : DrunkardSettings{
                 spawn_mode: DrunkSpawnMode::Random,
@@ -1127,8 +1103,7 @@ impl DrunkardsWalkBuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn fearful_symmetry() -> Box<DrunkardsWalkBuilder> {
+        pub fn fearful_symmetry() -> Box<DrunkardsWalkBuilder> {
         Box::new(DrunkardsWalkBuilder{
             settings : DrunkardSettings{
                 spawn_mode: DrunkSpawnMode::Random,
@@ -1228,7 +1203,6 @@ use super::{InitialMapBuilder, BuilderMap, TileType, Position, Symmetry, paint};
 use rltk::RandomNumberGenerator;
 
 #[derive(PartialEq, Copy, Clone)]
-#[allow(dead_code)]
 pub enum DLAAlgorithm { WalkInwards, WalkOutwards, CentralAttractor }
 
 pub struct DLABuilder {
@@ -1240,15 +1214,13 @@ pub struct DLABuilder {
 
 
 impl InitialMapBuilder for DLABuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.build(rng, build_data);
     }
 }
 
 impl DLABuilder {
-    #[allow(dead_code)]
-    pub fn new() -> Box<DLABuilder> {
+        pub fn new() -> Box<DLABuilder> {
         Box::new(DLABuilder{
             algorithm: DLAAlgorithm::WalkInwards,
             brush_size: 2,
@@ -1257,8 +1229,7 @@ impl DLABuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn walk_inwards() -> Box<DLABuilder> {
+        pub fn walk_inwards() -> Box<DLABuilder> {
         Box::new(DLABuilder{
             algorithm: DLAAlgorithm::WalkInwards,
             brush_size: 1,
@@ -1267,8 +1238,7 @@ impl DLABuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn walk_outwards() -> Box<DLABuilder> {
+        pub fn walk_outwards() -> Box<DLABuilder> {
         Box::new(DLABuilder{
             algorithm: DLAAlgorithm::WalkOutwards,
             brush_size: 2,
@@ -1277,8 +1247,7 @@ impl DLABuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn central_attractor() -> Box<DLABuilder> {
+        pub fn central_attractor() -> Box<DLABuilder> {
         Box::new(DLABuilder{
             algorithm: DLAAlgorithm::CentralAttractor,
             brush_size: 2,
@@ -1287,8 +1256,7 @@ impl DLABuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn insectoid() -> Box<DLABuilder> {
+        pub fn insectoid() -> Box<DLABuilder> {
         Box::new(DLABuilder{
             algorithm: DLAAlgorithm::CentralAttractor,
             brush_size: 2,
@@ -1398,15 +1366,13 @@ use rltk::RandomNumberGenerator;
 pub struct MazeBuilder {}
 
 impl InitialMapBuilder for MazeBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.build(rng, build_data);
     }
 }
 
 impl MazeBuilder {
-    #[allow(dead_code)]
-    pub fn new() -> Box<MazeBuilder> {
+        pub fn new() -> Box<MazeBuilder> {
         Box::new(MazeBuilder{})
     }
 
@@ -1603,7 +1569,6 @@ use super::{InitialMapBuilder, BuilderMap, TileType};
 use rltk::RandomNumberGenerator;
 
 #[derive(PartialEq, Copy, Clone)]
-#[allow(dead_code)]
 pub enum DistanceAlgorithm { Pythagoras, Manhattan, Chebyshev }
 
 pub struct VoronoiCellBuilder {
@@ -1613,31 +1578,27 @@ pub struct VoronoiCellBuilder {
 
 
 impl InitialMapBuilder for VoronoiCellBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.build(rng, build_data);
     }
 }
 
 impl VoronoiCellBuilder {
-    #[allow(dead_code)]
-    pub fn new() -> Box<VoronoiCellBuilder> {
+        pub fn new() -> Box<VoronoiCellBuilder> {
         Box::new(VoronoiCellBuilder{
             n_seeds: 64,
             distance_algorithm: DistanceAlgorithm::Pythagoras,
         })
     }
 
-    #[allow(dead_code)]
-    pub fn pythagoras() -> Box<VoronoiCellBuilder> {
+        pub fn pythagoras() -> Box<VoronoiCellBuilder> {
         Box::new(VoronoiCellBuilder{
             n_seeds: 64,
             distance_algorithm: DistanceAlgorithm::Pythagoras,
         })
     }
 
-    #[allow(dead_code)]
-    pub fn manhattan() -> Box<VoronoiCellBuilder> {
+        pub fn manhattan() -> Box<VoronoiCellBuilder> {
         Box::new(VoronoiCellBuilder{
             n_seeds: 64,
             distance_algorithm: DistanceAlgorithm::Manhattan,
@@ -1740,8 +1701,7 @@ impl MetaMapBuilder for WaveformCollapseBuilder {
 
 impl WaveformCollapseBuilder {
     /// Constructor for waveform collapse.
-    #[allow(dead_code)]
-    pub fn new() -> Box<WaveformCollapseBuilder> {
+        pub fn new() -> Box<WaveformCollapseBuilder> {
         Box::new(WaveformCollapseBuilder{})
     }
 
@@ -1824,7 +1784,6 @@ pub mod prefab_rooms;
 use std::collections::HashSet;
 
 #[derive(PartialEq, Copy, Clone)]
-#[allow(dead_code)]
 pub enum PrefabMode { 
     RexLevel{ template : &'static str },
     Constant{ level : prefab_levels::PrefabLevel },
@@ -1832,7 +1791,6 @@ pub enum PrefabMode {
     RoomVaults
 }
 
-#[allow(dead_code)]
 pub struct PrefabBuilder {
     mode: PrefabMode
 }
@@ -1844,43 +1802,37 @@ impl MetaMapBuilder for PrefabBuilder {
 }
 
 impl InitialMapBuilder for PrefabBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.build(rng, build_data);
     }
 }
 
 impl PrefabBuilder {
-    #[allow(dead_code)]
-    pub fn new() -> Box<PrefabBuilder> {
+        pub fn new() -> Box<PrefabBuilder> {
         Box::new(PrefabBuilder{
             mode : PrefabMode::RoomVaults,
         })
     }
 
-    #[allow(dead_code)]
-    pub fn rex_level(template : &'static str) -> Box<PrefabBuilder> {
+        pub fn rex_level(template : &'static str) -> Box<PrefabBuilder> {
         Box::new(PrefabBuilder{
             mode : PrefabMode::RexLevel{ template },
         })
     }
 
-    #[allow(dead_code)]
-    pub fn constant(level : prefab_levels::PrefabLevel) -> Box<PrefabBuilder> {
+        pub fn constant(level : prefab_levels::PrefabLevel) -> Box<PrefabBuilder> {
         Box::new(PrefabBuilder{
             mode : PrefabMode::Constant{ level },
         })
     }
 
-    #[allow(dead_code)]
-    pub fn sectional(section : prefab_sections::PrefabSection) -> Box<PrefabBuilder> {
+        pub fn sectional(section : prefab_sections::PrefabSection) -> Box<PrefabBuilder> {
         Box::new(PrefabBuilder{
             mode : PrefabMode::Sectional{ section },
         })
     }
 
-    #[allow(dead_code)]
-    pub fn vaults() -> Box<PrefabBuilder> {
+        pub fn vaults() -> Box<PrefabBuilder> {
         Box::new(PrefabBuilder{
             mode : PrefabMode::RoomVaults,
         })
@@ -1933,8 +1885,7 @@ impl PrefabBuilder {
         }
     }
 
-    #[allow(dead_code)]
-    fn load_rex_map(&mut self, path: &str, build_data : &mut BuilderMap) {
+        fn load_rex_map(&mut self, path: &str, build_data : &mut BuilderMap) {
         let xp_file = rltk::rex::XpFile::from_resource(path).unwrap();
 
         for layer in &xp_file.layers {
@@ -1957,8 +1908,7 @@ impl PrefabBuilder {
         string_vec
     }
 
-    #[allow(dead_code)]
-    fn load_ascii_map(&mut self, level: &prefab_levels::PrefabLevel, build_data : &mut BuilderMap) {
+        fn load_ascii_map(&mut self, level: &prefab_levels::PrefabLevel, build_data : &mut BuilderMap) {
         let string_vec = PrefabBuilder::read_ascii_to_vec(level.template);
 
         let mut i = 0;
@@ -1985,8 +1935,7 @@ impl PrefabBuilder {
         build_data.take_snapshot();
     }
 
-    #[allow(dead_code)]
-    fn apply_sectional(&mut self, section : &prefab_sections::PrefabSection, rng: &mut RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn apply_sectional(&mut self, section : &prefab_sections::PrefabSection, rng: &mut RandomNumberGenerator, build_data : &mut BuilderMap) {
         use prefab_sections::*;
 
         let string_vec = PrefabBuilder::read_ascii_to_vec(section.template);

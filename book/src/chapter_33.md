@@ -1083,7 +1083,7 @@ Notice that we're removing down stairs - the Cellular Automata generator will pl
 
 ![Screenshot](./c33-s13.gif).
 
-## Improving adjacency - and increasing the risk of rejection!
+## Improving adjacency - and increasing the risk of rejection
 
 What we have already is quite a workable solution - you can make decent maps with it, especially when you use other generators as the seed. On winding jigsaw maps, it's not generating the adjacency we'd like. There's a small risk by making the matcher more specific that we will see some failures, but lets give it a go anyway. In our code that builds a compatibility matrix, find the comment `There's no exits on this side` and replace the section with this code:
 
@@ -1225,8 +1225,7 @@ There are quite a few warnings in the project when you compile. They are almost 
 
 ```rust
 impl DrunkardsWalkBuilder {
-    #[allow(dead_code)]
-    pub fn new(new_depth : i32, settings: DrunkardSettings) -> DrunkardsWalkBuilder {
+        pub fn new(new_depth : i32, settings: DrunkardSettings) -> DrunkardsWalkBuilder {
 ```
 
 I've gone through and applied these where necessary in the example code to silence the compiler.
@@ -1261,7 +1260,6 @@ impl RexAssets {
 This saves a little bit of space in the resulting binary (never a bad thing: smaller binaries fit into your CPU's cache better, and generally run faster).
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-33-wfc)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-33-wfc/)
 ---

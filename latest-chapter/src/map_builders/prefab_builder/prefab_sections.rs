@@ -1,4 +1,3 @@
-#[allow(dead_code)]
 #[derive(PartialEq, Eq, Copy, Clone)]
 pub enum HorizontalPlacement {
     Left,
@@ -6,7 +5,6 @@ pub enum HorizontalPlacement {
     Right,
 }
 
-#[allow(dead_code)]
 #[derive(PartialEq, Eq, Copy, Clone)]
 pub enum VerticalPlacement {
     Top,
@@ -14,7 +12,6 @@ pub enum VerticalPlacement {
     Bottom,
 }
 
-#[allow(dead_code)]
 #[derive(PartialEq, Eq, Copy, Clone)]
 pub struct PrefabSection {
     pub template: &'static str,
@@ -23,7 +20,6 @@ pub struct PrefabSection {
     pub placement: (HorizontalPlacement, VerticalPlacement),
 }
 
-#[allow(dead_code)]
 pub const UNDERGROUND_FORT: PrefabSection = PrefabSection {
     template: RIGHT_FORT,
     width: 15,
@@ -31,7 +27,6 @@ pub const UNDERGROUND_FORT: PrefabSection = PrefabSection {
     placement: (HorizontalPlacement::Right, VerticalPlacement::Top),
 };
 
-#[allow(dead_code)]
 // The padding needs to be here!
 const RIGHT_FORT: &str = "
      #         
@@ -79,7 +74,6 @@ const RIGHT_FORT: &str = "
      #         
 ";
 
-#[allow(dead_code)]
 pub const ORC_CAMP: PrefabSection = PrefabSection {
     template: ORC_CAMP_TXT,
     width: 12,
@@ -87,7 +81,6 @@ pub const ORC_CAMP: PrefabSection = PrefabSection {
     placement: (HorizontalPlacement::Center, VerticalPlacement::Center),
 };
 
-#[allow(dead_code)]
 const ORC_CAMP_TXT: &str = "
             
  ########## 
@@ -104,7 +97,6 @@ const ORC_CAMP_TXT: &str = "
             
 ";
 
-#[allow(dead_code)]
 pub const DROW_ENTRY: PrefabSection = PrefabSection {
     template: DROW_ENTRY_TXT,
     width: 12,
@@ -112,7 +104,6 @@ pub const DROW_ENTRY: PrefabSection = PrefabSection {
     placement: (HorizontalPlacement::Center, VerticalPlacement::Center),
 };
 
-#[allow(dead_code)]
 const DROW_ENTRY_TXT: &str = "
             
  ########## 

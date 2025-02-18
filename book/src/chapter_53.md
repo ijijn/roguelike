@@ -1,4 +1,4 @@
-# Into the Woods!
+# Into the Woods
 
 ---
 
@@ -14,7 +14,7 @@
 
 We've spend a few chapters improving the basic game, its interface, and the starting town. That's fun, and we could honestly keep improving it for *many* chapters - but it's a good idea when developing to see some real progress. Otherwise, you tend to get demotivated! So for this chapter, we're going to add the next level to the game, populate it, and tackle the concept of *themes* to differentiate levels.
 
-## Into the woods!
+## Into the woods
 
 Our design document says that we go from the town to a limestone cavern. That's a good start, but it's quite unlikely that you would transition from one to the other with nothing in-between; otherwise, *everyone* would go there! So we're going to add a forest next to the town of Bracketon, with a cave entrance to the main adventure. A road runs through the woods, which is where *everyone else* typically goes (those who aren't set on trying to save the world, which is most people!).
 
@@ -239,8 +239,7 @@ impl MetaMapBuilder for YellowBrickRoad {
 }
 
 impl YellowBrickRoad {
-    #[allow(dead_code)]
-    pub fn new() -> Box<YellowBrickRoad> {
+        pub fn new() -> Box<YellowBrickRoad> {
         Box::new(YellowBrickRoad{})
     }
 
@@ -348,7 +347,7 @@ build_data.take_snapshot();
 
 This randomly picks an exit location (from NE and SE), and then adds a stream in the opposite direction. Once again, we use path-finding to place the stream - so we don't disturb the overall layout too much. Then we place the exit stairs.
 
-## But - I keep getting murdered by orcs!
+## But - I keep getting murdered by orcs
 
 We've left the default spawning to happen, with no concern for updating the monsters for our level! Our player is probably *very* low level, especially given that we won't implement levelling up until the next chapter. *ahem*. Anyway, we should introduce some beginner-friendly spawns and adjust the spawn locations of our other enemies. Take a look at `spawns.json` once again, and we'll go straight to the spawn tables at the top. We'll start by adjusting the `min_depth` entries for things we don't want to see yet:
 
@@ -458,7 +457,7 @@ And add the fox to the spawn table, too:
 { "name" : "Fox", "weight" : 15, "min_depth" : 2, "max_depth" : 3 }
 ```
 
-## It's still too hard - lets give the player more health!
+## It's still too hard - lets give the player more health
 
 Ok, so we're still getting murdered far too often. Let's give the poor player some more hit points! Open `gamesystem.rs` and edit `player_hp_at_level` to add 10 more HP:
 
@@ -513,7 +512,7 @@ If you `cargo run` now, you'll encounter a plethora of life in the forest - and 
 
 ![Screenshot](./c53-s6.jpg)
 
-## But Venison is Tasty!
+## But Venison is Tasty
 
 The problem with making deer use the `bystander` system is that they roam stupidly, and neither you - nor the wolves - can eat them. On a larger level, you can't eat the wolves either (not that they would taste good). Nor can you sell their pelts, or otherwise profit from their slaughter!
 
@@ -832,7 +831,7 @@ If you `cargo run` now, you can slay wolves and deer - and they drop meat and hi
 
 ![Screenshot](./c53-s7.gif)
 
-## Some Brigands - and they drop stuff!
+## Some Brigands - and they drop stuff
 
 Let's add a few brigands, and give them some minimal equipment. This gives the player an opportunity to loot some better equipment before they get to the next level, as well as more variety in the forest. Here's the NPC definition:
 
@@ -1069,7 +1068,6 @@ This has been a large chapter, but we've added a whole level to the game! It has
 In the next chapter, we'll change gear and look at adding some player progression.
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-53-woods)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-53-woods)
 ---

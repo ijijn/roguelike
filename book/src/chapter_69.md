@@ -108,7 +108,6 @@ gs.generate_world_map(9, 0);
 Two identical (design-wise; the content will vary due to procedural generation) levels in a row is pretty dull, and we need to convey the idea that there is an entrance to a dark elven city here. We'll start by adding a new prefab sectional to the map:
 
 ```rust
-#[allow(dead_code)]
 pub const DROW_ENTRY : PrefabSection = PrefabSection{
     template : DROW_ENTRY_TXT,
     width: 12,
@@ -116,7 +115,6 @@ pub const DROW_ENTRY : PrefabSection = PrefabSection{
     placement: ( HorizontalPlacement::Center, VerticalPlacement::Center )
 };
 
-#[allow(dead_code)]
 const DROW_ENTRY_TXT : &str = "
             
  ########## 
@@ -238,7 +236,7 @@ We'll also give them a faction entry:
 { "name" : "DarkElf", "responses" : { "Default" : "attack", "DarkElf" : "ignore" } }
 ```
 
-If you `cargo run` now, you'll have some moderately powerful dark elves to deal with. The thing is, they aren't very "dark elfy": they are basically reskinned bandits. What do you think of when you think "dark elf" (other than *Drizzt Do'Urden*, whose copyright owners would smite me from afar if I included him)? They are quite evil, magical, fast-moving, and generally quite formidable. They also tend to have their own dark technology, and pepper their enemies with ranged weaponry! 
+If you `cargo run` now, you'll have some moderately powerful dark elves to deal with. The thing is, they aren't very "dark elfy": they are basically reskinned bandits. What do you think of when you think "dark elf" (other than *Drizzt Do'Urden*, whose copyright owners would smite me from afar if I included him)? They are quite evil, magical, fast-moving, and generally quite formidable. They also tend to have their own dark technology, and pepper their enemies with ranged weaponry!
 
 We aren't going to support ranged weaponry until the next chapter, but we can take some steps to make them more dark elven. Let's give them a more dark-elf sounding set of items. In the `equipped` tag, we'll go with:
 
@@ -803,7 +801,6 @@ In this chapter, we've built ourselves a mushroom grove level, and a second leve
 ...
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-69-mushrooms2)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-69-mushrooms2)
 ---

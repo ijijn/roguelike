@@ -1,7 +1,6 @@
 use super::{paint, BuilderMap, InitialMapBuilder, MetaMapBuilder, Position, Symmetry, TileType};
 
 #[derive(PartialEq, Eq, Copy, Clone)]
-#[allow(dead_code)]
 pub enum DrunkSpawnMode {
     StartingPoint,
     Random,
@@ -20,27 +19,23 @@ pub struct DrunkardsWalkBuilder {
 }
 
 impl InitialMapBuilder for DrunkardsWalkBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, build_data: &mut BuilderMap) {
+        fn build_map(&mut self, build_data: &mut BuilderMap) {
         self.build(build_data);
     }
 }
 
 impl MetaMapBuilder for DrunkardsWalkBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, build_data: &mut BuilderMap) {
+        fn build_map(&mut self, build_data: &mut BuilderMap) {
         self.build(build_data);
     }
 }
 
 impl DrunkardsWalkBuilder {
-    #[allow(dead_code)]
-    pub const fn new(settings: DrunkardSettings) -> Self {
+        pub const fn new(settings: DrunkardSettings) -> Self {
         Self { settings }
     }
 
-    #[allow(dead_code)]
-    pub fn open_area() -> Box<Self> {
+        pub fn open_area() -> Box<Self> {
         Box::new(Self {
             settings: DrunkardSettings {
                 spawn_mode: DrunkSpawnMode::StartingPoint,
@@ -52,8 +47,7 @@ impl DrunkardsWalkBuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn open_halls() -> Box<Self> {
+        pub fn open_halls() -> Box<Self> {
         Box::new(Self {
             settings: DrunkardSettings {
                 spawn_mode: DrunkSpawnMode::Random,
@@ -65,8 +59,7 @@ impl DrunkardsWalkBuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn winding_passages() -> Box<Self> {
+        pub fn winding_passages() -> Box<Self> {
         Box::new(Self {
             settings: DrunkardSettings {
                 spawn_mode: DrunkSpawnMode::Random,
@@ -78,8 +71,7 @@ impl DrunkardsWalkBuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn fat_passages() -> Box<Self> {
+        pub fn fat_passages() -> Box<Self> {
         Box::new(Self {
             settings: DrunkardSettings {
                 spawn_mode: DrunkSpawnMode::Random,
@@ -91,8 +83,7 @@ impl DrunkardsWalkBuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn fearful_symmetry() -> Box<Self> {
+        pub fn fearful_symmetry() -> Box<Self> {
         Box::new(Self {
             settings: DrunkardSettings {
                 spawn_mode: DrunkSpawnMode::Random,

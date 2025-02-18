@@ -5,7 +5,6 @@ pub mod prefab_sections;
 use std::collections::HashSet;
 
 #[derive(PartialEq, Eq, Copy, Clone)]
-#[allow(dead_code)]
 pub enum PrefabMode {
     RexLevel {
         template: &'static str,
@@ -19,7 +18,6 @@ pub enum PrefabMode {
     RoomVaults,
 }
 
-#[allow(dead_code)]
 pub struct PrefabBuilder {
     mode: PrefabMode,
 }
@@ -31,42 +29,36 @@ impl MetaMapBuilder for PrefabBuilder {
 }
 
 impl InitialMapBuilder for PrefabBuilder {
-    #[allow(dead_code)]
     fn build_map(&mut self, build_data: &mut BuilderMap) {
         self.build(build_data);
     }
 }
 
 impl PrefabBuilder {
-    #[allow(dead_code)]
     pub fn new() -> Box<Self> {
         Box::new(Self {
             mode: PrefabMode::RoomVaults,
         })
     }
 
-    #[allow(dead_code)]
     pub fn rex_level(template: &'static str) -> Box<Self> {
         Box::new(Self {
             mode: PrefabMode::RexLevel { template },
         })
     }
 
-    #[allow(dead_code)]
     pub fn constant(level: prefab_levels::PrefabLevel) -> Box<Self> {
         Box::new(Self {
             mode: PrefabMode::Constant { level },
         })
     }
 
-    #[allow(dead_code)]
     pub fn sectional(section: prefab_sections::PrefabSection) -> Box<Self> {
         Box::new(Self {
             mode: PrefabMode::Sectional { section },
         })
     }
 
-    #[allow(dead_code)]
     pub fn vaults() -> Box<Self> {
         Box::new(Self {
             mode: PrefabMode::RoomVaults,
@@ -216,7 +208,6 @@ fn load_ascii_map(level: &prefab_levels::PrefabLevel, build_data: &mut BuilderMa
     }
 }
 
-#[allow(dead_code)]
 fn apply_sectional(section: &prefab_sections::PrefabSection, build_data: &mut BuilderMap) {
     use prefab_sections::{HorizontalPlacement, VerticalPlacement};
 

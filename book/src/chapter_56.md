@@ -200,8 +200,7 @@ impl MetaMapBuilder for CaveDecorator {
 }
 
 impl CaveDecorator {
-    #[allow(dead_code)]
-    pub fn new() -> Box<CaveDecorator> {
+        pub fn new() -> Box<CaveDecorator> {
         Box::new(CaveDecorator{})
     }
 
@@ -320,11 +319,12 @@ The caverns are pretty playable as-is, but they don't really match what we've de
 ],
 ```
 
-We've left bandits in the cave, because they may seek shelter there - but no more wolves, deer or rodents of unusual size (we're probably sick of them by now, anyway!). What else would you find in a cave? The [d20 system encounter tables](https://www.d20pfsrd.com/bestiary/indexes-and-tables/encounter-tables/#TOC-Dungeon-Avg.-CR-2-) suggest a few: 
+We've left bandits in the cave, because they may seek shelter there - but no more wolves, deer or rodents of unusual size (we're probably sick of them by now, anyway!). What else would you find in a cave? The [d20 system encounter tables](https://www.d20pfsrd.com/bestiary/indexes-and-tables/encounter-tables/#TOC-Dungeon-Avg.-CR-2-) suggest a few:
+
 ```
 Dire rats, fire beetles, human skeletons, giant centipedes, spider swarms, human zombies, chokers, skeletal champions, goblins, ghouls, giant spiders, cockatrice, gelatinous cube, rust monster, shadow, wight, stirges, darkmantles, troglodytes, bugbears, vargoilles,
 gray oozes, mimcs and ogres (oh my)
-``` 
+```
 
 That's quite the list! Thinking about *this* layer of the dungeon, a few of these make sense: Spiders will definitely like a nice dark area. "Stirges" are basically evil bats, so we should add bats. We have goblins and kobolds as well as the occasional orc. We already decided that we're sick of rats for now! I'm a big fan of gelatinous cubes, so I'd love to put them in, too! Many of the others are best left for a later level due to difficulty.
 
@@ -415,7 +415,7 @@ So bats are harmless herbivores who largely run away from you. Spiders and cubes
 
 Not too bad! It's playable, the right monsters appear, and overall not a bad experience at all.
 
-## Lighting!
+## Lighting
 
 One of the things that makes limestone caverns so amazing is the lighting; you peer through the marble with the light from your helmet torch, casting shadows and giving everything an eerie look. We can add cosmetic lighting to the game without too much difficulty (it might make its way into a stealth system at some point!)
 
@@ -685,7 +685,6 @@ In this chapter, we've added a whole new level and theme - and lit the caverns! 
 ...
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-56-caverns)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-56-caverns)
 ---

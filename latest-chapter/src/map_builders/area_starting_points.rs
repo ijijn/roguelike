@@ -1,14 +1,12 @@
 use super::{BuilderMap, MetaMapBuilder, Position};
 use crate::map;
 
-#[allow(dead_code)]
 pub enum XStart {
     Left,
     Centre,
     Right,
 }
 
-#[allow(dead_code)]
 pub enum YStart {
     Top,
     Middle,
@@ -27,7 +25,6 @@ impl MetaMapBuilder for AreaStartingPosition {
 }
 
 impl AreaStartingPosition {
-    #[allow(dead_code)]
     pub fn new(x: XStart, y: YStart) -> Box<Self> {
         Box::new(Self { x, y })
     }

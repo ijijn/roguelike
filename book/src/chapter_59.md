@@ -14,7 +14,7 @@
 
 We have the first layer of the limestone caverns looking pretty good. We know from the design document that the caverns give way to a dwarven fortress, but it seems reasonable to enjoy our cavern renderer for a little longer. Let's build a deeper caves level, focused on an orc and goblin camp, with peripheral wild monsters.
 
-## More cheating!
+## More cheating
 
 Now's a good time to add a little more cheat functionality to make working on later levels easier.
 
@@ -231,7 +231,6 @@ pub fn limestone_deep_cavern_builder(new_depth: i32, _rng: &mut rltk::RandomNumb
 This actually gets us a pretty playable level; we could stop here and not be ashamed (although we clearly need to add some more monsters). We're not done yet, though! We'd like there to be an orc camp at the center of the map. This sounds like a job for a prefab! Open up `map_builders/prefab_builder/prefab_sections.rs` and we'll add a new sectional:
 
 ```rust
-#[allow(dead_code)]
 pub const ORC_CAMP : PrefabSection = PrefabSection{
     template : ORC_CAMP_TXT,
     width: 12,
@@ -239,7 +238,6 @@ pub const ORC_CAMP : PrefabSection = PrefabSection{
     placement: ( HorizontalPlacement::Center, VerticalPlacement::Center )
 };
 
-#[allow(dead_code)]
 const ORC_CAMP_TXT : &str = "
             
  ≈≈≈≈o≈≈≈≈≈ 
@@ -466,7 +464,6 @@ Another level down (more improvements are possible; they are *always* possible),
 ...
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-59-caverns2)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-59-caverns2)
 ---

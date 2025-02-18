@@ -17,8 +17,7 @@ impl MetaMapBuilder for WaveformCollapseBuilder {
 
 impl WaveformCollapseBuilder {
     /// Constructor for waveform collapse.
-    #[allow(dead_code)]
-    pub fn new() -> Box<Self> {
+        pub fn new() -> Box<Self> {
         Box::new(Self {})
     }
 }

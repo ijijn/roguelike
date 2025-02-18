@@ -1,14 +1,12 @@
 use super::{BuilderMap, MetaMapBuilder, TileType};
 use crate::map;
 
-#[allow(dead_code)]
 pub enum XEnd {
     Left,
     Centre,
     Right,
 }
 
-#[allow(dead_code)]
 pub enum YEnd {
     Top,
     Middle,

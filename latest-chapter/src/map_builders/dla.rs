@@ -1,7 +1,6 @@
 use super::{paint, BuilderMap, InitialMapBuilder, MetaMapBuilder, Position, Symmetry, TileType};
 
 #[derive(PartialEq, Eq, Copy, Clone)]
-#[allow(dead_code)]
 pub enum DLAAlgorithm {
     WalkInwards,
     WalkOutwards,
@@ -16,22 +15,19 @@ pub struct DLABuilder {
 }
 
 impl InitialMapBuilder for DLABuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, build_data: &mut BuilderMap) {
+        fn build_map(&mut self, build_data: &mut BuilderMap) {
         self.build(build_data);
     }
 }
 
 impl MetaMapBuilder for DLABuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, build_data: &mut BuilderMap) {
+        fn build_map(&mut self, build_data: &mut BuilderMap) {
         self.build(build_data);
     }
 }
 
 impl DLABuilder {
-    #[allow(dead_code)]
-    pub fn new() -> Box<Self> {
+        pub fn new() -> Box<Self> {
         Box::new(Self {
             algorithm: DLAAlgorithm::WalkInwards,
             brush_size: 2,
@@ -40,8 +36,7 @@ impl DLABuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn walk_inwards() -> Box<Self> {
+        pub fn walk_inwards() -> Box<Self> {
         Box::new(Self {
             algorithm: DLAAlgorithm::WalkInwards,
             brush_size: 1,
@@ -50,8 +45,7 @@ impl DLABuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn walk_outwards() -> Box<Self> {
+        pub fn walk_outwards() -> Box<Self> {
         Box::new(Self {
             algorithm: DLAAlgorithm::WalkOutwards,
             brush_size: 2,
@@ -60,8 +54,7 @@ impl DLABuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn heavy_erosion() -> Box<Self> {
+        pub fn heavy_erosion() -> Box<Self> {
         Box::new(Self {
             algorithm: DLAAlgorithm::WalkInwards,
             brush_size: 2,
@@ -70,8 +63,7 @@ impl DLABuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn central_attractor() -> Box<Self> {
+        pub fn central_attractor() -> Box<Self> {
         Box::new(Self {
             algorithm: DLAAlgorithm::CentralAttractor,
             brush_size: 2,
@@ -80,8 +72,7 @@ impl DLABuilder {
         })
     }
 
-    #[allow(dead_code)]
-    pub fn insectoid() -> Box<Self> {
+        pub fn insectoid() -> Box<Self> {
         Box::new(Self {
             algorithm: DLAAlgorithm::CentralAttractor,
             brush_size: 2,

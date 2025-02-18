@@ -1,7 +1,6 @@
 use super::{BuilderMap, InitialMapBuilder, TileType};
 
 #[derive(PartialEq, Eq, Copy, Clone)]
-#[allow(dead_code)]
 pub enum DistanceAlgorithm {
     Pythagoras,
     Manhattan,
@@ -14,14 +13,12 @@ pub struct VoronoiCellBuilder {
 }
 
 impl InitialMapBuilder for VoronoiCellBuilder {
-    #[allow(dead_code)]
     fn build_map(&mut self, build_data: &mut BuilderMap) {
         self.build(build_data);
     }
 }
 
 impl VoronoiCellBuilder {
-    #[allow(dead_code)]
     pub fn new() -> Box<Self> {
         Box::new(Self {
             n_seeds: 64,
@@ -29,7 +26,6 @@ impl VoronoiCellBuilder {
         })
     }
 
-    #[allow(dead_code)]
     pub fn pythagoras() -> Box<Self> {
         Box::new(Self {
             n_seeds: 64,
@@ -37,7 +33,6 @@ impl VoronoiCellBuilder {
         })
     }
 
-    #[allow(dead_code)]
     pub fn manhattan() -> Box<Self> {
         Box::new(Self {
             n_seeds: 64,

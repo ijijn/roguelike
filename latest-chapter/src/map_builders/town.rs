@@ -10,8 +10,7 @@ pub fn town_builder(new_depth: i32, width: i32, height: i32) -> BuilderChain {
 pub struct TownBuilder {}
 
 impl InitialMapBuilder for TownBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, build_data: &mut BuilderMap) {
+        fn build_map(&mut self, build_data: &mut BuilderMap) {
         build_rooms(build_data);
     }
 }

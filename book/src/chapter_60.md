@@ -93,8 +93,7 @@ impl MetaMapBuilder for CaveTransition {
 }
 
 impl CaveTransition {
-    #[allow(dead_code)]
-    pub fn new() -> Box<CaveTransition> {
+        pub fn new() -> Box<CaveTransition> {
         Box::new(CaveTransition{})
     }
 
@@ -154,7 +153,7 @@ So there's all the usual boilerplate to make a builder, and then we get to the `
 5. We remove all spawns from the current map that are in the right half of the map.
 6. We copy all spawns from the BSP map to the current map, if they are in the right half of the map.
 
-The result of all of this? A split dungeon! 
+The result of all of this? A split dungeon!
 
 ![Screenshot](./c60-s1.gif)
 
@@ -184,10 +183,8 @@ use super::{MetaMapBuilder, BuilderMap, TileType};
 use crate::map;
 use rltk::RandomNumberGenerator;
 
-#[allow(dead_code)]
 pub enum XEnd { LEFT, CENTER, RIGHT }
 
-#[allow(dead_code)]
 pub enum YEnd{ TOP, CENTER, BOTTOM }
 
 pub struct AreaEndingPosition {
@@ -202,8 +199,7 @@ impl MetaMapBuilder for AreaEndingPosition {
 }
 
 impl AreaEndingPosition {
-    #[allow(dead_code)]
-    pub fn new(x : XEnd, y : YEnd) -> Box<AreaEndingPosition> {
+        pub fn new(x : XEnd, y : YEnd) -> Box<AreaEndingPosition> {
         Box::new(AreaEndingPosition{
             x, y
         })
@@ -531,7 +527,6 @@ The level is still a bit too likely to murder you, but it works. We'll be making
 ...
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-60-caverns3)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-60-caverns3)
 ---

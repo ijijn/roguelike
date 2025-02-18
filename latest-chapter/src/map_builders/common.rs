@@ -2,7 +2,6 @@ use super::{Map, TileType};
 use std::cmp::{max, min};
 
 #[derive(PartialEq, Eq, Copy, Clone)]
-#[allow(dead_code)]
 pub enum Symmetry {
     None,
     Horizontal,
@@ -114,10 +113,7 @@ fn apply_paint(map: &mut Map, brush_size: i32, x: i32, y: i32) {
         let half_brush_size = brush_size / 2;
         for brush_y in y - half_brush_size..y + half_brush_size {
             for brush_x in x - half_brush_size..x + half_brush_size {
-                if brush_x > 1
-                    && brush_x < map.width - 1
-                    && brush_y > 1
-                    && brush_y < map.height - 1
+                if brush_x > 1 && brush_x < map.width - 1 && brush_y > 1 && brush_y < map.height - 1
                 {
                     let idx = map.xy_idx(brush_x, brush_y);
                     map.tiles[idx] = TileType::Floor;

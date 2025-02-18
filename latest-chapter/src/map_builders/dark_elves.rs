@@ -30,16 +30,14 @@ use super::{BuilderMap, InitialMapBuilder, TileType};
 pub struct PlazaMapBuilder {}
 
 impl InitialMapBuilder for PlazaMapBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, build_data: &mut BuilderMap) {
+        fn build_map(&mut self, build_data: &mut BuilderMap) {
         empty_map(build_data);
         spawn_zones(build_data);
     }
 }
 
 impl PlazaMapBuilder {
-    #[allow(dead_code)]
-    pub fn new() -> Box<Self> {
+        pub fn new() -> Box<Self> {
         Box::new(Self {})
     }
 }

@@ -72,15 +72,13 @@ use super::{InitialMapBuilder, BuilderMap, TileType };
 pub struct PlazaMapBuilder ;
 
 impl InitialMapBuilder for PlazaMapBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, build_data : &mut BuilderMap) {
         self.empty_map(build_data);
     }
 }
 
 impl PlazaMapBuilder {
-    #[allow(dead_code)]
-    pub fn new() -> Box<PlazaMapBuilder> {
+        pub fn new() -> Box<PlazaMapBuilder> {
         Box::new(PlazaMapBuilder)
     }
 
@@ -113,8 +111,7 @@ The plaza needs to be divided into zones, which contain plaza content. That's si
 
 ```rust
 impl InitialMapBuilder for PlazaMapBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, build_data : &mut BuilderMap) {
         self.empty_map(build_data);
         self.spawn_zones(build_data);
     }

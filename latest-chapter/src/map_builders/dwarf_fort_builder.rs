@@ -31,8 +31,7 @@ impl MetaMapBuilder for DragonsLair {
 }
 
 impl DragonsLair {
-    #[allow(dead_code)]
-    pub fn new() -> Box<Self> {
+        pub fn new() -> Box<Self> {
         Box::new(Self {})
     }
 

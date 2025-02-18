@@ -1,6 +1,5 @@
 use super::{BuilderMap, MetaMapBuilder, Rect};
 
-#[allow(dead_code)]
 pub enum RoomSort {
     Leftmost,
     Rightmost,

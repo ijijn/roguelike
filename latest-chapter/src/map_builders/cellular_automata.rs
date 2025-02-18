@@ -3,21 +3,18 @@ use super::{BuilderMap, InitialMapBuilder, MetaMapBuilder, TileType};
 pub struct CellularAutomataBuilder {}
 
 impl InitialMapBuilder for CellularAutomataBuilder {
-    #[allow(dead_code)]
     fn build_map(&mut self, build_data: &mut BuilderMap) {
         build(build_data);
     }
 }
 
 impl MetaMapBuilder for CellularAutomataBuilder {
-    #[allow(dead_code)]
     fn build_map(&mut self, build_data: &mut BuilderMap) {
         apply_iteration(build_data);
     }
 }
 
 impl CellularAutomataBuilder {
-    #[allow(dead_code)]
     pub fn new() -> Box<Self> {
         Box::new(Self {})
     }

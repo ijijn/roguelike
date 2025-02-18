@@ -20,7 +20,7 @@ Let's start by adjusting some of our existing algorithms to be useful as filters
 
 ### Applying Cellular Automata as a meta-builder
 
-When we wrote the Cellular Automata system, we aimed for a generic cavern builder. The algorithm is capable of quite a bit more than that - each iteration is basically a "meta builder" running on the previous iteration. A simple tweak allows it to *also* be a meta-builder that only runs a single iteration. 
+When we wrote the Cellular Automata system, we aimed for a generic cavern builder. The algorithm is capable of quite a bit more than that - each iteration is basically a "meta builder" running on the previous iteration. A simple tweak allows it to *also* be a meta-builder that only runs a single iteration.
 
 We'll start by moving the code for a single iteration into its own function:
 
@@ -68,8 +68,7 @@ Finally, we'll add an implementation of `MetaMapBuilder` to the mix:
 
 ```rust
 impl MetaMapBuilder for CellularAutomataBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, _rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, _rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.apply_iteration(build_data);
     }
 }
@@ -102,8 +101,7 @@ The Drunken Walk algorithm can also make a nice post-processing effect, with ver
 
 ```rust
 impl MetaMapBuilder for DrunkardsWalkBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.build(rng, build_data);
     }
 }
@@ -134,8 +132,7 @@ DLA can also be modified to erode an existing, boxy map. Simply add the `MetaBui
 
 ```rust
 impl MetaMapBuilder for DLABuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.build(rng, build_data);
     }
 }
@@ -144,7 +141,6 @@ impl MetaMapBuilder for DLABuilder {
 We'll also add a new mode, `heavy_erosion` - it's the same as "walk inwards", but wants a greater percentage of floor space:
 
 ```rust
-#[allow(dead_code)]
 pub fn heavy_erosion() -> Box<DLABuilder> {
     Box::new(DLABuilder{
         algorithm: DLAAlgorithm::WalkInwards,
@@ -193,8 +189,7 @@ impl MetaMapBuilder for RoomExploder {
 }
 
 impl RoomExploder {
-    #[allow(dead_code)]
-    pub fn new() -> Box<RoomExploder> {
+        pub fn new() -> Box<RoomExploder> {
         Box::new(RoomExploder{})
     }
 
@@ -283,8 +278,7 @@ impl MetaMapBuilder for RoomCornerRounder {
 }
 
 impl RoomCornerRounder {
-    #[allow(dead_code)]
-    pub fn new() -> Box<RoomCornerRounder> {
+        pub fn new() -> Box<RoomCornerRounder> {
         Box::new(RoomCornerRounder{})
     }
 
@@ -360,15 +354,13 @@ use rltk::RandomNumberGenerator;
 pub struct SimpleMapBuilder {}
 
 impl InitialMapBuilder for SimpleMapBuilder {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.build_rooms(rng, build_data);
     }
 }
 
 impl SimpleMapBuilder {
-    #[allow(dead_code)]
-    pub fn new() -> Box<SimpleMapBuilder> {
+        pub fn new() -> Box<SimpleMapBuilder> {
         Box::new(SimpleMapBuilder{})
     }
 
@@ -412,15 +404,13 @@ use rltk::RandomNumberGenerator;
 pub struct DoglegCorridors {}
 
 impl MetaMapBuilder for DoglegCorridors {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.corridors(rng, build_data);
     }
 }
 
 impl DoglegCorridors {
-    #[allow(dead_code)]
-    pub fn new() -> Box<DoglegCorridors> {
+        pub fn new() -> Box<DoglegCorridors> {
         Box::new(DoglegCorridors{})
     }
 
@@ -508,15 +498,13 @@ use rltk::RandomNumberGenerator;
 pub struct BspCorridors {}
 
 impl MetaMapBuilder for BspCorridors {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.corridors(rng, build_data);
     }
 }
 
 impl BspCorridors {
-    #[allow(dead_code)]
-    pub fn new() -> Box<BspCorridors> {
+        pub fn new() -> Box<BspCorridors> {
         Box::new(BspCorridors{})
     }
 
@@ -567,15 +555,13 @@ use rltk::RandomNumberGenerator;
 pub struct RoomSorter {}
 
 impl MetaMapBuilder for RoomSorter {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.sorter(rng, build_data);
     }
 }
 
 impl RoomSorter {
-    #[allow(dead_code)]
-    pub fn new() -> Box<RoomSorter> {
+        pub fn new() -> Box<RoomSorter> {
         Box::new(RoomSorter{})
     }
 
@@ -621,15 +607,13 @@ pub struct RoomSorter {
 }
 
 impl MetaMapBuilder for RoomSorter {
-    #[allow(dead_code)]
-    fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
+        fn build_map(&mut self, rng: &mut rltk::RandomNumberGenerator, build_data : &mut BuilderMap) {
         self.sorter(rng, build_data);
     }
 }
 
 impl RoomSorter {
-    #[allow(dead_code)]
-    pub fn new(sort_by : RoomSort) -> Box<RoomSorter> {
+        pub fn new(sort_by : RoomSort) -> Box<RoomSorter> {
         Box::new(RoomSorter{ sort_by })
     }
 
@@ -659,7 +643,6 @@ fn sorter(&mut self, _rng : &mut RandomNumberGenerator, build_data : &mut Builde
 That's so simple it's basically cheating! Lets add TOPMOST and BOTTOMMOST as well, for completeness of this type of sort:
 
 ```rust
-#[allow(dead_code)]
 pub enum RoomSort { LEFTMOST, RIGHTMOST, TOPMOST, BOTTOMMOST }
 ...
 fn sorter(&mut self, _rng : &mut RandomNumberGenerator, build_data : &mut BuilderMap) {
@@ -681,7 +664,6 @@ See how that changes the character of the map without really changing the struct
 We'll add another sort, CENTRAL. This time, we're sorting by *distance* from the map center:
 
 ```rust
-#[allow(dead_code)]
 pub enum RoomSort { LEFTMOST, RIGHTMOST, TOPMOST, BOTTOMMOST, CENTRAL }
 ...
 fn sorter(&mut self, _rng : &mut RandomNumberGenerator, build_data : &mut BuilderMap) {
@@ -910,7 +892,6 @@ So we now have **2,288 possible builder combinations**, just from the last few c
 ...
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-37-layers2)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-37-layers2/)
 ---

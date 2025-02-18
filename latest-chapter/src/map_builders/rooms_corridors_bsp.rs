@@ -3,15 +3,13 @@ use super::{draw_corridor, BuilderMap, MetaMapBuilder, Rect};
 pub struct BspCorridors {}
 
 impl MetaMapBuilder for BspCorridors {
-    #[allow(dead_code)]
-    fn build_map(&mut self, build_data: &mut BuilderMap) {
+        fn build_map(&mut self, build_data: &mut BuilderMap) {
         corridors(build_data);
     }
 }
 
 impl BspCorridors {
-    #[allow(dead_code)]
-    pub fn new() -> Box<Self> {
+        pub fn new() -> Box<Self> {
         Box::new(Self {})
     }
 }

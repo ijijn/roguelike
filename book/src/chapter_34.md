@@ -181,7 +181,6 @@ We're going to support multiple modes for the prefab-builder, so lets bake that 
 
 ```rust
 #[derive(PartialEq, Clone)]
-#[allow(dead_code)]
 pub enum PrefabMode { 
     RexLevel{ template : &'static str }
 }
@@ -199,8 +198,7 @@ This is new - an `enum` with variables? This works because under the hood, Rust 
 
 ```rust
 impl PrefabBuilder {
-    #[allow(dead_code)]
-    pub fn new(new_depth : i32) -> PrefabBuilder {
+        pub fn new(new_depth : i32) -> PrefabBuilder {
         PrefabBuilder{
             map : Map::new(new_depth),
             starting_position : Position{ x: 0, y : 0 },
@@ -217,7 +215,6 @@ Including the map template path in the mode makes for easier reading, even if it
 Now we'll re-implement the map reader we previously deleted from `image_loader.rs` - only we'll add it as a member function for `PrefabBuilder`, and use the enclosing class features rather than passing `Map` and `new_depth` in and out:
 
 ```rust
-#[allow(dead_code)]
 fn load_rex_map(&mut self, path: &str) {
     let xp_file = rltk::rex::XpFile::from_resource(path).unwrap();
 
@@ -339,7 +336,6 @@ impl RexAssets {
 We also want to be able to list out spawns that are required by the map. Looking in `spawner.rs`, we have an established `tuple` format for how we pass spawns - so we'll use it in the struct:
 
 ```rust
-#[allow(dead_code)]
 pub struct PrefabBuilder {
     map : Map,
     starting_position : Position,
@@ -354,8 +350,7 @@ Now we'll modify our constructor to *use* the new map, and initialize `spawns`:
 
 ```rust
 impl PrefabBuilder {
-    #[allow(dead_code)]
-    pub fn new(new_depth : i32) -> PrefabBuilder {
+        pub fn new(new_depth : i32) -> PrefabBuilder {
         PrefabBuilder{
             map : Map::new(new_depth),
             starting_position : Position{ x: 0, y : 0 },
@@ -389,8 +384,7 @@ fn spawn_entities(&mut self, ecs : &mut World) {
 We do a bit of a dance with references just to work with the previous function signature (and not have to change it, which would change lots of other code). So far, so good - it reads the `spawn` list, and requests that everything in the list be placed onto the map. Now would be a good time to add something to the list! We'll want to modify our `load_rex_map` to handle the new data:
 
 ```rust
- #[allow(dead_code)]
-fn load_rex_map(&mut self, path: &str) {
+ fn load_rex_map(&mut self, path: &str) {
     let xp_file = rltk::rex::XpFile::from_resource(path).unwrap();
 
     for layer in &xp_file.layers {
@@ -555,7 +549,6 @@ Lets modify the `mode` to also allow this type:
 
 ```rust
 #[derive(PartialEq, Copy, Clone)]
-#[allow(dead_code)]
 pub enum PrefabMode { 
     RexLevel{ template : &'static str },
     Constant{ level : prefab_levels::PrefabLevel }
@@ -578,8 +571,7 @@ And modify our constructor to use it:
 
 ```rust
 impl PrefabBuilder {
-    #[allow(dead_code)]
-    pub fn new(new_depth : i32) -> PrefabBuilder {
+        pub fn new(new_depth : i32) -> PrefabBuilder {
         PrefabBuilder{
             map : Map::new(new_depth),
             starting_position : Position{ x: 0, y : 0 },
@@ -631,7 +623,6 @@ fn char_to_map(&mut self, ch : char, idx: usize) {
     }
 }
 
-#[allow(dead_code)]
 fn load_rex_map(&mut self, path: &str) {
     let xp_file = rltk::rex::XpFile::from_resource(path).unwrap();
 
@@ -649,7 +640,6 @@ fn load_rex_map(&mut self, path: &str) {
     }
 }
 
-#[allow(dead_code)]
 fn load_ascii_map(&mut self, level: &prefab_levels::PrefabLevel) {
     // Start by converting to a vector, with newlines removed
     let mut string_vec : Vec<char> = level.template.chars().filter(|a| *a != '\r' && *a !='\n').collect();
@@ -690,15 +680,12 @@ If you `cargo run` now, you'll see *exactly* the same as before - but instead of
 We'll extend our mapping system to explicitly support this: a regular builder makes a map, and then a *sectional prefab* replaces part of the map with your exciting premade content. We'll start by making a new file (in `map_builders/prefab_builder`) called `prefab_sections.rs`, and place a description of what we want:
 
 ```rust
-#[allow(dead_code)]
 #[derive(PartialEq, Copy, Clone)]
 pub enum HorizontalPlacement { Left, Center, Right }
 
-#[allow(dead_code)]
 #[derive(PartialEq, Copy, Clone)]
 pub enum VerticalPlacement { Top, Center, Bottom }
 
-#[allow(dead_code)]
 #[derive(PartialEq, Copy, Clone)]
 pub struct PrefabSection {
     pub template : &'static str,
@@ -707,7 +694,6 @@ pub struct PrefabSection {
     pub placement : (HorizontalPlacement, VerticalPlacement)
 }
 
-#[allow(dead_code)]
 pub const UNDERGROUND_FORT : PrefabSection = PrefabSection{
     template : RIGHT_FORT,
     width: 15,
@@ -715,7 +701,6 @@ pub const UNDERGROUND_FORT : PrefabSection = PrefabSection{
     placement: ( HorizontalPlacement::Right, VerticalPlacement::Top )
 };
 
-#[allow(dead_code)]
 const RIGHT_FORT : &str = "
      #         
   #######      
@@ -769,14 +754,12 @@ Level *sections* are different from builders we've made before, because they tak
 
 ```rust
 #[derive(PartialEq, Copy, Clone)]
-#[allow(dead_code)]
 pub enum PrefabMode { 
     RexLevel{ template : &'static str },
     Constant{ level : prefab_levels::PrefabLevel },
     Sectional{ section : prefab_sections::PrefabSection }
 }
 
-#[allow(dead_code)]
 pub struct PrefabBuilder {
     map : Map,
     starting_position : Position,
@@ -792,8 +775,7 @@ As much as I'd *love* to put the `previous_builder` into the enum, I kept runnin
 
 ```rust
 impl PrefabBuilder {
-    #[allow(dead_code)]
-    pub fn new(new_depth : i32, previous_builder : Option<Box<dyn MapBuilder>>) -> PrefabBuilder {
+        pub fn new(new_depth : i32, previous_builder : Option<Box<dyn MapBuilder>>) -> PrefabBuilder {
         PrefabBuilder{
             map : Map::new(new_depth),
             starting_position : Position{ x: 0, y : 0 },
@@ -1031,7 +1013,7 @@ for area in self.noise_areas.iter() {
 
 Once again, it's rinse and repeat on the other Voronoi spawn algorithms. I've done the work in the source code for you, if you'd like to take a peek.
 
-### Jump to here if refactoring is boring!
+### Jump to here if refactoring is boring
 
 SO - now that we've refactored our spawn system, how do we *use* it inside our `PrefabBuilder`? We can add one line to our `apply_sectional` function and get all of the entities from the previous map. You could simply copy it, but that's probably not what you *want*; you need to filter out entities inside the new prefab, both to make room for new ones and to ensure that the spawning makes sense. We'll also need to rearrange a little to keep the borrow checker happy. Here's the function now:
 
@@ -1104,7 +1086,6 @@ In this chapter, we've covered quite a bit of ground:
 ...
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-34-vaults)**
-
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-34-vaults/)
 ---

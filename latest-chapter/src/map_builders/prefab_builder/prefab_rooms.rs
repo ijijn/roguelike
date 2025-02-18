@@ -1,4 +1,3 @@
-#[allow(dead_code)]
 #[derive(PartialEq, Eq, Copy, Clone)]
 pub struct PrefabRoom {
     pub template: &'static str,
@@ -8,7 +7,6 @@ pub struct PrefabRoom {
     pub last_depth: i32,
 }
 
-#[allow(dead_code)]
 pub const TOTALLY_NOT_A_TRAP: PrefabRoom = PrefabRoom {
     template: TOTALLY_NOT_A_TRAP_MAP,
     width: 5,
@@ -17,7 +15,6 @@ pub const TOTALLY_NOT_A_TRAP: PrefabRoom = PrefabRoom {
     last_depth: 100,
 };
 
-#[allow(dead_code)]
 const TOTALLY_NOT_A_TRAP_MAP: &str = "
      
  ^^^ 
@@ -26,7 +23,6 @@ const TOTALLY_NOT_A_TRAP_MAP: &str = "
      
 ";
 
-#[allow(dead_code)]
 pub const SILLY_SMILE: PrefabRoom = PrefabRoom {
     template: SILLY_SMILE_MAP,
     width: 6,
@@ -35,7 +31,6 @@ pub const SILLY_SMILE: PrefabRoom = PrefabRoom {
     last_depth: 100,
 };
 
-#[allow(dead_code)]
 const SILLY_SMILE_MAP: &str = "
       
  ^  ^ 
@@ -45,7 +40,6 @@ const SILLY_SMILE_MAP: &str = "
       
 ";
 
-#[allow(dead_code)]
 pub const CHECKERBOARD: PrefabRoom = PrefabRoom {
     template: CHECKERBOARD_MAP,
     width: 6,
@@ -54,7 +48,6 @@ pub const CHECKERBOARD: PrefabRoom = PrefabRoom {
     last_depth: 100,
 };
 
-#[allow(dead_code)]
 const CHECKERBOARD_MAP: &str = "
       
  #^#  

@@ -7,7 +7,8 @@
     clippy::non_std_lazy_statics,
     clippy::similar_names,
     clippy::too_many_lines,
-    clippy::unnecessary_box_returns
+    clippy::unnecessary_box_returns,
+    dead_code
 )]
 
 extern crate serde;

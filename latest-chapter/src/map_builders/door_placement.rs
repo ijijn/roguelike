@@ -3,8 +3,7 @@ use super::{BuilderMap, MetaMapBuilder, TileType};
 pub struct DoorPlacement {}
 
 impl MetaMapBuilder for DoorPlacement {
-    #[allow(dead_code)]
-    fn build_map(&mut self, build_data: &mut BuilderMap) {
+        fn build_map(&mut self, build_data: &mut BuilderMap) {
         doors(build_data);
     }
 }

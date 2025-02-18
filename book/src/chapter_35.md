@@ -21,7 +21,6 @@ The life of a roguelike developer is part programmer, part interior decorator (i
 We'll make a new file in `map_builders/prefab_builders` called `prefab_rooms.rs`. We'll insert a relatively iconic map feature into it:
 
 ```rust
-#[allow(dead_code)]
 #[derive(PartialEq, Copy, Clone)]
 pub struct PrefabRoom {
     pub template : &'static str,
@@ -31,7 +30,6 @@ pub struct PrefabRoom {
     pub last_depth: i32
 }
 
-#[allow(dead_code)]
 pub const TOTALLY_NOT_A_TRAP : PrefabRoom = PrefabRoom{
     template : TOTALLY_NOT_A_TRAP_MAP,
     width: 5,
@@ -40,7 +38,6 @@ pub const TOTALLY_NOT_A_TRAP : PrefabRoom = PrefabRoom{
     last_depth: 100
 };
 
-#[allow(dead_code)]
 const TOTALLY_NOT_A_TRAP_MAP : &str = "
      
  ^^^ 
@@ -58,7 +55,6 @@ We'll start by adding another *mode* to the `PrefabBuiler` system:
 
 ```rust
 #[derive(PartialEq, Copy, Clone)]
-#[allow(dead_code)]
 pub enum PrefabMode { 
     RexLevel{ template : &'static str },
     Constant{ level : prefab_levels::PrefabLevel },
@@ -71,8 +67,7 @@ We're not going to add any parameters *yet* - by the end of the chapter, we'll h
 
 ```rust
 impl PrefabBuilder {
-    #[allow(dead_code)]
-    pub fn new(new_depth : i32, previous_builder : Option<Box<dyn MapBuilder>>) -> PrefabBuilder {
+        pub fn new(new_depth : i32, previous_builder : Option<Box<dyn MapBuilder>>) -> PrefabBuilder {
         PrefabBuilder{
             map : Map::new(new_depth),
             starting_position : Position{ x: 0, y : 0 },
@@ -416,7 +411,6 @@ Calling `retain` on a vector iterates through every entry, and calls the passed 
 Having only one vault is pretty dull - albeit a good start in terms of proving the functionality works. In `prefab_rooms.rs` we'll go ahead and write a couple more. These aren't intended to be seminal examples of level design, but they illustrate the process. We'll add some more room prefabs:
 
 ```rust
-#[allow(dead_code)]
 #[derive(PartialEq, Copy, Clone)]
 pub struct PrefabRoom {
     pub template : &'static str,
@@ -426,7 +420,6 @@ pub struct PrefabRoom {
     pub last_depth: i32
 }
 
-#[allow(dead_code)]
 pub const TOTALLY_NOT_A_TRAP : PrefabRoom = PrefabRoom{
     template : TOTALLY_NOT_A_TRAP_MAP,
     width: 5,
@@ -435,7 +428,6 @@ pub const TOTALLY_NOT_A_TRAP : PrefabRoom = PrefabRoom{
     last_depth: 100
 };
 
-#[allow(dead_code)]
 const TOTALLY_NOT_A_TRAP_MAP : &str = "
      
  ^^^ 
@@ -444,7 +436,6 @@ const TOTALLY_NOT_A_TRAP_MAP : &str = "
      
 ";
 
-#[allow(dead_code)]
 pub const SILLY_SMILE : PrefabRoom = PrefabRoom{
     template : SILLY_SMILE_MAP,
     width: 6,
@@ -453,7 +444,6 @@ pub const SILLY_SMILE : PrefabRoom = PrefabRoom{
     last_depth: 100
 };
 
-#[allow(dead_code)]
 const SILLY_SMILE_MAP : &str = "
       
  ^  ^ 
@@ -463,7 +453,6 @@ const SILLY_SMILE_MAP : &str = "
       
 ";
 
-#[allow(dead_code)]
 pub const CHECKERBOARD : PrefabRoom = PrefabRoom{
     template : CHECKERBOARD_MAP,
     width: 6,
@@ -472,7 +461,6 @@ pub const CHECKERBOARD : PrefabRoom = PrefabRoom{
     last_depth: 100
 };
 
-#[allow(dead_code)]
 const CHECKERBOARD_MAP : &str = "
       
  #^#  
@@ -578,7 +566,6 @@ This is very simple: we roll a six-sided dice and add the current depth. If we r
 We should offer some more friendly ways to build our `PrefabBuilder`, so it's obvious what we're doing when we construct our builder chain. Add the following constructors to `prefab_builder/mod.rs`:
 
 ```rust
-#[allow(dead_code)]
 pub fn rex_level(new_depth : i32, template : &'static str) -> PrefabBuilder {
     PrefabBuilder{
         map : Map::new(new_depth),
@@ -591,7 +578,6 @@ pub fn rex_level(new_depth : i32, template : &'static str) -> PrefabBuilder {
     }
 }
 
-#[allow(dead_code)]
 pub fn constant(new_depth : i32, level : prefab_levels::PrefabLevel) -> PrefabBuilder {
     PrefabBuilder{
         map : Map::new(new_depth),
@@ -604,7 +590,6 @@ pub fn constant(new_depth : i32, level : prefab_levels::PrefabLevel) -> PrefabBu
     }
 }
 
-#[allow(dead_code)]
 pub fn sectional(new_depth : i32, section : prefab_sections::PrefabSection, previous_builder : Box<dyn MapBuilder>) -> PrefabBuilder {
     PrefabBuilder{
         map : Map::new(new_depth),
@@ -617,7 +602,6 @@ pub fn sectional(new_depth : i32, section : prefab_sections::PrefabSection, prev
     }
 }
 
-#[allow(dead_code)]
 pub fn vaults(new_depth : i32, previous_builder : Box<dyn MapBuilder>) -> PrefabBuilder {
     PrefabBuilder{
         map : Map::new(new_depth),
