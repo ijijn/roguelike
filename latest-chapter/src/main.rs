@@ -36,8 +36,6 @@ pub mod saveload_system;
 mod spawner;
 pub use gamesystem::*;
 pub mod effects;
-#[macro_use]
-extern crate lazy_static;
 pub mod rng;
 pub mod spatial;
 mod systems;
