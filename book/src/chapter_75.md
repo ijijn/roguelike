@@ -105,7 +105,7 @@ pub fn dark_elf_plaza(new_depth: i32, width: i32, height: i32) -> BuilderChain {
 
 If you run the game now and teleport down to the last level, the "plaza" is a giant open space full of people killing both you and one another. I found it quite entertaining, but it's not what we want.
 
-![](./c75-emptymap.jpg)
+![Empty map](./c75-emptymap.jpg)
 
 The plaza needs to be divided into zones, which contain plaza content. That's similar to what we did for Voronoi maps, but we aren't looking to create cellular walls - just areas in which to place content. Let's start by making a basic Voronoi cell area. Extend your map builder to call a new function named `spawn_zones`:
 
@@ -173,7 +173,7 @@ println!("{:?}", zone_sizes);
 
 This will give different results every time, but will give a good idea of how many zones we've created and how large they are. Here's the output from a quick test run:
 
-```
+```rust
 [(0, 88), (1, 60), (2, 143), (3, 261), (4, 192), (5, 165), (6, 271), (7, 68), (8, 151), (9, 78), (10, 45), (11, 154), (12, 132), (13, 88), (14, 162), (15, 49), (16, 138), (17, 57), (18, 206), (19, 117), (20, 168), (21, 67), (22, 153), (23, 119), (24, 41), (25, 48), (26, 78), (27, 118), (28, 197), (29, 129), (30, 163), (31, 94)]
 ```
 
@@ -233,7 +233,7 @@ fn fill_zone(&mut self, build_data : &mut BuilderMap, voronoi_membership: &[i32]
 
 This already injects a little life into our map:
 
-![](./c75-solidrock.jpg)
+![Solid rock](./c75-solidrock.jpg)
 
 ### Pools
 
@@ -261,7 +261,7 @@ See how if we aren't matching anything else, we roll a dice? If it comes up 1 or
 
 The addition of some water features continues to bring the zone to life:
 
-![](./c75-pools.jpg)
+![Pools](./c75-pools.jpg)
 
 ### Stalactite Parks
 
@@ -378,7 +378,7 @@ We start by collecting a list of available tiles. Then we cover them all in nice
 
 The park areas look sufficiently chaotic:
 
-![](./c75-altar.jpg)
+![Altar](./c75-altar.jpg)
 
 ### Adding Walkways
 
@@ -415,7 +415,7 @@ fn make_roads(&mut self, build_data : &mut BuilderMap, voronoi_membership: &[i32
 
 With this in place, the map is passable. Roads delineate the edges, without looking too square:
 
-![](./c75-edgeroads.jpg)
+![Edge roads](./c75-edgeroads.jpg)
 
 ### Cleaning up the Spawns
 
@@ -632,7 +632,7 @@ That's a really tough monster, and makes for a good template for the Abyssal dem
 
 Now if you play the game, you'll find yourself facing a nasty demon monster at the exit to Abyss.
 
-![](./c75-vokoth.jpg)
+![Vokoth](./c75-vokoth.jpg)
 
 ## Wrap-Up
 
@@ -643,6 +643,7 @@ We now have the second-to-last section done! You can battle your way down to the
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-75-darkplaza)**
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-75-darkplaza)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.
