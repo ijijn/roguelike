@@ -824,14 +824,13 @@ for (e,h) in (&entities, &helper2).join() {
 ## Wrap-Up
 
 We now have nicely colored logs, and counters of the player's achievement. This leaves us one step shy of Steam (or XBOX) style achievements - which we will cover in a coming chapter.
- 
 
 ---
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-71-logging)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-71-logging)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

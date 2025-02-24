@@ -292,7 +292,7 @@ If you `cargo run` the project now, it will behave just as it did before: but th
 
 ## Multi-threaded dispatch
 
-We've gained a bit of clarity and organization with the single-threaded dispatcher, but we're not yet unleashing Specs' power! Make a new file, `src/systems/dispatcher/multi_thread.rs`. 
+We've gained a bit of clarity and organization with the single-threaded dispatcher, but we're not yet unleashing Specs' power! Make a new file, `src/systems/dispatcher/multi_thread.rs`.
 
 We'll start by making a new structure to hold a Specs dispatcher, and including some references:
 
@@ -542,8 +542,8 @@ This chapter has greatly cleaned up our systems handling. It's faster, leaner an
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-73-systems)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-73-systems)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.
