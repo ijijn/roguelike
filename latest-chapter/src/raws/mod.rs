@@ -18,13 +18,11 @@ pub use weapon_traits::*;
 mod rawmaster;
 pub use rawmaster::*;
 use serde::Deserialize;
-use std::sync::Mutex;
+use std::sync::{LazyLock, Mutex};
 
 rltk::embedded_resource!(RAW_FILE, "../../raws/spawns.json");
 
-lazy_static! {
-    pub static ref RAWS: Mutex<RawMaster> = Mutex::new(RawMaster::empty());
-}
+pub static RAWS: LazyLock<Mutex<RawMaster>> = LazyLock::new(|| Mutex::new(RawMaster::empty()));
 
 #[derive(Deserialize, Debug)]
 pub struct Raws {

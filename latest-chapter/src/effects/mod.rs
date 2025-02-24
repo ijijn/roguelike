@@ -1,7 +1,7 @@
 use crate::map::Map;
 use specs::prelude::*;
 use std::collections::{HashSet, VecDeque};
-use std::sync::Mutex;
+use std::sync::{LazyLock, Mutex};
 mod damage;
 mod targeting;
 pub use targeting::*;
@@ -12,9 +12,8 @@ mod triggers;
 use crate::components::AttributeBonus;
 use rltk::Point;
 
-lazy_static! {
-    pub static ref EFFECT_QUEUE: Mutex<VecDeque<EffectSpawner>> = Mutex::new(VecDeque::new());
-}
+pub static EFFECT_QUEUE: LazyLock<Mutex<VecDeque<EffectSpawner>>> =
+    LazyLock::new(|| Mutex::new(VecDeque::new()));
 
 #[derive(Debug)]
 pub enum EffectType {

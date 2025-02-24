@@ -1,9 +1,7 @@
 use std::collections::HashMap;
-use std::sync::Mutex;
+use std::sync::{LazyLock, Mutex};
 
-lazy_static! {
-    static ref EVENTS: Mutex<HashMap<String, i32>> = Mutex::new(HashMap::new());
-}
+static EVENTS: LazyLock<Mutex<HashMap<String, i32>>> = LazyLock::new(|| Mutex::new(HashMap::new()));
 
 pub fn clear_events() {
     EVENTS.lock().unwrap().clear();

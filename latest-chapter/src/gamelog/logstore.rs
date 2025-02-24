@@ -1,10 +1,8 @@
 use super::LogFragment;
 use rltk::prelude::*;
-use std::sync::Mutex;
+use std::sync::{LazyLock, Mutex};
 
-lazy_static! {
-    static ref LOG: Mutex<Vec<Vec<LogFragment>>> = Mutex::new(Vec::new());
-}
+static LOG: LazyLock<Mutex<Vec<Vec<LogFragment>>>> = LazyLock::new(|| Mutex::new(Vec::new()));
 
 pub fn append_entry(fragments: Vec<LogFragment>) {
     LOG.lock().unwrap().push(fragments);

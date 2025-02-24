@@ -1,6 +1,6 @@
 use crate::{tile_walkable, Map, RunState};
 use specs::prelude::*;
-use std::sync::Mutex;
+use std::sync::{LazyLock, Mutex};
 
 struct SpatialMap {
     blocked: Vec<(bool, bool)>,
@@ -16,9 +16,7 @@ impl SpatialMap {
     }
 }
 
-lazy_static! {
-    static ref SPATIAL_MAP: Mutex<SpatialMap> = Mutex::new(SpatialMap::new());
-}
+static SPATIAL_MAP: LazyLock<Mutex<SpatialMap>> = LazyLock::new(|| Mutex::new(SpatialMap::new()));
 
 pub fn set_size(map_tile_count: usize) {
     let mut lock = SPATIAL_MAP.lock().unwrap();

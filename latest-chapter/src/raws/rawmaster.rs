@@ -16,12 +16,13 @@ use regex::Regex;
 use specs::prelude::*;
 use specs::saveload::{MarkedBuilder, SimpleMarker};
 use std::collections::{HashMap, HashSet};
+use std::sync::LazyLock;
 
 #[must_use]
 pub fn parse_dice_string(dice: &str) -> (i32, i32, i32) {
-    lazy_static! {
-        static ref DICE_RE: Regex = Regex::new(r"(\d+)d(\d+)([\+\-]\d+)?").unwrap();
-    }
+    static DICE_RE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"(\d+)d(\d+)([\+\-]\d+)?").unwrap());
+
     let mut n_dice = 1;
     let mut die_type = 4;
     let mut die_bonus = 0;
