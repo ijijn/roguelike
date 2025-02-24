@@ -33,7 +33,7 @@ The following people have contributed to this project:
 * [NielsRenard](https://github.com/NielsRenard) fixed my awful English for dropping items and helped with even more broken Specs book links. He also helped find an awful issue preventing one from suffering damage from more than one source in a turn.
 * [ZeroCity](https://github.com/zerocity) fixed a typo in Chapter 2 (`Position` not `Pos`).
 * Fuddles from the r/roguelikedev Discord pointed out an issue with structure naming.
-* [dethmuffin](https://github.com/dethmuffin) pointed out an inconsistency in chapter 9, in the new `ConvertSaveLoad` code. 
+* [dethmuffin](https://github.com/dethmuffin) pointed out an inconsistency in chapter 9, in the new `ConvertSaveLoad` code.
 * Reddit user u/Koavf asked me to clarify the licensing for the project.
 * [Till Arnold](https://github.com/tillarnold) fixed a small typo in chapter 5.
 * [pk](https://github.com/pkrasam) helped remove some unused variable warnings.

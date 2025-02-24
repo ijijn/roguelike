@@ -156,7 +156,7 @@ Let's start by adding an exploding mushroom. In `spawns.json` (in the monsters s
 }
 ```
 
-So we've given it a nice mushroom glyph, and made it orange (which seems appropriate). It has a short visual range, since I've never pictured fungi as having the best eyesight (or even eyes, really). It's in a faction `Fungi`, which doesn't exist yet, and has a spell ability to `Explode`, which also doesn't exist yet! 
+So we've given it a nice mushroom glyph, and made it orange (which seems appropriate). It has a short visual range, since I've never pictured fungi as having the best eyesight (or even eyes, really). It's in a faction `Fungi`, which doesn't exist yet, and has a spell ability to `Explode`, which also doesn't exist yet!
 
 Let's go ahead and add it to the faction table:
 
@@ -1040,8 +1040,8 @@ And there we have it - a working fort-to-mushroom grove transition level, and a 
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-68-mushrooms)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-68-mushrooms)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.
