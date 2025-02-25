@@ -232,7 +232,7 @@ If you `cargo run` the project now, you'll see that we can still play - and the 
 
 ![Screenshot](./c41-s1.jpg).
 
-### Oops - we didn't move the tooltips or targeting!
+### Oops - we didn't move the tooltips or targeting
 
 If you play for a bit, you'll probably notice that tool-tips aren't working (they are still bound to the map coordinates). We should fix that! First of all, it's becoming obvious that the screen boundaries are something we'll need in more than just the drawing code, so lets break it into a separate function in `camera.rs`:
 
@@ -564,7 +564,7 @@ Voila - you are roaming a huge map! A definite downside of a huge map, and rolli
 
 ![Screenshot](./c41-s6.jpg).
 
-## Revisiting draw_map for progressive map rendering.
+## Revisiting draw_map for progressive map rendering
 
 If you keep the huge map, open `main.rs` and set `const SHOW_MAPGEN_VISUALIZER : bool = false;` to `true` - congratulations, you just crashed the game! That's because we never adjusted the `draw_map` function that we are using to verify map creation to handle maps of any size other than the original. Oops. This does bring up a problem: on an ASCII terminal we can't simply render the whole map and scale it down to fit. So we'll settle for rendering a portion of the map.
 
@@ -630,8 +630,8 @@ And - we're done! In this chapter, we've made it possible to have any size of ma
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-41-camera)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-41-camera)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

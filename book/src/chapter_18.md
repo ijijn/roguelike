@@ -194,6 +194,7 @@ type SystemData = ( Entities<'a>,
 ```
 
 And the expanded list of resources for the `run` method itself:
+
 ```rust
 let (entities, mut log, mut wants_melee, names, combat_stats, mut inflict_damage, 
     melee_power_bonuses, defense_bonuses, equipped, mut particle_builder, positions) = data;
@@ -249,6 +250,7 @@ impl<'a> System<'a> for ItemUseSystem {
 ```
 
 We'll start by showing a heart when you drink a healing potion. In the *healing* section:
+
 ```rust
 stats.hp = i32::min(stats.max_hp, stats.hp + healer.heal_amount);
 if entity == *player_entity {
@@ -263,6 +265,7 @@ if let Some(pos) = pos {
 ```
 
 We can use a similar effect for confusion - only with a magenta question mark. In the *confusion* section:
+
 ```rust
 gamelog.entries.push(format!("You use {} on {}, confusing them.", item_name.name, mob_name.name));
 
@@ -336,7 +339,6 @@ We don't need to worry about getting the `Position` component here, because we a
 ## Wrap Up
 
 That's it for visual effects for now. We've given the game a much more visceral feel, with feedback given for actions. That's a big improvement, and goes a long way to modernizing an ASCII interface!
-
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-18-particles)**
 

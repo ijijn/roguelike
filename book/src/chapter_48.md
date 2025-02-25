@@ -741,7 +741,6 @@ And in the props section:
 }
 ```
 
-
 If you `cargo run` now, you can run around and find largely populated rooms:
 
 ![Screenshot](./c48-s5.jpg)
@@ -874,8 +873,8 @@ In this chapter, we've added a bunch of props and bystanders to the town - as we
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-48-town2)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-48-town2)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

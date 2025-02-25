@@ -287,7 +287,7 @@ fn room_table(map_depth: i32) -> MasterTable {
 
 If you `cargo run` now, there's a much better balance of monsters and items (on ALL levels!).
 
-## Enter The Dragon
+## Here Comes The Dragon
 
 This level is dominated by a black dragon. Checking our D&D rules, these are fearsome *enormous* lizards of incredible physical might, razor-sharp teeth and claws, and a horrible acid breath that burns the flesh from your bones. With an introduction like that, the dragon had better be pretty fearsome! He also needs to be possible to beat, by a player with 5 levels under their belt. Slaying the dragon really should give some pretty amazing rewards, too. It should also be possible to sneak around the dragon if you are careful!
 
@@ -1024,6 +1024,7 @@ So in this chapter, we've built a dragon's lair - and populated it with a nasty 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-67-dragon)**
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-67-dragon)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

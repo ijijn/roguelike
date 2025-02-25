@@ -461,6 +461,7 @@ We've made a pretty nice map generator and fixed our dependency upon rooms. Cell
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-27-cellular-automata)**
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-27-cellular-automata/)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

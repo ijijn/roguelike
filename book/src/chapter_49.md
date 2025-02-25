@@ -308,6 +308,7 @@ fn spawn_dockers(&mut self, build_data : &mut BuilderMap, rng: &mut rltk::Random
     }
 }
 ```
+
 This is simple enough: for each tile on the map, retrieve its index and type. If its a bridge, and a 1d6 comes up a `1` - spawn someone. We randomly pick between Dock Workers, Wannabe Pirates and Fisherfolk.
 
 `spawn_townsfolk` is pretty simple, too:
@@ -428,8 +429,8 @@ This chapter has really brought our town to life. There's always room for improv
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-49-town3)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-49-town3)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

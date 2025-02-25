@@ -843,7 +843,7 @@ Also, add the `Rat` to the `Hungry Rodents` faction:
 
 ## Responding to more distant entities
 
-Responding to those next to you is a great first step, and actually helps with processing time (since adjacent enemies are processed without a costly search of the entire viewshed) - but if there isn't an adjacent enemy, the AI needs to look for a more distant one. If one is spotted that needs a reaction, we need some components to indicate *intent*. In `components.rs` (and registered in `main.rs` and `saveload_system.rs`): 
+Responding to those next to you is a great first step, and actually helps with processing time (since adjacent enemies are processed without a costly search of the entire viewshed) - but if there isn't an adjacent enemy, the AI needs to look for a more distant one. If one is spotted that needs a reaction, we need some components to indicate *intent*. In `components.rs` (and registered in `main.rs` and `saveload_system.rs`):
 
 ```rust
 #[derive(Component, Debug, Serialize, Deserialize, Clone)]
@@ -1078,7 +1078,7 @@ If you `cargo run` and play now, monsters will approach and attack - and cowards
 
 ## Cleaning up
 
-We're now performing the minimum AI performed by `MonsterAI` and much of the carnivore and herbivore handling in our generic systems, as well as giving townsfolk more intelligence than before! If you look at `MonsterAI` - there's nothing left that isn't performed already! So we can delete `ai/monster_ai_system.rs`, and remove it from `run_systems` (in `main.rs`) altogether! Once deleted, you should `cargo run` to see if the game is unchanged - it should be! 
+We're now performing the minimum AI performed by `MonsterAI` and much of the carnivore and herbivore handling in our generic systems, as well as giving townsfolk more intelligence than before! If you look at `MonsterAI` - there's nothing left that isn't performed already! So we can delete `ai/monster_ai_system.rs`, and remove it from `run_systems` (in `main.rs`) altogether! Once deleted, you should `cargo run` to see if the game is unchanged - it should be!
 
 Likewise, the fleeing and approaching of `ai/animal_ai_system.rs` is now redundant. You can actually delete this system, too!
 
@@ -1647,7 +1647,7 @@ impl<'a> System<'a> for InitiativeSystem {
 
 ## Fixing Performance
 
-You may have noticed a performance drop while we worked through this chapter. We've added a lot of functionality, so the systems seemed like the culprit - but they aren't! Our systems are actually running at a really good speed (one advantage of doing one thing per system: your CPU cache is very happy!). If you'd like to prove it, do a debug build, fire up a profiler (I use [Very Sleepy](http://www.codersnotes.com/sleepy/) on Windows) and attach it to the game! 
+You may have noticed a performance drop while we worked through this chapter. We've added a lot of functionality, so the systems seemed like the culprit - but they aren't! Our systems are actually running at a really good speed (one advantage of doing one thing per system: your CPU cache is very happy!). If you'd like to prove it, do a debug build, fire up a profiler (I use [Very Sleepy](http://www.codersnotes.com/sleepy/) on Windows) and attach it to the game!
 
 The culprit is actually *initiative*. Not every entity is moving on the same tick anymore, so it's taking more cycles through the main loop to get to the player's turn. This is a *small* slowdown, but noticeable. Fortunately, you can fix it with a quick change to the main loop in `main.rs`:
 
@@ -1677,8 +1677,8 @@ If you `cargo run` now, you can enjoy a much richer world!
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-57-ai)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-57-ai)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

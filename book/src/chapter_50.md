@@ -181,7 +181,7 @@ if let Some(intelligence) = mob_template.attributes.intelligence {
 eb = eb.with(attr);
 ```
 
-This checks for the presence of each attribute in the JSON, and assigns it to the mob. 
+This checks for the presence of each attribute in the JSON, and assigns it to the mob.
 
 ## Attribute Bonuses
 
@@ -528,7 +528,7 @@ eb = eb.with(pools);
 
 We're capturing the relevant stats during their building, and calling the new functions to help build the NPC's Pools.
 
-## Time to break stuff: delete the old stats!
+## Time to break stuff: delete the old stats
 
 In `components.rs`, delete `CombatStats`. You'll want to delete it in `main.rs` and `saveload_system.rs` as well. Watch your IDE paint the town red - we've used that quite a bit! Since we're enacting a new D&D-like system, it has to be done... this also gives us a chance to look at the places in which we're actually *using* it, and make some informed decisions.
 
@@ -542,7 +542,7 @@ Here are the simpler changes:
 * In `damage_system.rs` replace all references to `CombatStats` with `Pools`, and all references to `stats.hp` with `stats.hit_points.current` or `stats.hit_points.max` (for `max_hp`).
 * In `inventory_system.rs`, replace all references to `CombatStats` with `Pools`, and replace the line referencing `max_hp` and `hp` with `stats.hit_points = i32::min(stats.hit_points.max, stats.hit_points.current + healer.heal_amount);`
 
-And the less easy ones: 
+And the less easy ones:
 
 In `player.rs` replace `CombatStats` with `Pools` - it'll serve the same purpose. Also, find the `can_heal` section and replace it with:
 
@@ -584,7 +584,7 @@ pub fn draw_ui(ecs: &World, ctx : &mut Rltk) {
 ...
 ```
 
-## Updating the melee combat system.
+## Updating the melee combat system
 
 We're down to one "red file" (files with errors), in `melee_combat_system.rs`, but they now relate to core game systems that relied upon the old system. We want to make that more like a D20 (D&D) game, so they should be replaced anyway.
 
@@ -767,8 +767,8 @@ We've now implemented game stats and a simple D&D-like melee system. There's sti
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-50-stats)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-50-stats)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

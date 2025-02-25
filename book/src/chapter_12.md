@@ -14,7 +14,7 @@
 
 We have all the basics of a dungeon crawler now, but only having a single level is a big limitation! This chapter will introduce depth, with a new dungeon being spawned on each level down. We'll track the player's depth, and encourage ever-deeper exploration. What could possibly go wrong for the player?
 
-# Indicating - and storing - depth
+## Indicating - and storing - depth
 
 We'll start by adding the current depth to the map. In `map.rs`, we adjust the `Map` structure to include an integer for depth:
 
@@ -62,7 +62,7 @@ let map : Map = Map::new_map_rooms_and_corridors(1);
 
 That's it! Our maps now know about depth. You'll want to delete any `savegame.json` files you have lying around, since we've changed the format - loading will fail.
 
-# Showing the player their map depth
+## Showing the player their map depth
 
 We'll modify the player's heads-up-display to indicate the current map depth. In `gui.rs`, inside the `draw_ui` function, we add the following:
 
@@ -76,7 +76,7 @@ If you `cargo run` the project now, you'll see that we are showing you your curr
 
 ![Screenshot](./c12-s1.jpg)
 
-# Adding down stairs
+## Adding down stairs
 
 In `map.rs`, we have an enumeration - `TileType` - that lists the available tile types. We want to add a new one: down stairs. Modify the enumeration like this:
 
@@ -169,7 +169,7 @@ If you `cargo run` the project now, and run around a bit - you can find a set of
 
 ![Screenshot](./c12-s2.jpg)
 
-# Actually going down a level
+## Actually going down a level
 
 In `player.rs`, we have a big `match` statement that handles user input. Lets bind going to the next level to the `period` key (on US keyboards, that's `>` without the shift). Add this to the `match`:
 
@@ -334,7 +334,7 @@ If you `cargo run` the project now, you can run around and descend levels. Your 
 
 ![Screenshot](./c12-s3.jpg)
 
-# Wrapping Up
+## Wrapping Up
 
 This chapter was a bit easier than the last couple! You can now descend through an effectively infinite (it's really bounded by the size of a 32-bit integer, but good luck getting through that many levels) dungeon. We've seen how the ECS can help, and how our serialization work readily expands to include new features like this one as we add to the project.
 

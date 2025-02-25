@@ -65,7 +65,7 @@ In a real game design document, we'd painstakingly describe each element here. F
 
 ### Goals
 
-* *Overall*: The ultimate goal is to retrieve the Amulet of Yala - and return to town (town portal spells stop working once you have it). 
+* *Overall*: The ultimate goal is to retrieve the Amulet of Yala - and return to town (town portal spells stop working once you have it).
 * *Short-term*: Defeat enemies on each level.
 * Navigate each level of the dungeon, avoiding traps and reaching the exit.
 * Obtain lots of cool loot.
@@ -99,6 +99,7 @@ The game should include a good variety of items. Broadly, items are divided as:
 * Food.
 
 Other notes:
+
 * Eventually, items should have weight and inventory management becomes a skill. Until then, it can be quite loose/ready.
 * Magical items shouldn't immediately reveal what they do, beyond being magical.
 * Items should be drawn from loot tables that at least sort-of make sense.
@@ -142,11 +143,9 @@ I'm hopeless at languages, so English it is.
 
 Anyone who has great ideas should send them to me. :-)
 
-
 ## Wrap-Up
 
 So there we have it: a very skeletal design document, with lots of holes in it. It's a good idea to write one of these, especially when making a time-constrained game such as a "7-day roguelike challenge". This chapter will keep improving in quality as more features are implemented. For now, it's intended to serve as a baseline.
-
 
 ...
 

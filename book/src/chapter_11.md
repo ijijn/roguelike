@@ -14,7 +14,7 @@
 
 In the last few chapters, we've focused on getting a playable (if not massively fun) game going. You can run around, slay monsters, and make use of various items. That's a great start! Most games let you stop playing, and come back later to continue. Fortunately, Rust (and associated libraries) makes it relatively easy.
 
-# A Main Menu
+## A Main Menu
 
 If you're going to resume a game, you need somewhere from which to do so! A main menu also gives you the option to abandon your last save, possibly view credits, and generally tell the world that your game is here - and written by you. It's an important thing to have, so we'll put one together.
 
@@ -162,7 +162,7 @@ pub fn main_menu(gs : &mut State, ctx : &mut Rltk) -> MainMenuResult {
 
 That's a bit of a mouthful, but it displays menu options and lets you select them with the up/down keys and enter. It's very careful to not modify state itself, to keep things clear.
 
-# Including Serde
+## Including Serde
 
 `Serde` is pretty much the gold-standard for serialization in Rust. It makes a lot of things easier! So the first step is to include it. In your project's `Cargo.toml` file, we'll expand the `dependencies` section to include it:
 
@@ -182,7 +182,7 @@ serde_json = "1.0.39"
 
 It may be worth calling `cargo run` now - it will take a while, downloading the new dependencies (and all of their dependencies) and building them for you. It should keep them around so you don't have to wait this long every time you build.
 
-# Adding a "SaveGame" state
+## Adding a "SaveGame" state
 
 We'll extend `RunState` once more to support game saving:
 
@@ -217,7 +217,7 @@ VirtualKeyCode::Escape => return RunState::SaveGame,
 
 If you `cargo run` now, you can start a game and press escape to quit to the menu.
 
-# Getting started with saving the game
+## Getting started with saving the game
 
 Now that the scaffolding is in place, it's time to actually save something! Lets start simple, to get a feel for Serde. In the `tick` function, we extend the save system to just dump a JSON representation of the map to the console:
 
@@ -272,7 +272,7 @@ pub struct Rect {
 
 If you `cargo run` the project now, when you hit escape it will dump a huge blob of JSON data to the console. That's the game map!
 
-# Saving entity state
+## Saving entity state
 
 Now that we've seen how useful `serde` is, we should start to use it for the game itself. This is harder than one might expect, because of how `specs` handles `Entity` structures: their ID # is purely synthetic, with no guaranty that you'll get the same one next time! Also, you may not want to save *everything* - so `specs` introduces a concept of *markers* to help with this. It winds up being a bit more of a mouthful than it really needs to be, but gives a pretty powerful serialization system.
 
@@ -424,7 +424,7 @@ What's going on here, then?
 
 If you `cargo run` and start a game, then save it - you'll find a `savegame.json` file has appeared - with your game state in it. Yay!
 
-# Restoring Game State
+## Restoring Game State
 
 Now that we have the game data, it's time to load it!
 
@@ -614,7 +614,7 @@ That's quite the mouthful, so lets step through it:
 
 If you `cargo run` now, you can load your saved game!
 
-# Just add permadeath
+## Just add permadeath
 
 It wouldn't really be a roguelike if we let you keep your save game after you reload! So we'll add one more function to `saveload_system`:
 
@@ -663,7 +663,7 @@ The result? You can compile for `wasm32` and the `save_game` function simply doe
 
 (Why does the check that the file exists work? Rust is smart enough to say "no filesystem, so the file can't exist". Thanks, Rust!)
 
-# Wrap-up
+## Wrap-up
 
 This has been a long chapter, with quite heavy content. The great news is that we now have a framework for loading and saving the game whenever we want to. Adding components has gained some steps: we have to register them in `main`, tag them for `Serialize, Deserialize`, and remember to add them to our component type lists in `saveload_system.rs`. That could be easier - but it's a very solid foundation.
 

@@ -35,7 +35,7 @@ Rust makes it pretty easy to break any module into multiple files: you create a 
 
 So to get started, inside your `map_builders` directory - make a new directory called `waveform_collapse`. Add a file, `mod.rs` into it. You should have a source tree like this:
 
-```
+```plaintext
 \ src
    \ map_builders
       \ waveform_collapse
@@ -1262,6 +1262,7 @@ This saves a little bit of space in the resulting binary (never a bad thing: sma
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-33-wfc)**
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-33-wfc/)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

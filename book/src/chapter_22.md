@@ -86,7 +86,7 @@ match spawn.1.as_ref() {
 
 If you `cargo run` the project now, occasionally you will run into a red `^` - and it will be labeled "Bear Trap" on the mouse-over. Not massively exciting, but a good start! Note that for testing, we'll up the spawn frequency from 2 to 100 - LOTS of traps, making debugging easier. Remember to lower it later!
 
-## But you don't always spot the trap!
+## But you don't always spot the trap
 
 It is pretty easy if you can *always* know that a trap awaits you! So we want to make traps *hidden* by default, and come up with a way to sometimes locate traps when you are near them. Like most things in an ECS driven world, analyzing the text gives a great clue as to what components you need. In this case, we need to go into `components.rs` and create a new component - `Hidden`:
 
@@ -470,8 +470,8 @@ If you `cargo run` now, you can walk around - and sometimes spot traps. Monsters
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-22-simpletraps)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-22-simpletraps/)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

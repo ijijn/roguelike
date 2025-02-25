@@ -305,7 +305,7 @@ pub fn inflict_damage(ecs: &mut World, damage: &EffectSpawner, target: Entity) {
 
 Notice that we're not handling blood stains, experience points or anything of the like! We are, however, applying the damage. If you `cargo run` now, you can engage in melee (and not gain any benefits to doing so).
 
-### Blood for the blood god!
+### Blood for the blood god
 
 Our previous version spawned bloodstains whenever we inflicted damage. It would have been easy enough to include this in the `inflict_damage` function above, but we may have a use for bloodstains elsewhere! We also need to verify that our effects message queue really is smart enough to handle insertions during events. So we're going to make bloodstains an effect. We'll add it into the `EffectType` enum in `effects/mod.rs`:
 
@@ -696,7 +696,7 @@ let mut itemuse = ItemUseSystem{};
 
 Go ahead and `cargo run` and switch some equipment around to make sure it still works. That's good progress - we can remove three complete component storages from our `use_system`!
 
-### Item effects
+### Implementing item effects
 
 Now that we've cleaned up inventory management into its own system, it's time to really cut to the meat of this change: item usage with effects. The goal is to have a system that understands items, but can "fan out" into generic code that we can reuse for every other effect use. We'll start in `effects/mod.rs` by adding an effect type for "I want to use an item":
 
@@ -848,7 +848,6 @@ pub fn well_fed(ecs: &mut World, _damage: &EffectSpawner, target: Entity) {
 ```
 
 Very simple, and straight out of the original code. We need food to affect entities rather than just locations (in case you make something like a vending machine that hands out food over an area!):
-
 
 ```rust
 fn tile_effect_hits_entities(effect: &EffectType) -> bool {
@@ -1760,8 +1759,8 @@ This chapter has been a good example of the limitations of an ECS - and how to u
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-63-effects)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-63-effects)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

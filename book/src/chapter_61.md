@@ -139,7 +139,7 @@ RunState::TownPortal => {
 }
 ```
 
-So this is relatively straight-forward: it calls the as-yet-unwritten `spawn_town_portal` function, retrieves the depth, and uses the same logic as `NextLevel` and `PreviousLevel` to switch to the town level (the offset calculated to result in a depth of 1). 
+So this is relatively straight-forward: it calls the as-yet-unwritten `spawn_town_portal` function, retrieves the depth, and uses the same logic as `NextLevel` and `PreviousLevel` to switch to the town level (the offset calculated to result in a depth of 1).
 
 We also need to modify the `Ticking` handler to allow `TownPortal` to escape from the loop:
 
@@ -239,8 +239,8 @@ Now we need to make the portal go *back* to your point-of-origin in the dungeon.
 * Teleporters can affect anyone who enters the tile, *unless* you've flagged them as "player only".
 * Teleporting could happen across the current level, in which case it's like a regular move.
 * Teleporting could also happen across levels, in which case there are two possibilities:
-    * The player is teleporting, and we need to adjust game state like other level transitions.
-    * Another entity is teleporting, in which case we need to remove its `Position` component and add an `OtherLevelPosition` component so they are in-place when the player goes there.
+  * The player is teleporting, and we need to adjust game state like other level transitions.
+  * Another entity is teleporting, in which case we need to remove its `Position` component and add an `OtherLevelPosition` component so they are in-place when the player goes there.
 
 ### Cleaning up movement in general
 
@@ -529,7 +529,6 @@ I included this as an illustration as to why we put the safeguards in!
 
 *Make sure you remove these comment tags when you're done watching what happens!*
 
-
 ## Wrap-Up
 
 In this chapter, we started creating town portals - and wound up with a generic teleport system and a cleaned up movement system. This gives a lot more tactical options for the player, and enables "grab loot, return and sell it" play mechanics (as seen in *Diablo*). We're getting much closer to the game described in the design document!
@@ -538,8 +537,8 @@ In this chapter, we started creating town portals - and wound up with a generic 
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-61-townportal)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-61-townportal)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

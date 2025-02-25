@@ -321,7 +321,7 @@ The caverns are pretty playable as-is, but they don't really match what we've de
 
 We've left bandits in the cave, because they may seek shelter there - but no more wolves, deer or rodents of unusual size (we're probably sick of them by now, anyway!). What else would you find in a cave? The [d20 system encounter tables](https://www.d20pfsrd.com/bestiary/indexes-and-tables/encounter-tables/#TOC-Dungeon-Avg.-CR-2-) suggest a few:
 
-```
+```plaintext
 Dire rats, fire beetles, human skeletons, giant centipedes, spider swarms, human zombies, chokers, skeletal champions, goblins, ghouls, giant spiders, cockatrice, gelatinous cube, rust monster, shadow, wight, stirges, darkmantles, troglodytes, bugbears, vargoilles,
 gray oozes, mimcs and ogres (oh my)
 ```
@@ -687,6 +687,7 @@ In this chapter, we've added a whole new level and theme - and lit the caverns! 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-56-caverns)**
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-56-caverns)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

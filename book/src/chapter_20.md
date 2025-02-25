@@ -180,7 +180,7 @@ This is pretty straightforward: it reveals the tiles on the current row, and the
 
 ![Screenshot](./c20-s2.gif)
 
-## Remember to lower the spawn priority!
+## Remember to lower the spawn priority
 
 In `spawners.rs` we are currently spawning magic mapping scrolls *everywhere*. That's probably not what we want! Edit the spawn table to have a much lower priority:
 
@@ -205,7 +205,6 @@ fn room_table(map_depth: i32) -> RandomTable {
 ## Wrap Up
 
 This was a relatively quick chapter, but we now have another staple of the roguelike genre: magic mapping.
-
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-20-magicmapping)**
 

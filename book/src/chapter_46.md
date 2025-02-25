@@ -260,6 +260,7 @@ So we'll also add this little critter to the spawn list:
 ```json
 { "name" : "Kobold", "weight" : 15, "min_depth" : 0, "max_depth" : 3 }
 ```
+
 Notice that we make them *really* common - and stop harassing the player with them after level 3.
 
 If you `cargo run` the project now, you'll find the new entities in the game:
@@ -272,8 +273,8 @@ That's it for spawn tables! You've gained considerable power in these last two c
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-46-raws2)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-46-raws2)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

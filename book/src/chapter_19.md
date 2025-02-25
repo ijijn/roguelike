@@ -256,6 +256,7 @@ fn room_table(map_depth: i32) -> RandomTable {
 ```
 
 And to the spawn code:
+
 ```rust
 match spawn.1.as_ref() {
     "Goblin" => goblin(ecs, x, y),

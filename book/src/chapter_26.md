@@ -193,7 +193,8 @@ Lets take a look at what this function does:
 5. If we're splitting vertically, it's the same as (4) - but with top and bottom rectangles.
 
 Conceptually, this starts with a rectangle:
-```
+
+```plaintext
 #################################
 #                               #
 #                               #
@@ -209,7 +210,7 @@ Conceptually, this starts with a rectangle:
 
 A horizontal split would yield the following:
 
-```
+```plaintext
 #################################
 #              #                #
 #              #                #
@@ -225,7 +226,7 @@ A horizontal split would yield the following:
 
 The next split might be vertical:
 
-```
+```plaintext
 #################################
 #              #                #
 #              #                #
@@ -326,8 +327,8 @@ This type of dungeon can represent an interior, maybe of a space ship, a castle,
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-26-bsp-interiors)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-26-bsp-interiors/)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

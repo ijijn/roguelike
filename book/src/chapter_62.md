@@ -474,7 +474,7 @@ gui::VendorResult::Buy => {
 }
 ```
 
-Now that we're adding the components, we need to read them and do something with the knowledge! 
+Now that we're adding the components, we need to read them and do something with the knowledge!
 
 We need one more helper function in `raws/rawmaster.rs` to help this process:
 
@@ -932,8 +932,8 @@ This gets us the basics of the item identification mini-game. We've not touched 
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-62-magictems)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-62-magicitems)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

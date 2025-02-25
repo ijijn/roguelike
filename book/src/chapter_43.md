@@ -1,4 +1,4 @@
-# Let's Make a Game!
+# Let's Make a Game
 
 ---
 
@@ -24,7 +24,7 @@ Now we're going to start a series of articles that actually makes a cohesive gam
 
 This game will stick closely to the genre, with very little ground-breaking innovation. So we'll have a fantasy setting, dungeon diving, and limited progression. If you're familiar with the [Berlin Interpretation](http://www.roguebasin.com/index.php?title=Berlin_Interpretation) (an attempt at codifying what counts as a roguelike in a world of games using the name!), we'll try to stick closely to the important aspects:
 
-*High-value targets*
+**High-value targets*
 
 * *Random Environment Generation* is essential, and we've already covered a lot of interesting ways to do it!
 * *Permadeath* defines the genre, so we'll go with it. We'll probably sneak in game saving/loading, and look at how to handle non-permadeath if that's what you want - but we'll stick to the principle, and its implication that you should be able to beat a roguelike without dying.
@@ -36,7 +36,7 @@ This game will stick closely to the genre, with very little ground-breaking inno
 * *Hack'n'slash* - definitely!
 * *Exploration and discovery* - absolutely!
 
-*Low-value targets*
+**Low-value targets*
 
 * *Single player character* - we're unlikely to introduce groups in this section, but we might introduce friendly NPCs.
 * *Monsters are similar to players* - the ECS helps with this, since we're simulating the player in the same way as NPCs. We'll stick to the basic principle.

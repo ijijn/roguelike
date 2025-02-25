@@ -25,9 +25,9 @@ I like to sketch out UI in [Rex Paint](https://www.gridsagegames.com/rexpaint/).
 This isn't a bad start, as far as ASCII user interfaces go. Some pertinent notes:
 
 * We've expanded the terminal to `80x60`, which is a pretty common resolution for these games (Cogmind defaults to it).
-*  We've *shrunk* the amount of screen devoted to the map, so as to show you more pertinent information on the screen at once; it's actually `50x48`. 
-* The bottom panel is the log, which I colored in and gave some silly fake text just to make it clear what goes there. We'll definitely want to improve our logging experience to help immerse the player. 
-* The top-right shows some important information: your health and mana, both numerically and with bars. Below that, we're showing your attributes - and highlighting the ones that are improved in some way (we didn't say how!). 
+* We've *shrunk* the amount of screen devoted to the map, so as to show you more pertinent information on the screen at once; it's actually `50x48`.
+* The bottom panel is the log, which I colored in and gave some silly fake text just to make it clear what goes there. We'll definitely want to improve our logging experience to help immerse the player.
+* The top-right shows some important information: your health and mana, both numerically and with bars. Below that, we're showing your attributes - and highlighting the ones that are improved in some way (we didn't say how!).
 * The next panel down lists your equipped inventory.
 * Below that, we show your *consumables* - complete with a hot-key (shift + number) to activate them.
 * Below that, we're showing an example spell - that's not implemented yet, but the idea stands.
@@ -109,6 +109,7 @@ pub fn draw_hollow_box(
     }
 }
 ```
+
 This is actually copied from RLTK, but with the fill removed.
 
 Next, we begin work on `draw_ui`:
@@ -391,7 +392,7 @@ mouse_map_pos.0 += min_x - 1;
 mouse_map_pos.1 += min_y - 1;
 ```
 
-## Shiny, new tool-tips!
+## Shiny, new tool-tips
 
 That gets our *old* tooltip system working - but the prototype shows a spiffy new display! So we need to create a way to make these pretty tooltips, and arrange them. Since tooltips can be thought of as a self-contained entity, we'll make an object to define them:
 
@@ -685,8 +686,8 @@ Here's the iterative progress:
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-52-ui)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-52-ui)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

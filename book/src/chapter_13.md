@@ -14,7 +14,7 @@
 
 Currently, you can advance through multiple dungeon levels - but they all have the same spawns. There's no ramp-up of difficulty as you advance, and no easy-mode to get you through the beginning. This chapter aims to change that.
 
-# Adding a wait key
+## Adding a wait key
 
 An important tactical element of most roguelikes is the ability to skip a turn - let the monsters come to you (and not get the first hit!). As part of turning the game into a more tactical challenge, lets quickly implement turn skipping. In `player.rs` (along with the rest of the input), we'll add numeric keypad 5 and space to be skip:
 
@@ -67,7 +67,7 @@ fn skip_turn(ecs: &mut World) -> RunState {
 
 This looks up various entities, and then iterates the player's viewshed using the `tile_content` system. It checks what the player can see for monsters; if no monster is present, it heals the player by 1 hp. This encourages cerebral play - and can be balanced with the inclusion of a hunger clock at a later date. It also makes the game *really easy* - but we're getting to that!
 
-# Increased difficulty as you delve: spawn tables
+## Increased difficulty as you delve: spawn tables
 
 Thus far, we've been using a simple spawn system: it randomly picks a number of monsters and items, and then picks each with an equal weight. That's not much like "normal" games, which tend to make some things rare - and some things common. We'll create a generic `random_table` system, for use in the spawn system. Create a new file, `random_table.rs` and put the following in it:
 
@@ -196,7 +196,7 @@ This is definitely cleaner than the previous approach, and now you are less like
 
 A quick `cargo run` shows you the improved spawn variety.
 
-# Increasing the spawn rate as you delve
+## Increasing the spawn rate as you delve
 
 That gave a nicer distribution, but didn't solve the problem of later levels being of the same difficulty as earlier ones. A quick and dirty approach is to spawn more entities as you descend. That still doesn't *solve* the problem, but it's a start! We'll start by modifying the function signature of `spawn_room` to accept the map depth:
 
@@ -205,11 +205,13 @@ pub fn spawn_room(ecs: &mut World, room : &Rect, map_depth: i32) {
 ```
 
 Then we'll change the number of entities that spawn to use this:
+
 ```rust
 let num_spawns = rng.roll_dice(1, MAX_MONSTERS + 3) + (map_depth - 1) - 3;
 ```
 
 We'll have to change a couple of calls in `main.rs` to pass in the depth:
+
 ```rust
 for room in map.rooms.iter().skip(1) {
     spawner::spawn_room(&mut gs.ecs, room, 1);
@@ -235,9 +237,10 @@ for room in worldmap.rooms.iter().skip(1) {
 
 If you `cargo run` now, the first level is quite quiet. Difficulty ramps up a bit as you descend, until you have veritable hordes of monsters!
 
-# Increasing the weights by depth
+## Increasing the weights by depth
 
 Let's modify the `room_table` function to include map depth:
+
 ```rust
 fn room_table(map_depth: i32) -> RandomTable {
     RandomTable::new()
@@ -249,6 +252,7 @@ fn room_table(map_depth: i32) -> RandomTable {
         .add("Magic Missile Scroll", 4)
 }
 ```
+
 We also change the call to it in `spawn_room` to use it:
 
 ```rust
@@ -257,7 +261,7 @@ let spawn_table = room_table(map_depth);
 
 A `cargo build` later, and voila - you have an increasing probability of finding orcs, fireball and confusion scrolls as you descend. The total weight of goblins, health potions and magic missile scrolls remains the same - but because the others change, their total likelihood diminishes.
 
-# Wrapping Up
+## Wrapping Up
 
 You now have a dungeon that increases in difficulty as you descend! In the next chapter, we'll look at giving your character some progression as well (through equipment), to balance things out.
 

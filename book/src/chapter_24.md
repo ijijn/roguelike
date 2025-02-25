@@ -182,7 +182,7 @@ pub trait MapBuilder {
 }
 ```
 
-Notice the new entries: `get_snapshot_history` and `take_snapshot`. The former will be used to ask the generator for its history of map frames; the latter tells generators to support taking snapshots (and leaves it up to them how they do it). 
+Notice the new entries: `get_snapshot_history` and `take_snapshot`. The former will be used to ask the generator for its history of map frames; the latter tells generators to support taking snapshots (and leaves it up to them how they do it).
 
 This is a good time to mention one *major* difference between Rust and C++ (and other languages that provide Object Oriented Programming support). Rust traits *do not* support adding variables to the trait signature. So you can't include a `history : Vec<Map>` within the trait, even if that's exactly what you're using to store the snapshot in all the implementations. I honestly don't know why this is the case, but it's workable - just an odd departure from OOP norms.
 
@@ -385,8 +385,8 @@ This finishes building the test harness - you can watch maps spawn, which should
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-24-map-testing)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-24-map-testing/)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

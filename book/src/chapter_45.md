@@ -71,14 +71,14 @@ In JSON, we might go for a representation like this (just an example):
 
 Your package should be laid out like this:
 
-```
+```plaintext
 |     Root folder
 \ -   src (your source files)
 ```
 
 At the root level, we'll make a new directory/folder called `raws`. So your tree should look like this:
 
-```
+```plaintext
 |     Root folder
 \ -   src (your source files)
 \ -   raws
@@ -226,7 +226,7 @@ At the top of the file, make sure to include `use serde::{Deserialize};` and `us
 
 If you `cargo run` the project now, ignore the game window - watch the console. You'll see the following:
 
-```
+```rust
 Raws { items: [Item { name: "Healing Potion", renderable: Some(Renderable { glyph: "!", fg: "#FF00FF", bg: "#000000" }), consumable: Some(Consumable { effects: {"provides_healing": "8"} }) }, Item { name: "Magic Missile Scroll", renderable: Some(Renderable { glyph: ")", fg: "#00FFFF", bg: "#000000" 
 }), consumable: Some(Consumable { effects: {"damage": "20", "ranged": "6"} }) }] }
 ```
@@ -1065,6 +1065,7 @@ This chapter has given us the ability to easily change the items, mobs and props
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-45-raws1)**
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-45-raws1)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

@@ -193,7 +193,7 @@ fn remove_walls(&mut self, next : &mut Cell) {
 }
 ```
 
-Uh oh, there's some new stuff here: 
+Uh oh, there's some new stuff here:
 
 * We set `x` to be *our* `column` value, minus the `column` value of the next cell.
 * We do the same with `y` - but with `row` values.
@@ -309,8 +309,8 @@ This function is interesting in that it returns an `Option`. It's possible that 
 
 * Obtain a list of neighbors for the current cell.
 * If there are neighbors:
-    * If there is only one neighbor, return it.
-    * If there are multiple neighbors, pick one and random and return it.
+  * If there is only one neighbor, return it.
+  * If there are multiple neighbors, pick one and random and return it.
 * If there are no neighbors, return `None`.
 
 We use this from `generate_maze`:
@@ -506,8 +506,8 @@ In this chapter, we've built a maze. It's a guaranteed solvable maze, so there's
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-29-mazes)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-29-mazes/)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

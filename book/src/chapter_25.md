@@ -165,7 +165,7 @@ fn add_subrects(&mut self, rect : Rect) {
 
 The function `add_subrects` is core to the BSP (Binary Space Partition) approach: it takes a rectangle, and divides the width and height in half. It then creates four new rectangles, one for each quadrant of the original. These are added to the `rects` list. Graphically:
 
-```
+```plaintext
 ###############        ###############
 #             #        #  1   +   2  #
 #             #        #      +      #
@@ -209,7 +209,7 @@ fn get_random_sub_rect(&self, rect : Rect, rng : &mut RandomNumberGenerator) -> 
 
 So this takes a rectangle as the parameter, and makes a mutable copy to use as the result. It calculates the width and height of the rectangle, and then produces a *random* width and height inside that rectangle - but no less than 3 tiles in size and no more than 10 on each dimension. You can tweak those numbers to change your desired room size. It then shunts the rectangle a bit, to provide some random placement (otherwise, it would always be against the sides of the sub-rectangle). Finally, it returns the result. Graphically:
 
-```
+```plaintext
 ###############        ########
 #             #        #   1  #
 #             #        #      #
@@ -275,7 +275,6 @@ So now that we've implemented all of these, the overall algorithm is more obviou
 This tends to give a nice spread of rooms, and they are guaranteed not to overlap. Very Nethack like!
 
 If you `cargo run` now, you will be in a room with no exits. You'll get to watch rooms appear around the map in the visualizer. That's a great start.
-
 
 ![Screenshot](./c25-s1.gif)
 
@@ -373,8 +372,8 @@ You've refactored your map building into a new module, and built a simple BSP (B
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-25-bsproom-dungeons)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-25-bsproom-dungeons/)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

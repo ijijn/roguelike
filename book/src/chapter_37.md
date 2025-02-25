@@ -786,7 +786,7 @@ That's a big function, so we'll step through it. It's quite simple, just really 
 
 So that function is all about rolling dice, and making a map! It's a *lot* of combinations, even ignoring the thousands of possible layouts that can come from each starting builder. There are:
 
-```
+```math
 2 <starting rooms with options> * 5 <sort> * 2 <corridor> * 3 <modifier> = 60 basic room options.
 +1 for BSP Interior Dungeons = 61 room options.
 *2 <starting position options> = 122 room options.
@@ -836,7 +836,7 @@ This is similar to what we've done before, but with a twist: we now place the pl
 
 This also provides a lot of combinations, but not quite as many.
 
-```
+```math
 14 basic room options
 *1 Spawn option
 *1 Exit option
@@ -875,7 +875,7 @@ This is relatively straightforward. We randomly pick either a *room* or a *shape
 
 So how does our total combinatorial explosion look? Pretty good at this point:
 
-```
+```math
 488 possible room builders +
 84 possible shape builders =
 572 builder combinations.
@@ -894,6 +894,7 @@ So we now have **2,288 possible builder combinations**, just from the last few c
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-37-layers2)**
 
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-37-layers2/)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

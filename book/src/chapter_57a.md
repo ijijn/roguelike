@@ -258,7 +258,7 @@ fn evaluate(idx : usize, map : &Map, factions : &ReadStorage<Faction>, my_factio
 
 I like this API - it's very similar to the old setup, but cleanly wrapped!
 
-### Approach API: Some Nasty Code!
+### Approach API: Some Nasty Code
 
 > If you were wondering why I defined the API, and then changed it: it's so that you can see how the sausage is made. API building like this is always an iterative process, and it's good to see how things evolve.
 
@@ -468,6 +468,7 @@ fn evaluate(idx : usize, map : &Map, factions : &ReadStorage<Faction>, my_factio
 In `inventory_system.rs`, the `ItemUseSystem` performs a spatial lookup. This is another one that can be replaced with the closure system:
 
 Change:
+
 ```rust
 for mob in map.tile_content[idx].iter() {
     targets.push(*mob);
@@ -810,8 +811,8 @@ It still isn't absolutely perfect, but it's a *lot* better. I played for a while
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-57a-spatial)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-57a-spatial)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

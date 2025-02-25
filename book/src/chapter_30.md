@@ -225,12 +225,13 @@ If you adjust the constructor to use this algorithm, and `cargo run` the project
 
 ## Implementing Symmetry
 
-```
+```plaintext
 Tyger Tyger, burning bright, 
 In the forests of the night; 
 What immortal hand or eye, 
 Could frame thy fearful symmetry?
 ```
+
 (William Blake, The Tyger)
 
 Symmetry can transform a random map into something that looks designed - but quite alien. It often looks quite insectoid or reminiscent of a *Space Invaders* enemy. This can make for some fun-looking levels!
@@ -443,8 +444,8 @@ This chapter has introduced another, very flexible, map builder for your arsenal
 
 **The source code for this chapter may be found [here](https://github.com/thebracket/rustrogueliketutorial/tree/master/chapter-30-dla)**
 
-
 [Run this chapter's example with web assembly, in your browser (WebGL2 required)](https://bfnightly.bracketproductions.com/rustbook/wasm/chapter-30-dla/)
+
 ---
 
 Copyright (C) 2019, Herbert Wolverson.

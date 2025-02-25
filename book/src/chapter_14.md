@@ -14,7 +14,7 @@
 
 Now that we have a dungeon with increasing difficulty, it's time to start giving the player some ways to improve their performance! In this chapter, we'll start with the most basic of human tasks: equipping a weapon and shield.
 
-# Adding some items you can wear/wield
+## Adding some items you can wear/wield
 
 We already have a lot of the item system in place, so we'll build upon the foundation from previous chapters. Just using components we already have, we can start with the following in `spawners.rs`:
 
@@ -117,6 +117,7 @@ gs.ecs.register::<Equippable>();
 ```
 
 In `saveload_system.rs`, we add it to both sets of component lists:
+
 ```rust
 serialize_individually!(ecs, serializer, data, Position, Renderable, Player, Viewshed, Monster, 
     Name, BlocksTile, CombatStats, SufferDamage, WantsToMelee, Item, Consumable, Ranged, InflictsDamage, 
@@ -124,6 +125,7 @@ serialize_individually!(ecs, serializer, data, Position, Renderable, Player, Vie
     WantsToDropItem, SerializationHelper, Equippable
 );
 ```
+
 ```rust
 deserialize_individually!(ecs, de, d, Position, Renderable, Player, Viewshed, Monster, 
     Name, BlocksTile, CombatStats, SufferDamage, WantsToMelee, Item, Consumable, Ranged, InflictsDamage, 
@@ -133,6 +135,7 @@ deserialize_individually!(ecs, de, d, Position, Renderable, Player, Viewshed, Mo
 ```
 
 Finally, we should add the `Equippable` component to our `dagger` and `shield` functions in `spawner.rs`:
+
 ```rust
 fn dagger(ecs: &mut World, x: i32, y: i32) {
     ecs.create_entity()
@@ -566,7 +569,7 @@ impl State {
 
 Now if you `cargo run`, you can pick up a dagger or shield and equip it. Then you can press `R` to remove it.
 
-# Adding some more powerful gear later
+## Adding some more powerful gear later
 
 Lets add a couple more items, in `spawner.rs`:
 
@@ -654,7 +657,7 @@ match spawn.1.as_ref() {
 
 Now as you descend further, you can find better weapons and shields!
 
-# The game over screen
+## The game over screen
 
 We're nearly at the end of the basic tutorial, so lets make something happen when you die - rather than locking up in a console loop. In the file `damage_system.rs`, we'll edit the match statement on `player` for `delete_the_dead`:
 
@@ -783,7 +786,7 @@ If you `cargo run` now, and die - you'll get a message informing you that the ga
 
 ![Screenshot](./c14-s3.jpg)
 
-# Wrapping Up
+## Wrapping Up
 
 That's it for the first section of the tutorial. It sticks relatively closely to the Python tutorial, and takes you from "hello rust" to a moderately fun Roguelike. I hope you've enjoyed it! Stay tuned, I hope to add a section 2 soon.
 
