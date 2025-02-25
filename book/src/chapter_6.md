@@ -14,7 +14,7 @@
 
 A roguelike with no monsters is quite unusual, so lets add some! The good news is that we've already done some of the work for this: we can render them, and we can calculate what they can see. We'll build on the source from the previous chapter, and get some harmless monsters into play.
 
-# Rendering a monster in the center of each room
+## Rendering a monster in the center of each room
 
 We can simply add a `Renderable` component for each monster (we'll also add a `Viewshed` since we'll use it later). In our `main` function (in `main.rs`), add the following:
 
@@ -56,7 +56,7 @@ We get the map from the ECS, and use it to obtain an index - and check if the ti
 
 ![Screenshot](./c6-s2.gif)
 
-# Add some monster variety
+## Add some monster variety
 
 It's rather dull to only have one monster type, so we'll amend our monster spawner to be able to create `g`oblins and `o`rcs.
 
@@ -88,7 +88,7 @@ for room in map.rooms.iter().skip(1) {
 
 Obviously, when we start adding in combat we'll want more variety - but it's a good start. Run the program (`cargo run`), and you'll see a roughly 50/50 split between orcs and goblins.
 
-# Making the monsters think
+## Making the monsters think
 
 Now to start making the monsters think! For now, they won't actually *do* much, beyond pondering their lonely existence. We should start by adding a tag component to indicate that an entity *is* a monster. In `components.rs` we add a simple struct:
 
@@ -154,7 +154,7 @@ impl State {
 
 If you `cargo run` your project now, it will be very slow - and your console will fill up with "Monster considers their own existence". The AI is running - but it's running every tick!
 
-# Turn-based game, in a tick-based world
+## Turn-based game, in a tick-based world
 
 To prevent this - and make a turn-based game - we introduce a new concept to the game state. The game is either "running" or "waiting for input" - so we make an `enum` to handle this:
 
@@ -227,7 +227,7 @@ pub fn player_input(gs: &mut State, ctx: &mut Rltk) -> RunState {
 
 If you launch `cargo run` now, the game is back up to speed - and the monsters only think about what to do when you move. That's a basic turn-based tick loop!
 
-# Quiet monsters until they see you
+## Quiet monsters until they see you
 
 You *could* let monsters think every time anything moves (and you probably will when you get into deeper simulation), but for now lets quiet them down a bit - and have them react if they can see the player.
 
@@ -273,7 +273,7 @@ impl<'a> System<'a> for MonsterAI {
 
 If you `cargo run` this, you'll be able to move around - and your console will gain "Monster shouts insults" from time to time when a monster can see you.
 
-# Differentiating our monsters
+## Differentiating our monsters
 
 Monsters should have names, so we know who is yelling at us! So we create a new component, `Name`. In `components.rs`, we add:
 

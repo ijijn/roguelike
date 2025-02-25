@@ -14,9 +14,10 @@
 
 In this chapter, we'll add a user interface to the game.
 
-# Shrinking the map
+## Shrinking the map
 
 We'll start off by going to `map.rs`, and adding some constants: `MAPWIDTH`, `MAPHEIGHT` and `MAPCOUNT`:
+
 ```rust
 const MAPWIDTH : usize = 80;
 const MAPHEIGHT : usize = 50;
@@ -25,7 +26,7 @@ const MAPCOUNT : usize = MAPHEIGHT * MAPWIDTH;
 
 Then we'll go through and change every reference to 80*50 to `MAPCOUNT`, and references to the map size to use the constants. When this is done and running, we'll change the `MAPHEIGHT` to 43 - to give us room at the bottom of the screen for a user interface panel.
 
-# Some minimal GUI elements
+## Some minimal GUI elements
 
 We'll create a new file, `gui.rs` to hold our code. We'll go with a really minimal start:
 
@@ -39,6 +40,7 @@ pub fn draw_ui(ecs: &World, ctx : &mut Rltk) {
 ```
 
 We add a `mod gui` to the import block at the top of `main.rs`, and call it at the end of `tick`:
+
 ```rust
 gui::draw_ui(&self.ecs, ctx);
 ```
@@ -47,7 +49,7 @@ If we `cargo run` now, we'll see that the map has shrunk - and we have a white b
 
 ![Screenshot](./c8-s1.png)
 
-# Adding a health bar
+## Adding a health bar
 
 It would help the player out to know how much health they have left. Fortunately, RLTK provides a convenient helper for this. We'll need to obtain the player's health from the ECS, and render it. This is pretty easy, and you should be comfortable with it by now. The code looks like this:
 
@@ -70,7 +72,7 @@ pub fn draw_ui(ecs: &World, ctx : &mut Rltk) {
 }
 ```
 
-# Adding a message log
+## Adding a message log
 
 The game log makes sense as a *resource*: it's available to any system that wants to tell you something, and there's very little restriction as to what might want to tell you something. We'll start by modelling the log itself. Make a new file, `gamelog.rs`. We'll start very simply:
 
@@ -96,7 +98,7 @@ If you `cargo run` the project now, you'll see something like this:
 
 ![Screenshot](./c8-s2.png)
 
-# Logging attacks
+## Logging attacks
 
 In our `melee_combat_system`, we add `gamelog::GameLog` to our imports from `super`, add a read/write accessor for the log (`WriteExpect<'a, GameLog>,`), and extend the destructuring to include it: `let (entities, mut log, mut wants_melee, names, combat_stats, mut inflict_damage) = data;`. Then it's just a matter of replacing the `print!` macros with inserting into the game log. Here's the resultant code:
 
@@ -146,7 +148,7 @@ Now if you run the game and play a bit (`cargo run`, playing is up to you!), you
 
 ![Screenshot](./c8-s3.png)
 
-# Notifying of deaths
+## Notifying of deaths
 
 We can do the same thing with `delete_the_dead` to notify of deaths. Here's the finished code:
 
@@ -183,7 +185,7 @@ pub fn delete_the_dead(ecs : &mut World) {
 }
 ```
 
-# Mouse Support and Tooltips
+## Mouse Support and Tooltips
 
 Let's start by looking at how we obtain mouse information from RLTK. It's really easy; add the following at the bottom of your `draw_ui` function:
 
@@ -259,7 +261,7 @@ If you `cargo run` your project now, it looks like this:
 
 ![Screenshot](./c8-s4.png)
 
-# Optional post-processing for that truly retro feeling
+## Optional post-processing for that truly retro feeling
 
 Since we're on look and feel, lets consider enabling an RLTK feature: post-processing to give scanlines and screen burn, for that truly retro feel. It's entirely up to you if you want to use this! In `main.rs`, the initial setup simply replaced the first `init` command with:
 
@@ -275,7 +277,7 @@ If you choose to do this, the game looks a bit like the classic *Caves of Qud*:
 
 ![Screenshot](./c8-s5.png)
 
-# Wrap up
+## Wrap up
 
 Now that we have a GUI, it's starting to look pretty good!
 

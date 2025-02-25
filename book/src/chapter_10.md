@@ -14,7 +14,7 @@
 
 In the last chapter, we added items and inventory - and a single item type, a health potion. Now we'll add a second item type: *a scroll of magic missile*, that lets you zap an entity at range.
 
-# Using components to describe what an item *does*
+## Using components to describe what an item *does*
 
 In the last chapter, we pretty much wrote code to ensure that all items were healing potions. That got things going, but isn't very flexible. So we'll start by breaking down items into a few more component types. We'll start with a simple *flag* component, `Consumable`:
 
@@ -45,6 +45,7 @@ pub struct ProvidesHealing {
 ```
 
 And in our `ItemUseSystem`:
+
 ```rust
 let item_heals = healing.get(useitem.item);
 match item_heals {
@@ -80,9 +81,10 @@ fn health_potion(ecs: &mut World, x: i32, y: i32) {
 
 So we're describing where it is, what it looks like, its name, denoting that it is an item, consumed on use, and provides 8 points of healing. This is nice and descriptive - and future items can mix/match. As we add components, the item system will become more and more flexible.
 
-# Describing Ranged Magic Missile Scrolls
+## Describing Ranged Magic Missile Scrolls
 
 We'll want to add a few more components! In `components.rs` (and registered in `main.rs`):
+
 ```rust
 #[derive(Component, Debug)]
 pub struct Ranged {
@@ -119,6 +121,7 @@ fn magic_missile_scroll(ecs: &mut World, x: i32, y: i32) {
 That neatly lays out the properties of what makes it tick: it has a position, an appearance, a name, it's an item that is destroyed on use, it has a range of 6 tiles and inflicts 8 points of damage. That's what I like about components: after a while, it sounds more like you are describing a blueprint for a device than writing many lines of code!
 
 We'll go ahead and add them into the spawn list:
+
 ```rust
 fn random_item(ecs: &mut World, x: i32, y: i32) {
     let roll :i32;
@@ -144,7 +147,7 @@ If you run the program (with `cargo run`) now, you'll find scrolls as well as po
 
 ![Screenshot](./c10-s1.png)
 
-# Implementing ranged damage for items
+## Implementing ranged damage for items
 
 We want magic missile to be targeted: you activate it, and then have to select a victim. This will be another input mode, so we once again extend `RunState` in `main.rs`:
 
@@ -155,6 +158,7 @@ pub enum RunState { AwaitingInput, PreRun, PlayerTurn, MonsterTurn, ShowInventor
 ```
 
 We'll extend our handler for `ShowInventory` in `main.rs` to handle items that are ranged and induce a mode switch:
+
 ```rust
 RunState::ShowInventory => {
     let result = gui::show_inventory(self, ctx);
@@ -178,6 +182,7 @@ RunState::ShowInventory => {
 ```
 
 So now in `main.rs`, where we match the appropriate game mode, we can stub in:
+
 ```rust
 RunState::ShowTargeting{range, item} => {
     let target = gui::ranged_target(self, ctx, range);
@@ -250,6 +255,7 @@ RunState::ShowTargeting{range, item} => {
 ```
 
 What's this `target`? I added another field to `WantsToUseItem` in `components.rs`:
+
 ```rust
 #[derive(Component, Debug, ConvertSaveload, Clone)]
 pub struct WantsToUseItem {
@@ -261,6 +267,7 @@ pub struct WantsToUseItem {
 So now when you receive a `WantsToUseItem`, you can now that the *user* is the owning entity, the *item* is the `item` field, and it is aimed at `target` - if there is one (targeting doesn't make much sense for healing potions!).
 
 So now we can add another condition to our `ItemUseSystem`:
+
 ```rust
 // If it inflicts damage, apply it to the target cell
 let item_damages = inflict_damage.get(useitem.item);
@@ -288,9 +295,10 @@ This checks to see if we have an `InflictsDamage` component on the item - and if
 
 If you `cargo run` the game, you can now blast entities with your magic missile scrolls!
 
-# Introducing Area of Effect
+## Introducing Area of Effect
 
 We'll add another scroll type - *Fireball*. It's an old favorite, and introduces AoE - *Area of Effect* - damage. We'll start by adding a component to indicate our intent:
+
 ```rust
 #[derive(Component, Debug)]
 pub struct AreaOfEffect {
@@ -299,6 +307,7 @@ pub struct AreaOfEffect {
 ```
 
 We'll extend the `random_item` function in `spawner.rs` to offer it as an option:
+
 ```rust
 fn random_item(ecs: &mut World, x: i32, y: i32) {
     let roll :i32;
@@ -315,6 +324,7 @@ fn random_item(ecs: &mut World, x: i32, y: i32) {
 ```
 
 So now we can write a `fireball_scroll` function to actually spawn them. This is a lot like the other items:
+
 ```rust
 fn fireball_scroll(ecs: &mut World, x: i32, y: i32) {
     ecs.create_entity()
@@ -373,6 +383,7 @@ match useitem.target {
 This says "if there is no target, apply it to the player". If there *is* a target, check to see if it is an Area of Effect event; if it is - plot a viewshed from that point of the appropriate radius, and add every entity in the target area. If it isn't, we just get the entities in the target tile.
 
 So now we need to make the effect code generic. We don't want to assume that effects are independent; later on, we may decide that zapping something with a scroll has all manner of effects! So for healing, it looks like this:
+
 ```rust
 // If it heals, apply the healing
 let item_heals = healing.get(useitem.item);
@@ -393,6 +404,7 @@ match item_heals {
 ```
 
 The damage code is actually simplified, since we've already calculated targets:
+
 ```rust
 // If it inflicts damage, apply it to the target cell
 let item_damages = inflict_damage.get(useitem.item);
@@ -414,9 +426,9 @@ match item_damages {
 }
 ```
 
-If you `cargo run` the project now, you can use magic missile scrolls, fireball scrolls and health potions. 
+If you `cargo run` the project now, you can use magic missile scrolls, fireball scrolls and health potions.
 
-# Confusion Scrolls
+## Confusion Scrolls
 
 Let's add another item - confusion scrolls. These will target a single entity at range, and make them Confused for a few turns - during which time they will do nothing. We'll start by describing what we want in the item spawning code:
 
@@ -440,6 +452,7 @@ fn confusion_scroll(ecs: &mut World, x: i32, y: i32) {
 ```
 
 We'll also add it to the item choices:
+
 ```rust
 fn random_item(ecs: &mut World, x: i32, y: i32) {
     let roll :i32;
@@ -457,6 +470,7 @@ fn random_item(ecs: &mut World, x: i32, y: i32) {
 ```
 
 We'll add a new component (and register it!):
+
 ```rust
 #[derive(Component, Debug)]
 pub struct Confusion {

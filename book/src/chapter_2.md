@@ -20,7 +20,7 @@ If you've worked on games before, you may well be used to an object oriented des
 
 You've probably seen a "class hierarchy" such as this simplified one:
 
-```
+```plaintext
 BaseEntity
     Monster
         MeleeMob

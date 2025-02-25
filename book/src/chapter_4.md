@@ -83,7 +83,7 @@ There's nothing really new here, but lets break it down a bit:
 1. We define a `struct` called `Rect`. We added the `pub` tag to make it *public* - it's available outside of this module (by putting it into a new file, we automatically created a code module; that's a built-in Rust way to compartmentalize your code). Over in `main.rs`, we can add `pub mod Rect` to say "we use `Rect`, and because we put a `pub` in front of it anything can get `Rect` from us as `super::rect::Rect`. That's not very ergonomic to type, so a second line `use rect::Rect` shortens that to `super::Rect`.
 2. We make a new *constructor*, entitled `new`. It uses the return shorthand and returns a rectangle based on the `x`, `y`, `width` and `height` we pass in.
 3. We define a *member* method, `intersect`. It has an `&self`, meaning it can see into the `Rect` to which it is attached - but can't modify it (it's a "pure" function). It returns a bool: `true` if the two rectangles overlap, `false` otherwise.
-4. We define `center`, also as a pure member method. It simply returns the coordinates of the middle of the rectangle, as a *tuple* of `x` and `y` in `val.0` and `val.1`. 
+4. We define `center`, also as a pure member method. It simply returns the coordinates of the middle of the rectangle, as a *tuple* of `x` and `y` in `val.0` and `val.1`.
 
 We'll also make a new function to apply a room to a map:
 
@@ -119,7 +119,7 @@ If you `cargo run` your project, you'll see that we now have two rooms - not lin
 
 ## Making a corridor
 
-Two disconnected rooms isn't much fun, so lets add a corridor between them. We're going to need some comparison functions, so we have to tell Rust to import them (at the top of `map.rs`): `use std::cmp::{max, min};`. `min` and `max` do what they say: they return the minimum or maximum of two values. You could use `if` statements to do the same thing, but some computers will optimize this into a simple (FAST) call for you; we let Rust figure that out! 
+Two disconnected rooms isn't much fun, so lets add a corridor between them. We're going to need some comparison functions, so we have to tell Rust to import them (at the top of `map.rs`): `use std::cmp::{max, min};`. `min` and `max` do what they say: they return the minimum or maximum of two values. You could use `if` statements to do the same thing, but some computers will optimize this into a simple (FAST) call for you; we let Rust figure that out!
 
 Then we make two functions, for horizontal and vertical tunnels:
 

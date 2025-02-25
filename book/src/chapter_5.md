@@ -16,7 +16,7 @@ We have a nicely drawn map, but it shows the whole dungeon! That reduces the use
 
 This chapter starts with the code from chapter 4.
 
-# Map refactor
+## Map refactor
 
 We'll keep map-related functions and data together, to keep things clear as we make an ever-more-complicated game. The bulk of this is creating a new `Map` structure, and moving our helper functions to its implementation.
 
@@ -121,7 +121,7 @@ impl Map {
 
 There's changes in `main` and `player`, too - see the example source for all the details. This has cleaned up our code quite a bit - we can pass a `Map` around, instead of a vector. If we want to teach `Map` to do more things - we have a place to do so.
 
-# The field-of-view component
+## The field-of-view component
 
 Not just the player has limited visibility! Eventually, we'll want monsters to consider what they can see, too. So, since its reusable code, we'll make a `Viewshed` component. (I like the word *viewshed*; it comes from the cartography world - literally "what can I see from here?" - and perfectly describes our problem). We'll give each entity that has a *Viewshed* a list of tile indices they can see. In `components.rs` we add:
 
@@ -157,7 +157,7 @@ gs.ecs
 
 Player is getting quite complicated now - that's good, it shows what an ECS is good for!
 
-# A new system: generic viewsheds
+## A new system: generic viewsheds
 
 We'll start by defining a *system* to take care of this for us. We want this to be generic, so it works for anything that can benefit from knowing what it can see. We create a new file, `visibility_system.rs`:
 
@@ -199,7 +199,7 @@ use visibility_system::VisibilitySystem;
 
 This doesn't actually *do* anything, yet - but we've added a system into the dispatcher, and as soon as we flesh out the code to actually plot the visibility, it will apply to every entity that has both a *Viewshed* and a *Position* component.
 
-# Asking RLTK for a Viewshed: Trait Implementation
+## Asking RLTK for a Viewshed: Trait Implementation
 
 RLTK is written to not care about how you've chosen to lay out your map: I want it to be useful for anyone, and not everyone does maps the way this tutorial does. To act as a bridge between our map implementation and RLTK, it provides some *traits* for us to support. For this example, we need `BaseMap` and `Algorithm2D`. Don't worry, they are simple enough to implement.
 
@@ -227,7 +227,7 @@ impl BaseMap for Map {
 
 `is_opaque` simply returns true if the tile is a wall, and false otherwise. This will have to be expanded if/when we add more types of tile, but works for now. We'll leave the rest of the trait on defaults for now (so no need to enter anything else).
 
-# Asking RLTK for a Viewshed: The System
+## Asking RLTK for a Viewshed: The System
 
 So going back to `visibility_system.rs`, we now have what we need to request a viewshed from RLTK. We extend our `visibility_system.rs` file to look like this:
 
@@ -264,7 +264,7 @@ There's quite a bit here, and the viewshed is actually the simplest part:
 
 This will now run every frame (which is overkill, more on that later) - and store a list of visible tiles.
 
-# Rendering visibility - badly!
+## Rendering visibility - badly
 
 As a first try, we'll change our `draw_map` function to retrieve the map, and the player's viewshed. It will only draw tiles present in the viewshed:
 
@@ -306,7 +306,7 @@ If you run the example now (`cargo run`), it will show you just what the player 
 
 It's clear that we're on the right track, but we need a more efficient way to do things. It would be nice if the player could remember the map as they see it, too.
 
-# Expanding map to include revealed tiles
+## Expanding map to include revealed tiles
 
 To simulate map memory, we'll extend our `Map` class to include a `revealed_tiles` structure. It's just a `bool` for each tile on the map - if true, then we know what's there. Our `Map` definition now looks like this:
 
@@ -407,7 +407,7 @@ The main changes here are that we're getting the Entities list along with compon
 
 If you run (`cargo run`) the project now, it is MASSIVELY faster than the previous version, and remembers where you've been.
 
-# Speeding it up even more - recalculating visibility when we need to
+## Speeding it up even more - recalculating visibility when we need to
 
 It's still not as efficient as it could be! Lets only update viewsheds when we need to. Lets add a `dirty` flag to our `Viewshed` component:
 
@@ -447,7 +447,7 @@ This should be pretty familiar by now: we've added `viewsheds` to get write stor
 
 The game now runs *very* fast once more, if you type `cargo run`.
 
-# Greying out what we remember, but can't see
+## Greying out what we remember, but can't see
 
 One more extension: we'd like to render the parts of the map we know are there but can't currently see. So we add a list of what tiles are currently visible to `Map`:
 

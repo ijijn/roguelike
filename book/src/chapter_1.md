@@ -60,7 +60,7 @@ Now that you are in your chosen folder, you want to open a terminal/console wind
 Rust has a built-in package manager called `cargo`. Cargo can make project templates for you! So to create your new project, type `cargo init hellorust`. After a moment, a new folder has appeared in your project - titled `hellorust`.
 It will contain the following files and directories:
 
-```
+```plaintext
 src\main.rs
 Cargo.toml
 .gitignore
@@ -205,7 +205,7 @@ If you're new to Rust, you are probably wondering what exactly the `Hello Rust` 
 6. `ctx.print(1, 1, "Hello Rust World");` is asking the *context* to *print* "Hello Rust World" at the location (1,1).
 7. Now we get to `fn main()`. *Every* program has a `main` function: it tells the operating system where to start the program.
 
-8. ```
+8. ```rust
     use rltk::RltkBuilder;
     let context = RltkBuilder::simple80x50()
         .with_title("Roguelike Tutorial")
@@ -229,7 +229,7 @@ git clone https://github.com/thebracket/rustrogueliketutorial .
 
 After a while, this will download the complete tutorial (including the source code for this book!). It is laid out as follows (this isn't complete!):
 
-```
+```plaintext
 ───book
 ├───chapter-01-hellorust
 ├───chapter-02-helloecs

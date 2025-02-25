@@ -14,7 +14,7 @@
 
 Now that we have monsters, we want them to be more interesting than just yelling at you on the console! This chapter will make them chase you, and introduce some basic game stats to let you fight your way through the hordes.
 
-# Chasing the Player
+## Chasing the Player
 
 The first thing we need to do is finish implementing `BaseMap` for our `Map` class. In particular, we need to support `get_available_exits` - which is used by the pathfinding.
 
@@ -27,6 +27,7 @@ fn is_exit_valid(&self, x:i32, y:i32) -> bool {
     self.tiles[idx as usize] != TileType::Wall
 }
 ```
+
 This takes an index, and calculates if it can be entered.
 
 We then implement the trait, using this helper:
@@ -105,7 +106,7 @@ We've changed a few things to allow write access, requested access to the map. W
 
 If you `cargo run` the project, monsters will now chase the player - and stop if they lose line-of-sight. We're not preventing monsters from standing on each other - or you - and we're not having them *do* anything other than yell at your console - but it's a good start. It wasn't too hard to get chase mechanics in!
 
-# Blocking access
+## Blocking access
 
 We don't want monsters to walk on top of each other, nor do we want them to get stuck in a traffic jam hoping to find the player; we'd rather they are willing to try and flank the player! We'll accompany this by keeping track of what parts of the map are blocked.
 
@@ -246,7 +247,7 @@ if !map.blocked[destination_idx] {
 
 Since we already put walls into the blocked list, this should take care of the issue for now. `cargo run` shows that monsters now block the player. They block them *perfectly* - so a monster that wants to be in your way is an unpassable obstacle!
 
-# Allowing Diagonal Movement
+## Allowing Diagonal Movement
 
 It would be nice to be able to bypass the monsters - and diagonal movement is a mainstay of roguelikes. So lets go ahead and support it. In `map.rs`'s `get_available_exits` function, we add them:
 
@@ -319,7 +320,7 @@ pub fn player_input(gs: &mut State, ctx: &mut Rltk) -> RunState {
 
 You can now diagonally dodge around monsters - and they can move/attack diagonally.
 
-# Giving monsters and the player some combat stats
+## Giving monsters and the player some combat stats
 
 You probably guessed by now that the way to add stats to entities is with another component! In `components.rs`, we add `CombatStats`. Here's a simple definition:
 
@@ -336,16 +337,18 @@ pub struct CombatStats {
 As usual, don't forget to register it in `main.rs`!
 
 We'll give the `Player` 30 hit points, 2 defense, and 5 power:
+
 ```rust
 .with(CombatStats{ max_hp: 30, hp: 30, defense: 2, power: 5 })
 ```
 
 Likewise, we'll give the monsters a weaker set of stats (we'll worry about monster differentiation later):
+
 ```rust
 .with(CombatStats{ max_hp: 16, hp: 16, defense: 1, power: 4 })
 ```
 
-# Indexing what is where
+## Indexing what is where
 
 When traveling the map - as a player or a monster - it's really handy to know what is in a tile. You can combine it with the visibility system to make intelligent choices with what can be seen, you can use it to see if you are trying to walk into an enemy's space (and attack them), and so on. One way to do it would be to iterate the `Position` components and see if we hit anything; for low numbers of entities that would be plenty fast. We'll take a different approach, and make the `map_indexing_system` help us. We'll start by adding a field to the map:
 
@@ -417,11 +420,12 @@ impl<'a> System<'a> for MapIndexingSystem {
 }
 ```
 
-# Letting the player hit things
+## Letting the player hit things
 
 Most roguelike characters spend a lot of time hitting things, so let's implement that! Bump to attack (walking into the target) is the canonical way to do this. We want to expand `try_move_player` in `player.rs` to check to see if a tile we are trying to enter contains a target.
 
 We'll add a reader for `CombatStats` to the list of data-stores, and put in a quick enemy detector:
+
 ```rust
 let combat_stats = ecs.read_storage::<CombatStats>();
 let map = ecs.fetch::<Map>();
@@ -444,7 +448,7 @@ for (_player, pos, viewshed) in (&mut players, &mut positions, &mut viewsheds).j
 
 If you `cargo run` this, you'll see that you can walk up to a mob and try to move onto it. *From Hell's Heart, I stab thee!* appears on the console. So the detection works, and the attack is in the right place.
 
-# Player attacking and killing things
+## Player attacking and killing things
 
 We're going to do this in an ECS way, so there's a bit of boilerplate. In `components.rs`, we add a component indicating an intent to attack:
 
@@ -562,6 +566,7 @@ impl<'a> System<'a> for DamageSystem {
 ```
 
 We'll also add a method to clean up dead entities:
+
 ```rust
 pub fn delete_the_dead(ecs : &mut World) {
     let mut dead : Vec<Entity> = Vec::new();
@@ -584,7 +589,7 @@ This is called from our `tick` command, after the systems run: `damage_system::d
 
 If you `cargo run` now, you can run around the map hitting things - and they vanish when dead!
 
-# Letting the monsters hit you back
+## Letting the monsters hit you back
 
 Since we've already written systems to handle attacking and damaging, it's relatively easy to use the same code with monsters - just add a `WantsToMelee` component and they can attack/kill the player.
 
@@ -692,11 +697,12 @@ pub fn delete_the_dead(ecs : &mut World) {
 
 We'll worry about ending the game in a later chapter.
 
-# Expanding the turn system
+## Expanding the turn system
 
 If you look closely, you'll see that enemies can fight back even after they have taken fatal damage. While that fits with some Shakespearean dramas (they really should give a speech), it's not the kind of tactical play that roguelikes encourage. The problem is that our game state is just `Running` and `Paused` - and we aren't even running the systems when the player acts. Additionally, systems don't know what phase we are in - so they can't take that into account.
 
 Let's replace `RunState` with something more descriptive of each phase:
+
 ```rust
 #[derive(PartialEq, Copy, Clone)]
 pub enum RunState { AwaitingInput, PreRun, PlayerTurn, MonsterTurn }
@@ -717,6 +723,7 @@ gs.ecs.insert(RunState::PreRun);
 ```
 
 Now to start refactoring `Tick`. Our new `tick` function looks like this:
+
 ```rust
 fn tick(&mut self, ctx : &mut Rltk) {
         ctx.cls();
@@ -811,7 +818,7 @@ impl State {
 
 If you `cargo run` the project, it now behaves as you'd expect: the player moves, and things he/she kills die before they can respond.
 
-# Wrapping Up
+## Wrapping Up
 
 That was quite the chapter! We added in location indexing, damage, and killing things. The good news is that this is the hardest part; you now have a simple dungeon bash game! It's not particularly fun, and you *will* die (since there's no healing at all) - but the basics are there.
 

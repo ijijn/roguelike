@@ -14,7 +14,7 @@
 
 So far, we have maps, monsters, and bashing things! No roguelike "murder hobo" experience would be complete without items to pick up along the way. This chapter will add some basic items to the game, along with User Interface elements required to pick them up, use them and drop them.
 
-# Thinking about composing items
+## Thinking about composing items
 
 A major difference between object-oriented and entity-component systems is that rather than thinking about something as being located on an inheritance tree, you think about how it *composes* from components. Ideally, you already have some of the components ready to use!
 
@@ -26,7 +26,7 @@ So... what makes up an item? Thinking about it, an item can be said to have the 
 * It's an `item`, which implies that it can be picked up. So it'll need an `Item` component of some sort.
 * If it can be used, it will need some way to indicate that it *can* be used - and what to do with it.
 
-# Consistently random
+## Consistently random
 
 Computers are actually really bad at random numbers. Computers are inherently deterministic - so (without getting into cryptographic stuff) when you ask for a "random" number, you are actually getting a "really hard to predict next number in a sequence". The sequence is controlled by a *seed* - with the same seed, you always get the same dice rolls!
 
@@ -40,7 +40,7 @@ gs.ecs.insert(rltk::RandomNumberGenerator::new());
 
 We can now access the RNG whenever we need it, without having to pass one around. Since we're not creating a new one, we can start it with a seed (we'd use `seeded` instead of `new`, and provide a seed). We'll worry about that later; for now, it's just going to make our code cleaner!
 
-# Improved Spawning
+## Improved Spawning
 
 One monster per room, always in the middle, makes for rather boring play. We also need to support spawning items as well as monsters!
 
@@ -115,7 +115,7 @@ for room in map.rooms.iter().skip(1) {
 
 That's definitely tidier! `cargo run` will give you exactly what we had at the end of the previous chapter.
 
-# Spawn All The Things
+## Spawn All The Things
 
 We're going to extend the function to spawn multiple monsters per room, with 0 being an option. First we change the Map constants which we introduced in the previous chapter to be public in order to use them in `spawner.rs`:
 
@@ -181,7 +181,7 @@ If you `cargo run` the project now, it will have between 0 and 4 monsters per ro
 
 ![Screenshot](./c9-s1.png)
 
-# Health Potion Entities
+## Health Potion Entities
 
 We'll improve the chances of surviving for a bit by adding health potions to the game! We'll start off by adding some components to help define a potion. In `components.rs`:
 
@@ -196,6 +196,7 @@ pub struct Potion {
 ```
 
 We of course need to register these in `main.rs`:
+
 ```rust
 gs.ecs.register::<Item>();
 gs.ecs.register::<Potion>();
@@ -281,7 +282,7 @@ If you `cargo run` the project now, rooms now sometimes contain health potions. 
 
 ![Screenshot](./c9-s2.png)
 
-# Picking Up Items
+## Picking Up Items
 
 Having potions exist is a great start, but it would be helpful to be able to pick them up! We'll create a new component in `components.rs` (and register it in `main.rs`!), to represent an item being in someone's backpack:
 
@@ -351,6 +352,7 @@ VirtualKeyCode::G => get_item(&mut gs.ecs),
 ```
 
 As you probably guessed, the next step is to implement `get_item`:
+
 ```rust
 fn get_item(ecs: &mut World) {
     let player_pos = ecs.fetch::<Point>();
@@ -381,7 +383,7 @@ This obtains a bunch of references/accessors from the ECS, and iterates all item
 
 If you `cargo run` the project now, you can press `g` anywhere to be told that there's nothing to get. If you are standing on a potion, it will vanish when you press `g`! It's in our backpack - but we haven't any way to *know* that other than the log entry.
 
-# Listing your inventory
+## Listing your inventory
 
 It's a good idea to be able to see your inventory list! This will be a game *mode* - that is, another state in which the game loop can find itself. So to start, we'll extend `RunMode` in `main.rs` to include it:
 
@@ -391,11 +393,13 @@ pub enum RunState { AwaitingInput, PreRun, PlayerTurn, MonsterTurn, ShowInventor
 ```
 
 The `i` key is a popular choice for inventory (`b` is also popular!), so in `player.rs` we'll add the following to the player input code:
+
 ```rust
 VirtualKeyCode::I => return RunState::ShowInventory,
 ```
 
 In our `tick` function in `main.rs`, we'll add another matching:
+
 ```rust
 RunState::ShowInventory => {
     if gui::show_inventory(self, ctx) == gui::ItemMenuResult::Cancel {
@@ -405,6 +409,7 @@ RunState::ShowInventory => {
 ```
 
 That naturally leads to implementing `show_inventory`! In `gui.rs`, we add:
+
 ```rust
 #[derive(PartialEq, Copy, Clone)]
 pub enum ItemMenuResult { Cancel, NoResponse, Selected }
@@ -451,9 +456,10 @@ If you `cargo run` your project now, you can see items that you have collected:
 
 ![Screenshot](./c9-s3.png)
 
-# Using Items
+## Using Items
 
 Now that we can display our inventory, lets make selecting an item actually *use* it. We'll extend the menu to return both an item entity and a result:
+
 ```rust
 pub fn show_inventory(gs : &mut State, ctx : &mut Rltk) -> (ItemMenuResult, Option<Entity>) {
     let player_entity = gs.ecs.fetch::<Entity>();
@@ -501,6 +507,7 @@ pub fn show_inventory(gs : &mut State, ctx : &mut Rltk) -> (ItemMenuResult, Opti
 ```
 
 Our call to `show_inventory` in `main.rs` is now invalid, so we'll fix it up:
+
 ```rust
 RunState::ShowInventory => {
     let result = gui::show_inventory(self, ctx);
@@ -568,6 +575,7 @@ impl<'a> System<'a> for PotionUseSystem {
 ```
 
 And register it in the list of systems to run:
+
 ```rust
 let mut potions = PotionUseSystem{};
 potions.run_now(&self.ecs);
@@ -584,7 +592,9 @@ RunState::PreRun => {
     newrunstate = RunState::AwaitingInput;
 }
 ```
+
 ...  
+
 ```rust
 RunState::PlayerTurn => {
     self.run_systems();
@@ -599,6 +609,7 @@ RunState::MonsterTurn => {
 ```
 
 Finally we have to change the `RunState::ShowInventory` handling if an item was selected, we create a `WantsToDrinkPotion` intent:
+
 ```rust
 RunState::ShowInventory => {
                 let result = gui::show_inventory(self, ctx);
@@ -619,11 +630,12 @@ NOW if you `cargo run` the project, you can pickup and drink health potions:
 
 ![Screenshot](./c9-s4.gif)
 
-# Dropping Items
+## Dropping Items
 
 You probably want to be able to drop items from your inventory, especially later when they can be used as bait. We'll follow a similar pattern for this section - create an intent component, a menu to select it, and a system to perform the drop.
 
 So we create a component (in `components.rs`), and register it in `main.rs`:
+
 ```rust
 #[derive(Component, Debug, ConvertSaveload, Clone)]
 pub struct WantsToDropItem {
@@ -632,6 +644,7 @@ pub struct WantsToDropItem {
 ```
 
 We add another system to `inventory_system.rs`:
+
 ```rust
 pub struct ItemDropSystem {}
 
@@ -670,23 +683,27 @@ impl<'a> System<'a> for ItemDropSystem {
 ```
 
 Register it in the dispatch builder in `main.rs`:
+
 ```rust
 let mut drop_items = ItemDropSystem{};
 drop_items.run_now(&self.ecs);
 ```
 
 We'll add a new `RunState` in `main.rs`:
+
 ```rust
 #[derive(PartialEq, Copy, Clone)]
 pub enum RunState { AwaitingInput, PreRun, PlayerTurn, MonsterTurn, ShowInventory, ShowDropItem }
 ```
 
 Now in `player.rs`, we add `d` for *drop* to the list of commands:
+
 ```rust
 VirtualKeyCode::D => return RunState::ShowDropItem,
 ```
 
 In `gui.rs`, we need another menu - this time for dropping items:
+
 ```rust
 pub fn drop_item_menu(gs : &mut State, ctx : &mut Rltk) -> (ItemMenuResult, Option<Entity>) {
     let player_entity = gs.ecs.fetch::<Entity>();
@@ -734,6 +751,7 @@ pub fn drop_item_menu(gs : &mut State, ctx : &mut Rltk) -> (ItemMenuResult, Opti
 ```
 
 We also need to extend the state handler in `main.rs` to use it:
+
 ```rust
 RunState::ShowDropItem => {
     let result = gui::drop_item_menu(self, ctx);
@@ -754,7 +772,7 @@ If you `cargo run` the project, you can now press `d` to drop items! Here's a sh
 
 ![Screenshot](./c9-s5.png)
 
-# Render order
+## Render order
 
 You've probably noticed by now that when you walk over a potion, it renders over the top of you - removing the context for your player completely! We'll fix that by adding a `render_order` field to `Renderables`:
 
@@ -790,7 +808,7 @@ for (pos, render) in data.iter() {
 }
 ```
 
-# Wrap Up
+## Wrap Up
 
 This chapter has shown a fair amount of the power of using an ECS: picking up, using and dropping entities is relatively simple - and once the player can do it, so can anything else (if you add it to their AI). We've also shown how to order ECS fetches, to maintain a sensible render order.
 

@@ -12,7 +12,7 @@
 
 ---
 
-The remainder of this tutorial will be dedicated to making a Roguelike. [Rogue](https://en.wikipedia.org/wiki/Rogue_(video_game) appeared in 1980, as a text-mode dungeon exploration game. It has spawned an entire genre of "roguelikes": procedurally generated maps, hunting an objective over multiple levels and "permadeath" (restart when you die). The definition is the source of many online fights; I'd rather avoid that!
+The remainder of this tutorial will be dedicated to making a Roguelike. [Rogue](<https://en.wikipedia.org/wiki/Rogue_(video_game)> appeared in 1980, as a text-mode dungeon exploration game. It has spawned an entire genre of "roguelikes": procedurally generated maps, hunting an objective over multiple levels and "permadeath" (restart when you die). The definition is the source of many online fights; I'd rather avoid that!
 
 A Roguelike without a map to explore is a bit pointless, so in this chapter we'll put together a basic map, draw it, and let your player walk around a bit. We're starting with the code from chapter 2, but with the red smiley faces (and their leftward tendencies) removed.
 
@@ -46,6 +46,7 @@ This is simple: it multiplies the `y` position by the map width (80), and adds `
 We're using a Rust function shorthand here. Notice that the function returns a `usize` (equivalent to `size_t` in C/C++ - whatever the basic size type used for a platform is) - and the function body lacks a `;` at the end? Any function that ends with a statement that lacks a semicolon treats that line as a `return` statement. So it's the same as typing `return (y as usize * 80) + x as usize`. This comes from the Rust author's *other* favorite language, `ML` - which uses the same shorthand. It's considered "Rustacean" (canonical Rust; I always picture a Rust Monster with cute little claws and shell) to use this style, so we've adopted it for the tutorial.
 
 Then we write a *constructor* function to make a map:
+
 ```rust
 fn new_map() -> Vec<TileType> {
     let mut map = vec![TileType::Floor; 80*50];
